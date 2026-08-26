@@ -1,0 +1,75 @@
+generated: '2026-08-26'
+method: searched
+source: 'registry.npmjs.org (name lookup + full-text search), pypi.org/pypi/*/json,
+  nuget azuresearch-usnc.nuget.org/query, rubygems.org/api/v1/gems, crates.io/api/v1/crates,
+  repo.packagist.org, plus https://developer.mycarrier.io/llms.txt and the full
+  developer.mycarrier.io documentation index'
+package_count: 0
+official_package_count: 0
+packages: []
+note: 'MyCarrier publishes NO first-party client SDK in any public package registry.
+  The complete developer documentation index (llms.txt, 46 lines, every guide and
+  reference page) contains no SDK, client-library or CLI page — the documented
+  integration path is raw HTTPS with HTTP Basic auth, exercised through Postman.
+  Because no official client library exists, NO `SDKs` pointer is emitted in apis.yml;
+  emitting one would credit MyCarrier with a surface it does not ship.'
+registries_probed:
+- registry: npm
+  method: name lookup + full-text search "mycarrier"
+  result: no first-party package
+- registry: pypi
+  names: [mycarrier, mycarriertms]
+  status: 404
+  result: absent
+- registry: nuget
+  query: mycarrier
+  total_hits: 0
+  result: absent
+- registry: rubygems
+  name: mycarrier
+  status: 404
+  result: absent
+- registry: crates.io
+  name: mycarrier
+  status: 403
+  result: 'blocked to our crawler; no crates.io reference appears anywhere in MyCarrier
+    documentation, so a first-party Rust crate is not expected'
+- registry: packagist
+  name: mycarrier/sdk
+  status: 404
+  result: absent
+namesake_collision:
+  finding: 'npm full-text search for "mycarrier" returns five packages that are NOT
+    this company. They are recorded here so a later enrichment round does not mistake
+    them for first-party MyCarrier TMS SDKs.'
+  rejected:
+  - name: myc-chat-widget
+    registry: npm
+    version: 1.0.5
+    published: '2025-12-16'
+    reason: 'A floating chat widget, not a freight API client. No repository, no homepage,
+      no link to mycarrier.io or mycarriertms.com. Sole npm maintainer "arhamymr" has
+      no association with MyCarrier TMS.'
+  - name: mycarrier-nps
+    registry: npm
+    version: 1.0.0
+    published: '2023-04-14'
+    reason: 'NPS survey widget. No repository, no homepage, no description beyond its
+      own name. Maintainer "agungrizkyana", unaffiliated.'
+  - name: mycarrier-chatbox
+    registry: npm
+    version: 1.0.0
+    published: '2023-04-14'
+    reason: Chat box widget. Same unaffiliated maintainer as mycarrier-nps.
+  - name: myc-components
+    registry: npm
+    version: 0.0.30
+    published: '2020-12-21'
+    reason: '"Myc design system" UI component library. Predates MyCarrier''s public
+      API, no repository, no link to the company. Same unaffiliated maintainer.'
+  - name: myc-components-test
+    registry: npm
+    version: null
+    published: null
+    reason: Test publish of myc-components; same unaffiliated maintainer.
+derived_candidates: []

@@ -1,0 +1,53 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the MyCarrier FreightAudit API
+  version: 1.0.0
+extends: ../openapi/mycarrier-freightaudit-api-openapi.json
+x-generated: '2026-08-26'
+x-method: derived
+x-source: 'openapi/mycarrier-freightaudit-api-openapi.json,
+  https://developer.mycarrier.io/docs/api-environments'
+x-note: 'The FreightAudit contract is the largest MyCarrier publishes (86 operations,
+  180 schemas) and the only one using RFC 9457 problem details — but NOT ONE of its 86
+  operations declares an operationId, and none carries a summary or description. That is
+  the single biggest contract-quality gap in MyCarrier''s estate: a generated client has
+  no stable method names. Overlays cannot responsibly invent 86 operationIds, so this
+  overlay records the gap explicitly rather than papering over it, and adds the metadata
+  that can be stated truthfully.'
+actions:
+- target: $.info
+  description: Add contact and documentation links.
+  update:
+    contact:
+      name: MyCarrier API Support
+      email: support@mycarrier.io
+      url: https://developer.mycarrier.io/
+    x-documentation: https://developer.mycarrier.io/docs/getting-started
+    x-contract-gaps:
+    - 'No operationId on any of the 86 operations.'
+    - 'No summary or description on any operation.'
+    - 'No 429 declared despite documented rate limits.'
+- target: $.servers
+  description: Record the documented sandbox host alongside production.
+  update:
+  - url: https://invoice.mycarriertms.com
+    description: Production
+  - url: https://invoice-api.preprod.mycarrier.dev
+    description: Sandbox
+- target: $.paths./api/Payment/PayNow.post
+  description: 'Surface the idempotency contract that is currently buried in a request
+    schema — this is the only enforced idempotency in MyCarrier''s estate.'
+  update:
+    x-idempotency:
+      mechanism: request-body-field
+      key: idempotencyKey
+      required: true
+      companion_field: correlationId
+      note: 'MC.Invoice.API.Dtos.Payments.Requests.PayInvoiceRequest requires both
+        idempotencyKey and correlationId. No replay/retention window is published.'
+- target: $.paths.*.*.responses
+  description: Declare the documented but undeclared 429 response.
+  update:
+    '429':
+      description: 'Too Many Requests. Rate limits are enforced per account and per
+        endpoint. Retry with a progressively increasing delay.'

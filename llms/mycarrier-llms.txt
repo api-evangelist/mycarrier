@@ -1,0 +1,46 @@
+# MyCarrier Public API Documentation
+
+> Digitize Your Business from Order to Invoice! MyCarrier automates the entire LTL shipment lifecycle from quote-to-cash, enabling efficiency and data accuracy across multiple departments and software systems. Right from order creation, MyCarrier enables you to run rate quotes directly in your ERP system and pushes shipment details back into the order record. With automatic retrieval of documents in MyInvoiceHub, you can review freight bills and resolve variances seamlessly.
+
+Append .md to any documentation page URL to get its markdown version.
+
+## Guides
+- [MyCarrier Developer Guide](https://developer.mycarrier.io/docs/getting-started.md)
+- [Get Started](https://developer.mycarrier.io/docs/get-started.md)
+- [Install Postman](https://developer.mycarrier.io/docs/postman-guide.md)
+- [Import Collection](https://developer.mycarrier.io/docs/importing-a-postman-collection.md)
+- [Authentication](https://developer.mycarrier.io/docs/authentication-1.md)
+- [Postman Environment & Variables](https://developer.mycarrier.io/docs/setting-up-enviornments-establishing-variables.md)
+- [API Environments](https://developer.mycarrier.io/docs/api-environments.md)
+- [Order Management](https://developer.mycarrier.io/docs/order-management.md): Use the Order API to create and manage orders by integrating MyCarrier with other systems like an ERP or WMS.
+- [Required Fields](https://developer.mycarrier.io/docs/required-fields.md): This guide outlines the required fields for creating an order using the MyCarrier API. Ensuring all required fields are included will help you successfully create and manage orders.
+- [Create An Order](https://developer.mycarrier.io/docs/create-an-order.md): This guide will walk you through the steps to create an order using the MyCarrier API. Follow these instructions to ensure your order is successfully created and processed.
+- [Supported Data Format](https://developer.mycarrier.io/docs/supported-data-format.md)
+- [API Rate Limits](https://developer.mycarrier.io/docs/api-rate-limits.md)
+- [Status Codes](https://developer.mycarrier.io/docs/status-code.md)
+- [Webhooks Guide](https://developer.mycarrier.io/docs/webhooks.md)
+- [Shipment Created Webhook](https://developer.mycarrier.io/docs/update-shipment-webhook.md): Alerts when a shipment has been successfully dispatched in MyCarrier, including information about the shipment's initial setup and carrier details.
+- [Shipment Update Webhook](https://developer.mycarrier.io/docs/update-shipment-webhooks.md): Notifies when a shipment has been successfully updated in MyCarrier, providing details about the shipment's current status and costs.
+- [Shipment Canceled Webhook](https://developer.mycarrier.io/docs/canceled-shipment-webhook.md): Indicates when a shipment has been successfully canceled in MyCarrier, with details about the cancellation and associated charges.
+- [Shipment Tracking Webhook](https://developer.mycarrier.io/docs/shipment-tracking-webhook.md): Provides updates on the tracking status of a shipment in MyCarrier, including the latest tracking information and estimated delivery dates.
+- [Invoice Auto-Approved](https://developer.mycarrier.io/docs/invoice-auto-approved.md): Signals that an invoice has been automatically approved in MyCarrier, with details about the shipment and associated costs.
+- [Invoice Approved Webhook](https://developer.mycarrier.io/docs/invoice-approved-webhook.md): Notifies when an invoice has been manually approved in MyCarrier, including information about the shipment and invoice details.
+
+## API Reference
+- [Get Shipping Locations List](https://developer.mycarrier.io/reference/getshippinglocations-1.md): Get shipping locations for a current customer
+- [Get Shipping Location by Location ID](https://developer.mycarrier.io/reference/getshippinglocationbylocationid-1.md): Get detailed shipping location information by location ID for the current customer
+- [Create or Modify Orders](https://developer.mycarrier.io/reference/uploadorder.md): Create a new order or update existing by Reference ID
+- [Delete Order](https://developer.mycarrier.io/reference/deleteorder.md): Delete an order by Reference ID
+- [Get Order by reference id](https://developer.mycarrier.io/reference/order.md): Get an order by Reference Id
+- [Dispatches a quote that we quoted through the rate API.](https://developer.mycarrier.io/reference/dispatchquote-1.md): Dispatch, Manual Dispatch or Edit Dispatch
+- [Get Rates](https://developer.mycarrier.io/reference/getrates-1.md): Get rates for a quote based on rating request
+- [Delete Rule](https://developer.mycarrier.io/reference/deleteroutingguide.md): Deletes a specific routing guide entry from the system.
+- [Download Rules](https://developer.mycarrier.io/reference/downloadroutingguide.md): Exports all saved routing guide records for a customer in Excel format.
+- [Download Excel Template](https://developer.mycarrier.io/reference/downloadroutingguidetemplate.md): Provides a standardized Excel template for preparing routing guide uploads.
+- [Get Saved Rules](https://developer.mycarrier.io/reference/fetchroutingguide.md): Retrieves all saved routing guide entries for a customer.
+- [Match Rule](https://developer.mycarrier.io/reference/matchroutingguide.md): Filters routing guides based on specified parameters and returns the details of a single carrier that matches the criteria.
+- [Upload Rules](https://developer.mycarrier.io/reference/uploadroutingguide.md): Enables uploading multiple routing guide records for a customer via an Excel file.
+- [Upsert Rule](https://developer.mycarrier.io/reference/upsertroutingguide.md): Creates or updates a routing guide rule based on provided data.
+- [Get Shipment Details by reference id](https://developer.mycarrier.io/reference/shipmentdetails-2.md): Get a shipments full details by any shipment identifier
+- [/carrierintegrations/webhook/smc3/documents](https://developer.mycarrier.io/reference/postcarrierintegrationswebhooksmc3documents.md)
+- [/carrierintegrations/webhook/smc3/status](https://developer.mycarrier.io/reference/postcarrierintegrationswebhooksmc3status.md)

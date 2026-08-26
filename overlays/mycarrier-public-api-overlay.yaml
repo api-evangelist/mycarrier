@@ -1,0 +1,68 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the MyCarrier Public API
+  version: 1.0.0
+extends: ../openapi/mycarrier-public-api-openapi.json
+x-generated: '2026-08-26'
+x-method: derived
+x-source: 'openapi/mycarrier-public-api-openapi.json, https://developer.mycarrier.io/docs/authentication-1,
+  https://developer.mycarrier.io/docs/api-rate-limits, https://developer.mycarrier.io/docs/status-code'
+x-note: 'Captures API Evangelist enhancements without mutating MyCarrier''s published
+  contract. The largest gap this addresses: the contract declares an EMPTY
+  components.securitySchemes and no top-level security[], even though every operation
+  documents a 401 and the docs describe HTTP Basic auth. A generated client built from
+  the raw contract has no way to authenticate.'
+actions:
+- target: $.info
+  description: Add contact and documentation links absent from the published info block.
+  update:
+    contact:
+      name: MyCarrier API Support
+      email: support@mycarrier.io
+      url: https://developer.mycarrier.io/
+    x-documentation: https://developer.mycarrier.io/docs/getting-started
+- target: $.components
+  description: Declare the HTTP Basic scheme the docs describe but the contract omits.
+  update:
+    securitySchemes:
+      BasicAuth:
+        type: http
+        scheme: basic
+        description: 'Basic Authorization: username is the account admin email, password
+          is the Order API Key from Customer Settings. HTTPS is required.'
+- target: $
+  description: Apply BasicAuth globally, matching the documented auth model and the
+    401 declared on every operation.
+  update:
+    security:
+    - BasicAuth: []
+- target: $.servers
+  description: Record the documented sandbox environments alongside production.
+  update:
+  - url: https://api.mycarriertms.com
+    description: Production
+  - url: https://preprod-api.mycarrier.dev
+    description: 'Sandbox (documented as the future consolidated sandbox host)'
+- target: $.paths.*.*.responses
+  description: 'Declare the 429 response that MyCarrier documents in prose but omits
+    from every contract, so generated clients expect it.'
+  update:
+    '429':
+      description: 'Too Many Requests. Rate limits are enforced per account and per
+        endpoint. Retry with a progressively increasing delay. No rate-limit headers
+        are published.'
+- target: $.tags
+  description: Declare the resource tags the contract leaves undeclared.
+  update:
+  - name: Orders
+    description: Create, retrieve and delete orders by caller-supplied reference ID.
+  - name: Rating
+    description: Price a shipment across MyCarrier's LTL carrier partners.
+  - name: Dispatch
+    description: Commit a rated quote to a carrier.
+  - name: Routing Guide
+    description: Lane-to-carrier policy rules.
+  - name: Shipments
+    description: Retrieve dispatched shipment detail.
+  - name: Addresses
+    description: Saved shipping locations.

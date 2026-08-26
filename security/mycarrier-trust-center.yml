@@ -1,0 +1,26 @@
+generated: '2026-08-26'
+method: probed
+source: https://trust.mycarrier.io/
+present: true
+url: https://trust.mycarrier.io/
+http_status: 200
+platform: Vanta Trust Center
+canonical: https://trust.mycarrier.io
+program_statement: 'MyCarrier is committed to maintaining a secure and compliant
+  environment, with controls continuously monitored and validated through our
+  Vanta-powered Trust Center.'
+program_statement_source: 'meta name="description" on https://trust.mycarrier.io/'
+certifications: []
+certifications_note: 'MyCarrier operates a dedicated, live trust center on its own
+  subdomain, which is a published compliance program. The specific frameworks and audit
+  reports it lists could NOT be read: the page is a fully client-rendered Vanta
+  single-page application whose served HTML (5,750 bytes) contains only the document
+  shell, module preloads and Open Graph tags. Three candidate data endpoints
+  (/api/trust-center, /graphql, and the Vanta app path) each returned the same SPA
+  shell rather than JSON. No named certification (SOC 2, ISO 27001, PCI DSS, HIPAA,
+  FedRAMP) is asserted here, because none was observed — recording one from inference
+  would be fabrication. Re-probe with a JS-capable fetch to enumerate the framework
+  list.'
+documents_gated: unknown
+note: 'Most Vanta trust centers gate audit reports behind an NDA click-through; whether
+  MyCarrier does was not observable without rendering the page.'

@@ -1,0 +1,60 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.mycarrier.io/docs/api-environments
+summary: 'MyCarrier operates a dedicated sandbox environment on a separate domain
+  (mycarrier.dev) from production (mycarriertms.com). Sandbox access is not self-service:
+  MyCarrier provisions the sandbox environment and the API key on request.'
+environments:
+- name: Production
+  api: Order
+  base_url: https://order-public-api.api.mycarriertms.com
+  variable: orders_api_url
+  future_base_url: https://api.mycarriertms.com
+- name: Production
+  api: Invoice
+  base_url: https://invoice.mycarriertms.com
+  variable: freightaudit_api_url
+  future_base_url: https://api.mycarriertms.com
+- name: Sandbox
+  api: Order
+  base_url: https://order-public-api.preprod.mycarrier.dev
+  variable: orders_api_url
+  future_base_url: http://preprod-api.mycarrier.dev
+- name: Sandbox
+  api: Invoice
+  base_url: https://invoice-api.preprod.mycarrier.dev
+  variable: freightaudit_api_url
+  future_base_url: http://preprod-api.mycarrier.dev
+separation_model:
+  mode: separate-host
+  note: 'Test and live are separated by HOST, not by a key prefix or a mode flag.
+    MyCarrier does not publish distinct test-vs-live key prefixes, so a credential
+    carries no visible indication of which environment it belongs to.'
+test_data:
+  test_cards: none published
+  magic_identifiers: none published
+  fixtures: none published
+  time_simulation: none published
+  note: 'MyCarrier publishes no test cards, magic test identifiers, seeded fixtures
+    or test clocks. The sandbox is a live-shaped environment against the customer''s
+    own provisioned test account.'
+access:
+  self_service: false
+  how: 'Request an account at https://go.mycarrier.io/sign-up; MyCarrier sets up the
+    Sandbox environment and issues an API key.'
+  docs: https://developer.mycarrier.io/docs/getting-started
+tooling:
+  postman:
+    documented: true
+    docs: https://developer.mycarrier.io/docs/postman-guide
+    public_collection: false
+    note: 'The docs recommend Postman and walk through installing it, importing a
+      collection, and setting up environment variables — but the MyCarrier collection
+      is shared on request rather than published to a public Postman workspace. No
+      public collection or workspace URL exists, so no Postman pointer is emitted.'
+gaps:
+- Sandbox access requires a sales/support conversation; there is no self-service signup
+  for API credentials.
+- 'The migration signalled on the environments page (both Order and Invoice moving to
+  api.mycarriertms.com / preprod-api.mycarrier.dev) is published as a "Future API URL"
+  column with no date, no deprecation policy and no Sunset header.'

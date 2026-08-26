@@ -1,0 +1,130 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.mycarrier.io/docs/webhooks
+asyncapi_published: false
+asyncapi_note: 'MyCarrier publishes NO AsyncAPI document. It does publish a real,
+  documented webhook catalog — six named event types, each with a full sample payload —
+  plus a webhook REGISTRATION API. That is captured here as type Webhooks. No AsyncAPI
+  file was generated, because generating one would assert a machine-readable event
+  contract MyCarrier does not ship.'
+transport: HTTP POST callback
+delivery: push
+summary: 'Beyond retrieving shipment updates via GET, a customer can register an HTTP
+  callback endpoint and receive shipment and invoice lifecycle events as they occur.'
+docs: https://developer.mycarrier.io/docs/webhooks
+registration:
+  self_service_api: true
+  spec: openapi/mycarrier-webhook-api-openapi.json
+  api_title: ITM.Services.Webhook.Api
+  auth: Bearer JWT
+  operations:
+  - method: GET
+    path: /Webhook
+    summary: Returns a list of registered Webhooks
+  - method: POST
+    path: /Webhook
+    summary: Attempts to create a new Webhook
+  - method: PUT
+    path: /Webhook
+    summary: Update an existing Webhook
+  - method: DELETE
+    path: /Webhook
+    summary: Delete the Webhook specified by name
+  - method: GET
+    path: /Filtered
+    summary: Returns a filtered list of registered Webhooks
+  - method: GET
+    path: /Composed
+    summary: Returns a registered Webhook with headers
+  - method: GET
+    path: /WebhookType
+    summary: Returns a list of registered WebhookTypes
+  - method: POST
+    path: /WebhookType
+    summary: Create a new WebhookType
+  - method: PUT
+    path: '/WebhookType/{name}'
+    summary: Update a WebhookType
+  - method: DELETE
+    path: '/WebhookType/{name}'
+    summary: Delete the WebhookType specified by name
+  - method: GET
+    path: /HttpHeaderFiltered
+    summary: Returns a list of additional HTTP headers
+  - method: POST
+    path: /WebhookHttpHeader
+    summary: Create a new outbound HTTP header
+  - method: PUT
+    path: /WebhookHttpHeader
+    summary: Update an existing HTTP header by header key
+  - method: DELETE
+    path: /WebhookHttpHeader
+    summary: Delete the HTTP header by header key
+  custom_headers: true
+  custom_headers_note: 'A customer can attach arbitrary outbound HTTP headers to their
+    webhook registration, which is how a receiver authenticates MyCarrier''s callbacks.'
+event_count: 6
+events:
+- name: shipment.created
+  title: Shipment Created Webhook
+  description: 'Alerts when a shipment has been successfully dispatched in MyCarrier,
+    including information about the shipment''s initial setup and carrier details.'
+  docs: https://developer.mycarrier.io/docs/update-shipment-webhook
+  sample_payload_published: true
+  envelope: '{ Message, Payload }'
+  key_fields: [ShipmentId, QuoteId, QuoteReferenceId, CustomerBOLNumber, PONumber,
+    CarrierCode, CarrierName, TotalCost, CarrierPRONumber, PickupDate,
+    EstimatedDeliveryDate, TransitTime, BOLLink, LabelLink, SecurityKey, CustomerId]
+- name: shipment.updated
+  title: Shipment Update Webhook
+  description: 'Notifies when a shipment has been successfully updated in MyCarrier,
+    providing details about the shipment''s current status and costs.'
+  docs: https://developer.mycarrier.io/docs/update-shipment-webhooks
+  sample_payload_published: true
+- name: shipment.canceled
+  title: Shipment Canceled Webhook
+  description: 'Indicates when a shipment has been successfully canceled in MyCarrier,
+    with details about the cancellation and associated charges.'
+  docs: https://developer.mycarrier.io/docs/canceled-shipment-webhook
+  sample_payload_published: true
+  note: 'Cancellation is observable as an event but is NOT performable through the
+    public API — see the reversibility block in conventions/mycarrier-conventions.yml.'
+- name: shipment.tracking.updated
+  title: Shipment Tracking Webhook
+  description: 'Provides updates on the tracking status of a shipment in MyCarrier,
+    including the latest tracking information and estimated delivery dates.'
+  docs: https://developer.mycarrier.io/docs/shipment-tracking-webhook
+  sample_payload_published: true
+- name: invoice.auto_approve
+  title: Invoice Auto-Approved
+  description: 'Signals that an invoice has been automatically approved in MyCarrier,
+    with details about the shipment and associated costs.'
+  docs: https://developer.mycarrier.io/docs/invoice-auto-approved
+  sample_payload_published: true
+- name: invoice.approve
+  title: Invoice Approved Webhook
+  description: 'Notifies when an invoice has been manually approved in MyCarrier,
+    including information about the shipment and invoice details.'
+  docs: https://developer.mycarrier.io/docs/invoice-approved-webhook
+  sample_payload_published: true
+inbound_callbacks:
+  note: 'The public API also exposes two INBOUND carrier-integration callbacks that
+    MyCarrier receives rather than sends: POST /carrierintegrations/webhook/smc3/documents
+    and POST /carrierintegrations/webhook/smc3/status (SMC3, the LTL rating and transit
+    data provider). These are not customer-subscribable events.'
+security:
+  signature_verification: not published
+  note: 'MyCarrier documents no webhook signature or HMAC verification scheme. The
+    shipment payload carries a per-shipment `SecurityKey` UUID used to authorize the
+    BOL and label download links, but that is a capability token on those URLs, not a
+    payload signature. A receiver''s only authentication option is the custom outbound
+    headers it configures on its own webhook registration.'
+delivery_semantics:
+  retries: not published
+  ordering: not published
+  at_least_once: not published
+gaps:
+- No AsyncAPI or other machine-readable event schema; payload shapes exist only as
+  JSON samples on documentation pages.
+- No webhook signature/HMAC verification scheme published.
+- No published retry, ordering or replay semantics.

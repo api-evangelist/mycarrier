@@ -1,0 +1,31 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.mycarrier.io/docs/api-rate-limits
+limit_count: 0
+note: 'MyCarrier documents that rate limits EXIST and how to react to them, but publishes
+  no numbers. The rate-limits page states that limits are "customized", that "distinct
+  rate limits are applied to different API endpoints", and that they are "enforced on
+  an account-by-account basis" — without naming a single quota, window or burst value.
+  No rate-limit response headers are documented anywhere in the developer docs, and
+  none of the six published OpenAPI contracts declares a 429 response or a
+  RateLimit/X-RateLimit/Retry-After header. An agent therefore cannot read its remaining
+  budget at runtime; it can only observe the 429 and back off. limit_count is 0 because
+  zero numeric limits are published, not because limits are absent.'
+scope: per-account and per-endpoint
+exhaustion:
+  status_code: 429
+  documented: true
+  retry_after_header: not documented
+  guidance: 'The docs recommend integrations monitor for 429 status codes and employ
+    a retry mechanism with a gradually increasing delay strategy.'
+response_headers:
+  documented: []
+  observed_in_spec: []
+  note: 'No X-RateLimit-*, RateLimit-* or Retry-After header is documented or declared
+    in any published contract. Live observation was not possible: every MyCarrier API
+    operation requires credentials, so no unauthenticated response could be inspected.'
+limits: []
+gaps:
+- No published numeric quota, window or burst for any endpoint.
+- No documented rate-limit response headers, so remaining budget is not machine-readable.
+- 429 is documented in prose but is not declared as a response in any OpenAPI contract.

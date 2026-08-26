@@ -1,0 +1,144 @@
+generated: '2026-08-26'
+method: derived
+source: 'openapi/mycarrier-public-api-openapi.json, openapi/mycarrier-order-public-api-openapi.json,
+  openapi/mycarrier-freightaudit-api-openapi.json, openapi/mycarrier-rating-api-openapi.json,
+  https://developer.mycarrier.io/docs/status-code, https://trust.mycarrier.io/'
+standards:
+- id: openapi
+  conforms: true
+  evidence: 'Six published OpenAPI documents: OpenAPI 3.0.0 (Public API, via the ReadMe
+    API registry), 3.0.4 (live Order and FreightAudit swagger endpoints), 3.0.1
+    (Order/FreightAudit/Webhook legacy) and 3.0.3 (Rating legacy).'
+- id: rest
+  conforms: true
+  evidence: 'Resource-centric URLs over standard HTTP verbs; the getting-started guide
+    states the API has a RESTful design adhering to HTTP standards.'
+- id: rfc9457
+  conforms: partial
+  evidence: 'openapi/mycarrier-freightaudit-api-openapi.json defines ProblemDetailsResponse
+    and Microsoft.AspNetCore.Mvc.ProblemDetails with type/title/status/detail/instance
+    and serves application/problem+json. The public API and order contracts do NOT —
+    they use bespoke {data, errors[], statusCode} and {isSuccess, errorMessages[]}
+    envelopes.'
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme is declared in any published contract and no OAuth
+    flow is documented.
+- id: oidc
+  conforms: false
+  evidence: No openIdConnect scheme; /.well-known/openid-configuration 404s on every host.
+- id: http-basic
+  conforms: true
+  evidence: 'BasicAuth (type http, scheme basic) declared in the Order and FreightAudit
+    public contracts and documented at
+    https://developer.mycarrier.io/docs/authentication-1.'
+- id: jwt-bearer
+  conforms: true
+  evidence: 'Bearer scheme with bearerFormat JWT declared in
+    openapi/mycarrier-freightaudit-api-openapi.json and
+    openapi/mycarrier-webhook-api-openapi.json.'
+- id: w3c-trace-context
+  conforms: true
+  evidence: 'Every operation in openapi/mycarrier-public-api-openapi.json declares an
+    optional `Traceparent` header parameter, the W3C Trace Context propagation header.'
+- id: pagination
+  conforms: partial
+  evidence: 'Offset pagination (skip/take) with isTruncated/returnedCount on
+    GET /api/v1/address/shipping-locations only. No pagination on other collections.'
+- id: idempotency
+  conforms: partial
+  evidence: 'MC.Invoice.API.Dtos.Payments.Requests.PayInvoiceRequest REQUIRES
+    `idempotencyKey` and `correlationId`. No Idempotency-Key header exists on any
+    operation, and no other write operation accepts a key.'
+- id: webhooks
+  conforms: true
+  evidence: 'Six documented event types with sample payloads at
+    https://developer.mycarrier.io/docs/webhooks, plus a webhook registration API
+    (openapi/mycarrier-webhook-api-openapi.json).'
+- id: asyncapi
+  conforms: false
+  evidence: 'MyCarrier documents webhooks in prose with JSON samples but publishes no
+    AsyncAPI document. The webhook catalog is captured at
+    asyncapi/mycarrier-events-webhooks.yml as type Webhooks.'
+- id: json:api
+  conforms: false
+  evidence: No JSON:API media type or document structure in any contract.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface or OData query options.
+- id: scim
+  conforms: false
+  evidence: No SCIM schema URN; no user-provisioning surface is published.
+- id: fhir
+  conforms: false
+  evidence: Not a healthcare provider.
+- id: psd2
+  conforms: false
+  evidence: Not a payment services provider under PSD2.
+- id: fapi
+  conforms: false
+  evidence: No OAuth surface, so FAPI is not applicable.
+domain_standards:
+- id: nmfta-scac
+  name: Standard Carrier Alpha Code (SCAC)
+  body: National Motor Freight Traffic Association (NMFTA)
+  conforms: true
+  evidence: 'Declared throughout the contract as the carrier identifier, not merely
+    claimed in marketing prose. openapi/mycarrier-public-api-openapi.json:
+    MC.Quote.Contracts.Responses.Rate.ServiceResponse.carrier — "Carrier SCAC (Standard
+    Carrier Alpha Code) providing the rate", maxLength 4, example "ABCF"; routing-guide
+    rules carry `carrierScac` and "A comma-separated list of carrier SCACs to be
+    excluded for this routing guide rule"; the FreightAudit contract routes dispute
+    email by SCAC at GET /api/CarrierSettings/DisputeEmail/SCAC/{carrierCode}.'
+  significance: 'A shipper or TMS that already speaks SCAC addresses MyCarrier''s
+    fourteen carrier partners with no bespoke carrier-code mapping.'
+- id: nmfta-nmfc
+  name: National Motor Freight Classification (NMFC)
+  body: National Motor Freight Traffic Association (NMFTA)
+  conforms: true
+  evidence: 'Commodity classification is expressed in NMFC, not a MyCarrier-private
+    taxonomy. Fields `commodityNMFC` ("An optional non-decimal numeric string ... that
+    specifies the commodity NMFC code for a specific commodity in a specific handling
+    unit"), `commodityNMFCSubCode` ("NMFC sub-classification code for more specific
+    commodity classification"), and in the rating contract `nmfcItemCode` /
+    `nmfcSubCode`. The marketing site also lists "NMFC Verification" as a Basic-tier
+    feature.'
+- id: fmcsa-hazmat
+  name: FMCSA hazard classes and UN/NA hazardous material identifiers
+  body: 'Federal Motor Carrier Safety Administration; UN Model Regulations / 49 CFR'
+  conforms: true
+  evidence: 'The handling-unit commodity model carries `hazmatHazardClass` ("the Federal
+    Motor Carrier Safety Administration (FMCSA) hazard class"), `hazmatIDNumber` ("using
+    the United Nations (UN) or North American (NA) format that specifies the hazardous
+    material identifier"), `hazmatPackingGroup` ("the hazardous material packing group
+    type indicating the degree of danger") and `hazmatProperShippingName` ("the full
+    proper shipping name"). These are the regulated 49 CFR / UN shipping-description
+    elements, declared as first-class request fields.'
+- id: x12-edi
+  name: EDI freight invoicing
+  body: ASC X12
+  conforms: partial
+  evidence: 'The FreightAudit contract exposes an EDI mapping surface —
+    POST/DELETE /api/CustomerSettings/EdiMapping with
+    MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest and the
+    MC.Invoice.Data.Mongo.Entities.EdiMapping entity — plus a partner EDI intake at
+    POST /api/v1/Integrations/YourEDI/Create
+    (YourEDICreateInvoiceRequest). The EDI transaction sets themselves (e.g. 210 freight
+    invoice, 214 shipment status) are NOT named in the contract, so this is recorded as
+    partial: an EDI mapping capability is demonstrably present, but no specific X12
+    transaction set is declared.'
+- id: ebol
+  name: Electronic Bill of Lading
+  conforms: true
+  evidence: 'eBOL is a published Basic-tier platform feature, and BOL artifacts are
+    first-class in the API: the dispatch response returns `bolNumber`, the shipment
+    model exposes `bol` ("The signed Bill Of Lading from the carrier") and `originalBol`
+    links, and the shipment.created webhook payload carries a `BOLLink`.'
+compliance:
+  program_published: true
+  trust_center: https://trust.mycarrier.io/
+  certifications: []
+  note: 'MyCarrier operates a live, dedicated Vanta-powered trust center on its own
+    subdomain, which is a published compliance program. The named frameworks it lists
+    could not be read because the page is fully client-rendered — see
+    security/mycarrier-trust-center.yml. No certification is asserted here.'

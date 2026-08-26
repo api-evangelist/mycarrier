@@ -1,0 +1,224 @@
+generated: '2026-08-26'
+method: derived
+source: 'openapi/mycarrier-public-api-openapi.json, openapi/mycarrier-freightaudit-api-openapi.json,
+  openapi/mycarrier-order-public-api-openapi.json, https://developer.mycarrier.io/docs/authentication-1,
+  https://developer.mycarrier.io/docs/api-rate-limits, https://developer.mycarrier.io/docs/status-code,
+  https://developer.mycarrier.io/docs/supported-data-format'
+authentication:
+  style: http-basic
+  detail: 'Username = account admin email, password = Order API Key, sent in the
+    Authorization header. The FreightAudit live contract and the webhook-registration
+    contract declare Bearer JWT instead. The public contract additionally declares an
+    optional X-Mc-Api-Key header parameter on every operation alongside Authorization.'
+  https_required: true
+  see: authentication/mycarrier-authentication.yml
+media_types:
+  request: application/json
+  response: application/json
+  note: 'The docs state MyCarrier favours JSON as its standard interchange format.
+    Two routing-guide operations return Excel binaries
+    (DownloadRoutingGuide, DownloadRoutingGuideTemplate).'
+idempotency:
+  supported: true
+  scope: partial
+  mechanism: request-body field
+  key_field: idempotencyKey
+  key_header: null
+  operations:
+  - operationId: null
+    method: POST
+    path: /api/Payment/PayNow
+    spec: openapi/mycarrier-freightaudit-api-openapi.json
+    schema: MC.Invoice.API.Dtos.Payments.Requests.PayInvoiceRequest
+    required: true
+    note: 'The pay-invoice request REQUIRES both `idempotencyKey` and `correlationId`.
+      This is a genuine, enforced idempotency contract on the money-moving operation.'
+  retention: not published
+  detail: 'Idempotency is real but NARROW: it is enforced on the invoice payment
+    operation only, via a required `idempotencyKey` field in the request body, not via
+    a standard Idempotency-Key HTTP header. No other MyCarrier write operation accepts
+    an idempotency key.'
+  natural_keys:
+    supported: true
+    detail: 'Order writes are upserts keyed on the caller''s own reference ID —
+      UploadOrder is documented as "Create a new order or update existing by Reference
+      ID", and both DeleteOrder and Order address the resource by
+      /referenceId/{referenceId}. Re-sending the same order payload with the same
+      reference ID updates rather than duplicates, which gives order creation
+      idempotent-by-natural-key behaviour without an idempotency token.'
+  gaps:
+  - No Idempotency-Key request header on any operation.
+  - No published key retention/replay window.
+  - No idempotency on dispatch (DispatchQuote), which is the operation that commits
+    freight to a carrier.
+pagination:
+  style: offset
+  params:
+  - name: skip
+    in: query
+    type: integer
+    description: Number of records to skip.
+  - name: take
+    in: query
+    type: integer
+    description: Number of records to take.
+  applies_to:
+  - GET /api/v1/address/shipping-locations
+  response_fields:
+  - name: returnedCount
+    description: Number of returned results.
+  - name: isTruncated
+    description: Indicates whether the results are truncated.
+  detail: 'Only the shipping-locations collection is paginated. There is no cursor,
+    no total count and no link header; a client learns it has more data from the
+    boolean `isTruncated` flag, and must re-request with a larger `skip`.'
+  gaps:
+  - Pagination is applied to one collection only; other list surfaces return unbounded
+    arrays.
+  - No total-count field, so a client cannot size a full walk in advance.
+error_envelope:
+  styles:
+  - name: ApiResponseOf<T>
+    shape: '{ data: <T>, errors: [string], statusCode: integer }'
+    used_by: public API (addresses, quotes, routing guide, shipments)
+    machine_readable_codes: false
+    note: '`errors` is a flat array of human strings with no code field.'
+  - name: Result
+    shape: '{ isSuccess: boolean, errorMessages: [string] }'
+    used_by: order operations (400 responses on /api/v1/orders)
+    machine_readable_codes: false
+  - name: StatusInfo / Note
+    shape: '{ message: string, notes: [ { code, message, source, status } ] }'
+    used_by: rating and dispatch responses
+    machine_readable_codes: true
+    note: 'The richest envelope MyCarrier ships. Each Note carries a `code` for
+      programmatic handling (documented example "VALIDATION_001"), a `source` enum
+      (Carrier | MyCarrier | ThirdParty | Validation) that says WHO rejected the
+      request, and a `status` enum (Success | Info | Warning | Error). This is the
+      only place a client can tell a carrier-side failure from a MyCarrier-side one.'
+  - name: ProblemDetails
+    shape: RFC 7807 / RFC 9457 { type, title, status, detail, instance }
+    used_by: FreightAudit live contract
+    machine_readable_codes: true
+    content_type: application/problem+json
+  detail: 'Four different error envelopes across the surface. A single client
+    integrating orders, rating and invoicing must handle all four.'
+  see: errors/mycarrier-problem-types.yml
+request_tracing:
+  supported: true
+  mechanism: W3C Trace Context
+  header: Traceparent
+  detail: 'Every public API operation declares an optional `Traceparent` header
+    parameter, so a caller can propagate a W3C Trace Context trace ID into MyCarrier.
+    No response correlation header is documented, so the trace is one-directional
+    from the client''s point of view. The FreightAudit payment request also requires
+    a caller-supplied `correlationId` (uuid).'
+  gaps:
+  - No documented response request-id header to quote back to support.
+metadata:
+  supported: true
+  headers:
+  - name: X-Mc-Meta-Customerdevicename
+    description: Connector device name (optional connector metadata).
+  - name: X-Mc-Meta-Customerinternalrecordid
+    description: Connector internal record id (optional connector metadata).
+  detail: 'A caller can attach its own record identifier to a request via
+    X-Mc-Meta-Customerinternalrecordid, which is how ERP/WMS connectors tie a
+    MyCarrier call back to a row in their own system.'
+environment_selection:
+  header: Environment
+  detail: 'An `Environment` header parameter is declared on the public and FreightAudit
+    contracts alongside the separate sandbox hosts.'
+versioning:
+  style: path
+  current: v1
+  see: lifecycle/mycarrier-lifecycle.yml
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: 429
+  detail: 'Documented as prose only — no rate-limit headers are published or declared,
+    so an agent cannot read remaining budget and can only react to a 429.'
+  see: rate-limits/mycarrier-rate-limits.yml
+field_expansion:
+  supported: false
+  note: No expand, fields or sparse-fieldset parameter is declared on any operation.
+dry_run_mode:
+  supported: partial
+  detail: 'There is no dry-run flag, but the domain splits rehearsal from commitment
+    across two operations: GetRates (POST /api/v1/quote/rate) prices a shipment without
+    committing it, and DispatchQuote (POST /api/v1/quote/dispatch) commits the quote to
+    the carrier. An agent can therefore always price before it books. The FreightAudit
+    contract also ships explicit validate-before-commit pairs:
+    POST /api/BulkImport/Validate before POST /api/BulkImport/Import, and
+    POST /api/v2/import/invoices/validate before POST /api/v2/import/invoices.'
+reversibility:
+  grade: documented
+  applicable: true
+  detail: 'Reversal paths exist across every write surface, but MyCarrier publishes NO
+    time window for any of them, so this grades `documented` rather than `verified`.
+    No MyCarrier documentation page states how long an order can be deleted, whether a
+    dispatched shipment can be recalled through the API at all, or how long a recorded
+    payment can be removed. Nothing here asserts a window, because none is published.'
+  surfaces:
+  - write_operation: UploadOrder
+    method: POST
+    path: /api/v1/orders
+    reversal_operation: DeleteOrder
+    reversal_method: DELETE
+    reversal_path: /api/v1/orders/referenceId/{referenceId}
+    reversal_type: delete
+    window: not published
+    docs: https://developer.mycarrier.io/docs/order-management
+    note: 'An order can also be superseded rather than deleted, because UploadOrder is
+      an upsert on the same reference ID.'
+  - write_operation: UpsertRoutingGuide
+    method: POST
+    path: /api/v1/routing-guide/upsert
+    reversal_operation: DeleteRoutingGuide
+    reversal_method: DELETE
+    reversal_path: /api/v1/routing-guide/delete/{id}
+    reversal_type: delete
+    window: not published
+  - write_operation: DispatchQuote
+    method: POST
+    path: /api/v1/quote/dispatch
+    reversal_operation: null
+    reversal_type: none-in-api
+    window: not published
+    note: 'THE HIGHEST-CONSEQUENCE GAP. DispatchQuote tenders freight to a carrier and
+      is the one MyCarrier write with real-world, billable effect, yet the public API
+      exposes no cancel or recall operation. MyCarrier clearly supports cancellation —
+      it publishes a `shipment.canceled` webhook and the shipment model carries an
+      `isCanceled` flag — but the cancellation itself is performed in the MyCarrier UI,
+      not through the API. An agent that dispatches cannot undo it programmatically.'
+  - write_operation: POST /api/Payment/Record
+    reversal_operation: DELETE /api/Payment/DeletePayment
+    reversal_type: delete
+    window: not published
+    spec: openapi/mycarrier-freightaudit-api-openapi.json
+  - write_operation: POST /api/Payment/BulkPay
+    reversal_operation: DELETE /api/v3/payments/manual-payments
+    reversal_type: delete
+    window: not published
+    spec: openapi/mycarrier-freightaudit-api-openapi.json
+  - write_operation: POST /api/Dispute/Save
+    reversal_operation: DELETE /api/Dispute/Remove
+    reversal_type: delete
+    window: not published
+    spec: openapi/mycarrier-freightaudit-api-openapi.json
+  - write_operation: POST /api/Notes/Save
+    reversal_operation: DELETE /api/Notes/Delete
+    reversal_type: delete
+    window: not published
+    spec: openapi/mycarrier-freightaudit-api-openapi.json
+  - write_operation: 'PATCH /api/v2/Integrations/Invoices/ArchiveToggle/{type}'
+    reversal_operation: 'PATCH /api/v2/Integrations/Invoices/ArchiveToggle/{type}'
+    reversal_type: toggle
+    window: not published
+    note: 'Archive/unarchive is a genuine two-way toggle on one operation. The invoice
+      status enum also carries an `InvoiceRestored` activity type, so restore-after-delete
+      exists in the domain model, but no public operation performs it.'
+  gaps:
+  - No published reversal window for any operation.
+  - No API-side cancellation of a dispatched shipment.
+  - No restore operation despite an `InvoiceRestored` state in the model.

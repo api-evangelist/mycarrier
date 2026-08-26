@@ -1,0 +1,55 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.mycarrier.io/docs/authentication-1
+docs: https://developer.mycarrier.io/docs/authentication-1
+summary:
+  types:
+  - http
+  primary: http-basic
+  note: 'MyCarrier''s documented public API uses HTTP Basic authentication. The username
+    is the email address of the account admin and the password is the Order API Key.
+    The FreightAudit live contract and the webhook-registration contract additionally
+    declare a Bearer JWT scheme. No OAuth 2.0, OpenID Connect or mTLS scheme is declared
+    in any published MyCarrier contract, so there is no scope surface and scopes/ is
+    intentionally absent.'
+schemes:
+- name: BasicAuth
+  type: http
+  scheme: basic
+  description: 'Basic Authorization: use `email` (account admin email) / `api-key`
+    (Order API Key) for login.'
+  credential_location: Authorization header
+  sources:
+  - openapi/mycarrier-order-public-api-openapi.json
+  - openapi/mycarrier-freightaudit-public-api-openapi.json
+  - openapi/mycarrier-public-api-openapi.json
+  docs: https://developer.mycarrier.io/docs/authentication-1
+- name: Bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Enter JWT Bearer token only.
+  sources:
+  - openapi/mycarrier-freightaudit-api-openapi.json
+  - openapi/mycarrier-webhook-api-openapi.json
+key_management:
+  where: 'The API key is issued per customer account and read from the MyCarrier web
+    app under Customer Settings -> "Order API Key", which must be unmasked to reveal
+    it.'
+  docs: https://developer.mycarrier.io/docs/authentication-1
+  rotation_policy: not published
+  self_service_issuance: false
+  issuance_note: 'Keys are provisioned by MyCarrier. The docs direct customers to contact
+    support@mycarrier.io when the Order API Key field is blank, and sandbox access plus
+    an API key are set up by MyCarrier on request via https://go.mycarrier.io/sign-up.'
+transport:
+  https_required: true
+  note: 'The docs state that all API interactions must be over HTTPS and that HTTP
+    and unauthenticated requests will not succeed.'
+gaps:
+- 'The documented v1 Public API contract (openapi/mycarrier-public-api-openapi.json)
+  declares an EMPTY components.securitySchemes object and no top-level security[],
+  even though every operation documents a 401 response and the docs describe Basic
+  auth. The auth model is only discoverable from prose, not from that contract.'
+- No published key rotation or expiry policy.
+- No OAuth 2.0 / OIDC surface, so no delegated or scoped third-party access.

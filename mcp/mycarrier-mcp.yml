@@ -1,0 +1,101 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/mycarrier-public-api-openapi.json
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+  note: 'MyCarrier ships NO MCP server — neither a hosted remote endpoint nor a local
+    stdio package. Searched: the full developer.mycarrier.io documentation index
+    (llms.txt), the marketing site, npm (name lookup and full-text search for
+    "mycarrier"), and general web search. Nothing found. The tools below are a
+    CANDIDATE surface DERIVED from MyCarrier''s published OpenAPI operations to show
+    what an MCP server would expose; they are not implemented by anyone. No MCPServer
+    pointer is emitted in apis.yml, because that pointer asserts a live agent surface
+    the provider does not serve.'
+server: null
+tools:
+- name: get_rates
+  description: Get rates for a quote based on a rating request.
+  rest: GetRates
+  method: POST
+  path: /api/v1/quote/rate
+  consequence: read
+- name: dispatch_quote
+  description: Dispatch, manually dispatch, or edit-dispatch a quote previously returned
+    by the rating API.
+  rest: DispatchQuote
+  method: POST
+  path: /api/v1/quote/dispatch
+  consequence: write
+- name: upload_order
+  description: Create a new order or update an existing one by reference ID.
+  rest: UploadOrder
+  method: POST
+  path: /api/v1/orders
+  consequence: write
+- name: get_order
+  description: Get an order by reference ID.
+  rest: Order
+  method: GET
+  path: /api/v1/orders/referenceId/{referenceId}
+  consequence: read
+- name: delete_order
+  description: Delete an order by reference ID.
+  rest: DeleteOrder
+  method: DELETE
+  path: /api/v1/orders/referenceId/{referenceId}
+  consequence: destructive
+- name: get_shipment_details
+  description: Get a shipment's full details by any shipment identifier.
+  rest: ShipmentDetails
+  method: GET
+  path: /api/v1/shipments/{id}
+  consequence: read
+- name: list_shipping_locations
+  description: Get the shipping locations for the current customer.
+  rest: GetShippingLocations
+  method: GET
+  path: /api/v1/address/shipping-locations
+  consequence: read
+- name: get_shipping_location
+  description: Get detailed shipping location information by location ID.
+  rest: GetShippingLocationByLocationId
+  method: GET
+  path: /api/v1/address/shipping-locations/{locationId}
+  consequence: read
+- name: fetch_routing_guide
+  description: Retrieve all saved routing guide entries for a customer.
+  rest: FetchRoutingGuide
+  method: GET
+  path: /api/v1/routing-guide/fetch
+  consequence: read
+- name: match_routing_guide
+  description: Filter routing guides by parameters and return the single matching carrier.
+  rest: MatchRoutingGuide
+  method: POST
+  path: /api/v1/routing-guide/match
+  consequence: read
+- name: upsert_routing_guide
+  description: Create or update a routing guide rule.
+  rest: UpsertRoutingGuide
+  method: POST
+  path: /api/v1/routing-guide/upsert
+  consequence: write
+- name: delete_routing_guide
+  description: Delete a specific routing guide entry.
+  rest: DeleteRoutingGuide
+  method: DELETE
+  path: /api/v1/routing-guide/delete/{id}
+  consequence: destructive
+coverage:
+  openapi_operations_total: 17
+  tools_derived: 12
+  omitted: 'DownloadRoutingGuide and DownloadRoutingGuideTemplate return Excel binaries
+    rather than JSON, and the two /carrierintegrations/webhook/smc3/* operations are
+    inbound carrier callbacks that a client never calls. All four are unsuitable as
+    agent tools.'

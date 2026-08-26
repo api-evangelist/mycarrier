@@ -1,0 +1,115 @@
+generated: '2026-08-26'
+method: probed
+source: live GET probes of /.well-known/* on every apis.yml host and OpenAPI servers[] host
+hit_count: 0
+note: 'No MyCarrier host serves any /.well-known/ discovery document. Two of the six
+  hosts answer with a catch-all rather than a real 404, so each host was probed with
+  a control path (/.well-known/zz-control-probe-9931) first: go.mycarrier.io returns
+  an identical 54,223-byte HTML 404 for the control and for every well-known path, and
+  mycarriertms.com returns an identical 11,226-byte HTML 200 SPA shell for the control
+  and for every well-known path. Neither is a served document. api.mycarriertms.com
+  returns a clean text/plain "404 page not found" for all paths. invoice.mycarriertms.com
+  and order-public-api.api.mycarriertms.com refuse connections at the site root (they
+  serve only their /api and /swagger paths), so no well-known surface exists to probe.
+  Because no path returned a real document, NO WellKnown and NO SecurityTxt pointer is
+  emitted in apis.yml — this file records a measured absence, not a presence.'
+soft_404_control:
+- host: https://go.mycarrier.io
+  path: /.well-known/zz-control-probe-9931
+  status: 404
+  bytes: 54223
+  verdict: html-error-page-identical-to-all-probes
+- host: https://mycarriertms.com
+  path: /.well-known/zz-control-probe-9931
+  status: 200
+  bytes: 11226
+  verdict: spa-catch-all-200-identical-to-all-probes
+- host: https://api.mycarriertms.com
+  path: /.well-known/zz-control-probe-9931
+  status: 404
+  bytes: 18
+  verdict: real-404
+hosts:
+- host: https://go.mycarrier.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://mycarriertms.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    note: soft-404 SPA shell identical to control probe; not a document
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    note: soft-404 SPA shell identical to control probe; not a document
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    note: soft-404 SPA shell identical to control probe; not a document
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    note: soft-404 SPA shell identical to control probe; not a document
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    note: soft-404 SPA shell identical to control probe; not a document
+- host: https://api.mycarriertms.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://developer.mycarrier.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+- host: https://invoice.mycarriertms.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 0
+    note: connection refused at site root; host serves only /api and /swagger paths
+  - path: /.well-known/api-catalog
+    status: 0
+    note: connection refused at site root
+- host: https://order-public-api.api.mycarriertms.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 0
+    note: connection refused at site root; host serves only /api and /swagger paths
+  - path: /.well-known/api-catalog
+    status: 0
+    note: connection refused at site root
+agent_card_probe:
+  result: miss
+  note: '/.well-known/agent-card.json and /.well-known/agent.json were probed on every
+    host. go.mycarrier.io, api.mycarriertms.com and developer.mycarrier.io returned
+    real 404s; mycarriertms.com returned the same SPA shell it returns for the control
+    path. No A2A Agent Card exists, so no a2a/ artifact and no AgentCard pointer were
+    written.'

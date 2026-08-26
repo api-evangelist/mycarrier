@@ -1,0 +1,34 @@
+generated: '2026-08-26'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: go.mycarrier.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 17 20:19:27 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: developer.mycarrier.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 10 10:15:22 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.mycarriertms.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 18 15:47:44 2026 GMT
+  hsts: null
+domains:
+- domain: mycarrier.io
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+- domain: mycarriertms.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

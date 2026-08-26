@@ -1,0 +1,119 @@
+generated: '2026-08-26'
+method: searched
+source: 'https://developer.mycarrier.io/llms.txt, https://developer.mycarrier.io/docs/api-environments,
+  https://status.mycarriertms.com/'
+versioning:
+  scheme: path
+  pattern: /api/v{n}/...
+  current: v1
+  note: 'MyCarrier versions in the URL path. The documented Public API is v1. The
+    FreightAudit contract runs v1, v2 and v3 side by side on the same host
+    (/api/v1/..., /api/v2/..., /api/v3/...), with v3 the newest resource shape for
+    invoices, payments and invoice overview. The ReadMe docs project also carries a
+    legacy 0.5 documentation branch alongside the published 1.0 branch.'
+  policy_published: false
+  policy_note: No written versioning policy is published — the scheme is only observable
+    from the contracts.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: 'MyCarrier publishes NO deprecation policy and declares no `deprecated: true`
+    operation in any of its six contracts. It does signal one pending migration: the
+    API Environments page carries a "Future API URL" column moving both the Order API
+    (order-public-api.api.mycarriertms.com) and the Invoice API (invoice.mycarriertms.com)
+    onto a single api.mycarriertms.com host, and both sandbox hosts onto
+    preprod-api.mycarrier.dev. No date, no Sunset/Deprecation header and no migration
+    guide accompany it. Because no deprecation policy exists, NO `Deprecation` pointer
+    is emitted in apis.yml.'
+  pending_migration:
+    from:
+    - https://order-public-api.api.mycarriertms.com
+    - https://invoice.mycarriertms.com
+    to: https://api.mycarriertms.com
+    sandbox_from:
+    - https://order-public-api.preprod.mycarrier.dev
+    - https://invoice-api.preprod.mycarrier.dev
+    sandbox_to: http://preprod-api.mycarrier.dev
+    date_announced: null
+    docs: https://developer.mycarrier.io/docs/api-environments
+    note: 'The published "Future API URL" for the sandbox is written as an http:// URL
+      on a docs page that elsewhere states HTTPS is mandatory.'
+status_page:
+  present: true
+  url: https://status.mycarriertms.com/
+  http_status: 200
+  platform: 'custom Next.js status page (not Atlassian Statuspage or Instatus)'
+  machine_readable: false
+  probed:
+  - path: /api/v2/status.json
+    status: 404
+  - path: /api/v2/summary.json
+    status: 404
+  - path: /summary.json
+    status: 404
+  - path: /history.rss
+    status: 404
+  note: 'A live status page exists and reports component health, but exposes no JSON
+    or RSS feed — an agent cannot read MyCarrier''s operational state programmatically.'
+changelog:
+  present: false
+  probed:
+  - url: https://developer.mycarrier.io/changelog
+    status: 404
+  - url: https://developer.mycarrier.io/docs/changelog
+    status: 404
+  - url: https://go.mycarrier.io/release-notes
+    status: 404
+  - url: https://go.mycarrier.io/product-updates
+    status: 404
+  note: 'No dated changelog or release-notes surface was found on the developer portal
+    or the marketing site, and llms.txt lists no changelog page. Individual doc pages
+    do carry an `updatedAt` timestamp in their markdown frontmatter (most recently
+    2025-10-08 for the webhook pages, 2025-04-29 for the guides), which is the only
+    dated change signal MyCarrier publishes. No changelog/ artifact and no ChangeLog
+    pointer were written.'
+sla:
+  published: false
+  note: No public SLA or uptime commitment is published outside the general terms and
+    conditions.
+support:
+  help_center: https://help-center.mycarriertms.com/en/
+  contact: https://go.mycarrier.io/contact-us
+  api_support_email: support@mycarrier.io
+legacy_contracts:
+  note: 'MyCarrier''s ReadMe documentation project carries a legacy 0.5 branch
+    (is_stable: false, codename "legacy") alongside the published 1.0 branch. Four
+    contracts published on that legacy branch were captured because they are real,
+    reachable, MyCarrier-authored documents that describe surfaces the 1.0 branch does
+    not fully cover.'
+  contracts:
+  - file: openapi/mycarrier-rating-api-openapi.json
+    title: MyCarrier Rating API
+    branch: '0.5 (legacy)'
+    servers: ['https://app-integration-prod-api.azurewebsites.net/feature']
+    ownership_justification: 'Published by MyCarrier from its own ReadMe docs project
+      (project "mycarrier", "MyCarrier Public API") and titled "MyCarrier Rating API".
+      Its servers[] names a generic Azure App Service feature slot rather than a
+      MyCarrier-branded host, which is a legacy pre-production deployment target, NOT
+      the current base — the current rating surface is POST /api/v1/quote/rate on
+      https://api.mycarriertms.com. Do not treat this servers[] value as a MyCarrier
+      API base URL.'
+    superseded_by: 'openapi/mycarrier-public-api-openapi.json (GetRates)'
+  - file: openapi/mycarrier-freightaudit-public-api-openapi.json
+    title: FreightAudit Public API
+    branch: '0.5 (legacy)'
+    servers: ['https://invoice.mycarriertms.com']
+    note: 'The 11-operation curated PUBLIC subset of the invoice surface. The live
+      swagger endpoint on the same host exposes 86 operations
+      (openapi/mycarrier-freightaudit-api-openapi.json); both are captured because they
+      are genuinely different contracts — one is what MyCarrier documents for partners,
+      the other is what the service actually serves.'
+  - file: openapi/mycarrier-webhook-api-openapi.json
+    title: ITM.Services.Webhook.Api
+    branch: '0.5 (legacy)'
+    servers: []
+    note: 'Declares NO servers[] block, so the published contract does not state which
+      host serves webhook registration.'

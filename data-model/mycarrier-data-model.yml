@@ -1,0 +1,171 @@
+generated: '2026-08-26'
+method: derived
+source: 'openapi/mycarrier-public-api-openapi.json, openapi/mycarrier-order-public-api-openapi.json,
+  openapi/mycarrier-freightaudit-api-openapi.json'
+summary: 'MyCarrier''s domain runs one spine: an Order becomes a rated Quote, a
+  dispatched Quote becomes a Shipment, and a Shipment is reconciled against a carrier
+  Invoice. Routing Guide rules and Shipping Locations are the reference data that steer
+  it. Identifiers are a mix of integer surrogate ids, UUID record ids and
+  caller-supplied reference ids.'
+entities:
+- name: Order
+  description: 'A shipment request uploaded from an ERP/WMS. Created or updated by
+    reference ID; carries a changeVersion counter incremented on every change.'
+  identifier: referenceId
+  identifier_type: caller-supplied string
+  schema: MC.Order.Client.Contracts.Responses.Models.Order
+  operations: [UploadOrder, Order, DeleteOrder]
+  fields_of_note: [changeVersion, createdAt, status]
+- name: Quote
+  description: A priced rating result for a shipment, optionally saved for later dispatch.
+  identifier: quoteId
+  identifier_type: int64
+  secondary_identifier: quoteKey (uuid)
+  schema: MC.Quote.Contracts.Responses.Rate.RatingResponse
+  operations: [GetRates, DispatchQuote]
+- name: RateItem
+  description: 'One carrier''s priced offer within a Quote — service level, lane type,
+    price breakdown, appointment windows and accessorials.'
+  schema: MC.Quote.Contracts.Responses.Rate.RateItemResponse
+- name: Shipment
+  description: 'A dispatched, in-flight or delivered freight movement with carrier PRO
+    number, BOL, tracking history and documents.'
+  identifier: shipmentId
+  identifier_type: integer
+  schema: MC.Shipment.Contracts.Responses.PublicShipmentDto
+  operations: [ShipmentDetails]
+  fields_of_note: [isCanceled, isRemoved, carrierPRONumber, bolNumber]
+- name: HandlingUnit
+  description: A pallet or piece on a shipment, carrying dimensions, weight and commodities.
+  schema: MC.Shipment.Contracts.Responses.PublicShipmentHandlingUnitDto
+- name: Commodity
+  description: 'The freight itself — description, NMFC class, hazmat details.'
+  schema: MC.Shipment.Contracts.Responses.PublicShipmentCommodityDto
+  fields_of_note: [commodityNMFC, freightClass, hazardous]
+- name: ShippingLocation
+  description: 'A saved origin/destination address for the customer, with default
+    accessorials and contact details.'
+  identifier: locationId
+  schema: MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
+  operations: [GetShippingLocations, GetShippingLocationByLocationId]
+- name: RoutingGuideRule
+  description: 'A customer rule binding an origin/destination lane to a preferred
+    carrier, service and excluded SCACs.'
+  identifier: id
+  identifier_type: int32
+  schema: MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto
+  operations: [FetchRoutingGuide, MatchRoutingGuide, UpsertRoutingGuide,
+    DeleteRoutingGuide, UploadRoutingGuide, DownloadRoutingGuide,
+    DownloadRoutingGuideTemplate]
+- name: Carrier
+  description: 'An LTL carrier, identified by SCAC.'
+  identifier: carrierScac
+  identifier_type: string (max 4)
+- name: Invoice
+  description: 'A carrier freight bill audited against the shipment, moving through
+    Open / Approved / Dispute / Denied / Cancelled / AutoApproved / Paid / Archived /
+    ShortPaid / NeedsReview.'
+  identifier: recordId
+  identifier_type: uuid
+  spec: openapi/mycarrier-freightaudit-api-openapi.json
+  status_enum: MC.Invoice.Data.Mongo.Enums.InvoiceStatusType
+- name: Dispute
+  description: 'A contested invoice charge, moving through Created / Submitted /
+    Accepted / Denied / Deleted / AutoClosed.'
+  identifier: disputeId
+  spec: openapi/mycarrier-freightaudit-api-openapi.json
+  status_enum: MC.Invoice.Data.Mongo.Enums.DisputeStatusType
+- name: Payment
+  description: A payment recorded or executed against one or more invoices.
+  identifier: paymentId
+  identifier_type: uuid
+  spec: openapi/mycarrier-freightaudit-api-openapi.json
+- name: Note
+  description: A free-text annotation attached to an invoice.
+  spec: openapi/mycarrier-freightaudit-api-openapi.json
+- name: EdiMapping
+  description: Per-customer EDI field mapping configuration for invoice intake.
+  schema: MC.Invoice.Data.Mongo.Entities.EdiMapping
+  spec: openapi/mycarrier-freightaudit-api-openapi.json
+- name: Webhook
+  description: 'A registered customer callback endpoint with a webhook type and optional
+    outbound HTTP headers.'
+  identifier: name
+  spec: openapi/mycarrier-webhook-api-openapi.json
+relationships:
+- from: Order
+  to: Quote
+  type: has_many
+  via: quoteId
+  note: An order is rated to produce quotes.
+- from: Quote
+  to: RateItem
+  type: has_many
+  via: rates[]
+- from: Quote
+  to: Shipment
+  type: has_one
+  via: 'DispatchQuote — dispatching a quote creates the shipment'
+- from: Shipment
+  to: Order
+  type: belongs_to
+  via: indentifiers.orderId
+  note: 'Spelled `indentifiers` in the published schema
+    (MC.Shipment.Contracts.Responses.PublicShipmentDto) — a typo in MyCarrier''s own
+    contract, recorded verbatim.'
+- from: Shipment
+  to: HandlingUnit
+  type: has_many
+  via: handlingUnits[]
+- from: HandlingUnit
+  to: Commodity
+  type: has_many
+  via: commodities[]
+- from: Shipment
+  to: Carrier
+  type: belongs_to
+  via: service.carrier (SCAC)
+- from: Shipment
+  to: ShippingLocation
+  type: belongs_to
+  via: addressId
+  note: Origin, destination and third-party addresses each reference a location.
+- from: RoutingGuideRule
+  to: Carrier
+  type: belongs_to
+  via: carrierSCAC
+- from: Invoice
+  to: Shipment
+  type: belongs_to
+  via: shipmentId
+  note: 'Also linkable after the fact via PATCH /api/Shipment/LinkShipment, and an
+    invoice can create a shipment via POST /api/Shipment/CreateShipmentFromInvoice.'
+- from: Invoice
+  to: Dispute
+  type: has_many
+  via: invoiceRecordId
+- from: Invoice
+  to: Payment
+  type: has_many
+  via: recordIds
+- from: Invoice
+  to: Note
+  type: has_many
+  via: invoiceRecordId
+identifier_conventions:
+  patterns:
+  - entity: Order
+    id: caller-supplied referenceId string
+  - entity: Quote
+    id: int64 quoteId plus a uuid quoteKey
+  - entity: Shipment
+    id: integer shipmentId; also addressable by BOL, PRO or customer reference number
+  - entity: Invoice
+    id: uuid recordId
+  - entity: RoutingGuideRule
+    id: int32
+  prefixes: none
+  note: 'MyCarrier uses no typed id prefixes (no `ord_`/`inv_` style). Identifier type
+    varies by entity and by API generation — integers in the older order/quote surfaces,
+    UUIDs in the newer invoice surfaces — so a client cannot infer an entity type from
+    an identifier alone.'

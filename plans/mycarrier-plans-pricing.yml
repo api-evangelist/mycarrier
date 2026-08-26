@@ -1,0 +1,106 @@
+generated: '2026-08-26'
+method: searched
+source: https://go.mycarrier.io/plans-and-pricing
+currency: USD
+billing_period: month
+plan_count: 4
+note: 'MyCarrier publishes a full public price list for the TMS product. API access
+  itself is NOT one of the listed tiers: the pricing page lists "API/ERP Integrations"
+  as a contact-for-pricing add-on, and the Professional Plus tier is described as being
+  for teams that need integrations. A developer therefore cannot self-serve API access
+  at a published price.'
+plans:
+- name: Basic
+  price: 0
+  currency: USD
+  period: month
+  contact_sales: false
+  limits:
+    users: 1
+    shipping_locations: 2
+    shipment_history_days: 14
+    ai_assisted_quotes_per_month: 10
+  included:
+  - LTL Quoting
+  - Digital Dispatch
+  - Real Time Tracking
+  - eBOL
+  - Insurance
+  - NMFC Verification
+- name: Starter
+  price: 60
+  currency: USD
+  period: month
+  contact_sales: false
+  badge: Best Value
+  limits:
+    users: 3
+    shipping_locations: 3
+    shipment_history_days: 60
+    ai_assisted_quotes_per_month: 75
+  included:
+  - Everything in Basic
+  - Shipment Import
+  - Reporting & Advanced Configurations
+- name: Professional
+  price: 200
+  currency: USD
+  period: month
+  contact_sales: false
+  limits:
+    users: unlimited
+    shipping_locations: unlimited
+    shipment_history_days: unlimited
+    ai_assisted_quotes_per_month: 200
+  included:
+  - Everything in Starter
+  - Advanced Analytics
+  - Full Truckload
+  - Freight Assist AI
+  - Collaboration tools
+  - Priority support
+- name: Professional Plus
+  price: null
+  currency: USD
+  period: month
+  contact_sales: true
+  limits: {}
+  included:
+  - Everything in Professional
+  - Integrations
+  - Customized capabilities
+  note: Published as "Contact sales" for teams that need integrations or customized
+    capabilities.
+add_ons:
+- name: Additional Users
+  price: 10
+  currency: USD
+  period: month
+  unit: per user
+- name: Additional Locations
+  price: 10
+  currency: USD
+  period: month
+  unit: per location
+- name: Data History/Address Book
+  price: 30
+  currency: USD
+  period: month
+- name: Advanced Analytics
+  price: 30
+  currency: USD
+  period: month
+- name: Truckload Feature
+  price: 30
+  currency: USD
+  period: month
+- name: API/ERP Integrations
+  price: null
+  currency: USD
+  period: month
+  contact_sales: true
+- name: Invoice Hub + Precision Payments
+  price: null
+  currency: USD
+  period: month
+  contact_sales: true

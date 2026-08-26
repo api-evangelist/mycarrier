@@ -1,23 +1,183 @@
 aid: mycarrier
 name: MyCarrier
-description: 'MyCarrier is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'MyCarrier is a transportation management system (TMS) for less-than-truckload
+  (LTL) and full-truckload freight, founded in 2018 by Michael Bookout and Chris Scheid.
+  The platform lets shippers quote, book, dispatch, track, audit and pay freight from
+  a single connected workspace using direct carrier rates rather than broker markups,
+  and connects to more than a dozen national LTL carriers. MyCarrier publishes a public
+  REST API on developer.mycarrier.io covering order creation and management, rate quoting
+  and dispatch, routing-guide rules, shipping locations, shipment detail retrieval, and
+  a FreightAudit / invoice surface for freight bill audit, disputes, notes and payments.
+  It also publishes a webhook catalog for shipment and invoice lifecycle events.'
+image: https://apporderprocessprodsa.blob.core.windows.net/$web/images/tms-logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/mycarrier/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
 - Company
-apis: []
+- Logistics
+- Transportation
+- Freight
+- Shipping
+- LTL
+- Supply Chain
+- Transportation Management
+- Freight Audit
+- Invoicing
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: mycarrier-public-api
+  name: MyCarrier Public API
+  description: 'The documented MyCarrier Public API — order creation and management,
+    rate quoting and dispatch, routing-guide rules, shipping locations and shipment
+    detail retrieval. 17 operations over HTTP Basic authentication using the account
+    admin email as username and the Order API Key as password.'
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Orders
+  - Rating
+  - Dispatch
+  - Routing Guide
+  - Shipments
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-public-api-openapi.json
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Overlay
+    url: overlays/mycarrier-public-api-overlay.yaml
+  - type: OpenAPI
+    url: openapi/mycarrier-rating-api-openapi.json
+- aid: mycarrier-order-api
+  name: MyCarrier Order API
+  description: 'The MyCarrier Order Public API — create or modify an order, delete an
+    order by reference ID, and retrieve an order by reference ID. Served from its own
+    host with HTTP Basic authentication (email / api-key).'
+  humanURL: https://developer.mycarrier.io/docs/order-management
+  baseURL: https://order-public-api.api.mycarriertms.com
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-order-public-api-openapi.json
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Overlay
+    url: overlays/mycarrier-order-public-api-overlay.yaml
+- aid: mycarrier-freightaudit-api
+  name: MyCarrier FreightAudit API
+  description: 'The MyCarrier FreightAudit (Invoice Hub) API — freight bill audit,
+    invoice filtering and retrieval, disputes, notes, tags, bulk import/export, payments
+    and remittance, invoice analytics and shipment linking. Bearer JWT on the live
+    contract; the documented public subset uses HTTP Basic.'
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://invoice.mycarriertms.com
+  tags:
+  - Invoicing
+  - Freight Audit
+  - Payments
+  - Disputes
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-freightaudit-api-openapi.json
+  - type: OpenAPI
+    url: openapi/mycarrier-freightaudit-public-api-openapi.json
+  - type: Overlay
+    url: overlays/mycarrier-freightaudit-api-overlay.yaml
+- aid: mycarrier-webhook-api
+  name: MyCarrier Webhook Registration API
+  description: 'The MyCarrier webhook registration surface (ITM.Services.Webhook.Api)
+    — register, update and delete webhook subscriptions, webhook types and additional
+    outbound HTTP headers. Bearer JWT. The published contract declares no servers[]
+    block, so the host is not stated in the spec.'
+  humanURL: https://developer.mycarrier.io/docs/webhooks
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Webhooks
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-webhook-api-openapi.json
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://go.mycarrier.io/
+- type: DeveloperPortal
+  url: https://developer.mycarrier.io/
+- type: Documentation
+  url: https://developer.mycarrier.io/docs/getting-started
+- type: APIReference
+  url: https://developer.mycarrier.io/reference/getrates-1
+- type: GettingStarted
+  url: https://developer.mycarrier.io/docs/getting-started
+- type: Authentication
+  url: authentication/mycarrier-authentication.yml
+- type: Support
+  url: https://help-center.mycarriertms.com/en/
+- type: HelpCenter
+  url: https://help-center.mycarriertms.com/en/
+- type: Blog
+  url: https://go.mycarrier.io/blog
+- type: Pricing
+  url: https://go.mycarrier.io/plans-and-pricing
+- type: SignUp
+  url: https://go.mycarrier.io/sign-up
+- type: Login
+  url: https://login.mycarriertms.com/a/b38da2f/login
+- type: TermsOfService
+  url: https://go.mycarrier.io/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://go.mycarrier.io/privacy-policy
+- type: StatusPage
+  url: https://status.mycarriertms.com/
+- type: TrustCenter
+  url: https://trust.mycarrier.io/
+- type: Compliance
+  url: security/mycarrier-trust-center.yml
+- type: LLMsTxt
+  url: llms/mycarrier-llms.txt
+- type: Plans
+  url: plans/mycarrier-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/mycarrier-rate-limits.yml
+- type: ErrorCatalog
+  url: errors/mycarrier-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/mycarrier-lifecycle.yml
+- type: Conventions
+  url: conventions/mycarrier-conventions.yml
+- type: Idempotency
+  url: conventions/mycarrier-conventions.yml
+- type: Conformance
+  url: conformance/mycarrier-conformance.yml
+- type: DataModel
+  url: data-model/mycarrier-data-model.yml
+- type: Sandbox
+  url: sandbox/mycarrier-sandbox.yml
+- type: Packages
+  url: packages/mycarrier-packages.yml
+- type: Webhooks
+  url: asyncapi/mycarrier-events-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/mycarrier-domain-security.yml
+
+x-enrichment:
+  date: '2026-08-26'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1

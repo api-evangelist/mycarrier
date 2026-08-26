@@ -1,0 +1,45 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the MyCarrier Order Public API
+  version: 1.0.0
+extends: ../openapi/mycarrier-order-public-api-openapi.json
+x-generated: '2026-08-26'
+x-method: derived
+x-source: 'openapi/mycarrier-order-public-api-openapi.json,
+  https://developer.mycarrier.io/docs/api-environments,
+  https://developer.mycarrier.io/docs/api-rate-limits'
+x-note: 'The Order contract is the healthiest MyCarrier ships — it already declares
+  BasicAuth and applies it globally. These actions add the documented sandbox server,
+  the undeclared 429, and the idempotent-by-reference-ID semantics that are only stated
+  in prose.'
+actions:
+- target: $.info
+  description: Add contact and documentation links.
+  update:
+    contact:
+      name: MyCarrier API Support
+      email: support@mycarrier.io
+      url: https://developer.mycarrier.io/
+    x-documentation: https://developer.mycarrier.io/docs/order-management
+- target: $.servers
+  description: Record the documented sandbox host alongside production.
+  update:
+  - url: https://order-public-api.api.mycarriertms.com
+    description: Production
+  - url: https://order-public-api.preprod.mycarrier.dev
+    description: Sandbox
+- target: $.paths./api/Orders.post
+  description: Record that order upload is an upsert keyed on the caller-supplied
+    reference ID, and is therefore idempotent by natural key.
+  update:
+    x-idempotency:
+      mechanism: natural-key
+      key: referenceId
+      note: 'Re-sending the same payload with the same reference ID updates the existing
+        order rather than creating a duplicate. No Idempotency-Key header exists.'
+- target: $.paths.*.*.responses
+  description: Declare the documented but undeclared 429 response.
+  update:
+    '429':
+      description: 'Too Many Requests. Rate limits are enforced per account and per
+        endpoint. Retry with a progressively increasing delay.'

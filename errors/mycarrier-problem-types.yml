@@ -1,0 +1,110 @@
+generated: '2026-08-26'
+method: derived
+source: 'openapi/mycarrier-public-api-openapi.json, openapi/mycarrier-freightaudit-api-openapi.json,
+  openapi/mycarrier-order-public-api-openapi.json, https://developer.mycarrier.io/docs/status-code'
+format: mixed
+format_detail: 'The FreightAudit contract emits RFC 7807 / RFC 9457 problem details
+  (application/problem+json, ProblemDetailsResponse with type/title/status/detail/instance).
+  The public API and order contracts do NOT — they return bespoke envelopes with a flat
+  array of human-readable error strings and no machine-readable code.'
+envelopes:
+- name: ProblemDetailsResponse
+  format: rfc9457
+  content_type: application/problem+json
+  fields: [type, title, status, detail, instance]
+  used_by: openapi/mycarrier-freightaudit-api-openapi.json
+- name: ApiResponseOf<T>
+  format: custom
+  fields: [data, errors, statusCode]
+  codes: false
+  used_by: public API — addresses, quotes, routing guide, shipments
+- name: Result
+  format: custom
+  fields: [isSuccess, errorMessages]
+  codes: false
+  used_by: order create/modify and delete
+- name: StatusInfo
+  format: custom
+  fields: [message, notes]
+  codes: true
+  used_by: rating and dispatch
+  note: 'The only MyCarrier envelope with programmatic error codes.'
+status_codes:
+  source: https://developer.mycarrier.io/docs/status-code
+  documented:
+  - status: 200
+    label: OK
+    code: SUCCESS
+    description: Everything worked as expected.
+  - status: 201
+    label: Created
+    code: RESORUCE_CREATED
+    description: Resouces is created.
+    note: 'Both the code and the description are misspelled in MyCarrier''s published
+      table ("RESORUCE_CREATED", "Resouces is created"); recorded verbatim.'
+  - status: 400
+    label: Bad Request
+    code: BAD_REQUEST
+    description: The request was unacceptable, often due to missing a required parameter.
+  - status: 401
+    label: Unauthorized
+    code: UNAUTHORIZED
+    description: No valid API key provided.
+problem_types:
+- status: 400
+  title: Bad Request
+  detail: Request has missing/invalid values.
+  remediation: 'Check required fields against https://developer.mycarrier.io/docs/required-fields.
+    On rating and dispatch, read StatusInfo.notes[].code and .source to see whether the
+    rejection came from MyCarrier validation or from the carrier.'
+  operations: all
+- status: 401
+  title: Unauthorized
+  detail: 'Authentication token is missing or invalid / the username or password
+    provided is incorrect.'
+  remediation: 'Confirm HTTP Basic credentials are the account admin email and the
+    Order API Key from Customer Settings, and that the request is over HTTPS.'
+  operations: all
+- status: 403
+  title: Forbidden
+  detail: User does not have permission to access this resource.
+  operations: shipping-locations, FreightAudit
+- status: 404
+  title: Not Found
+  detail: Resource not found.
+  operations: most GET/DELETE by identifier
+- status: 429
+  title: Too Many Requests
+  detail: Rate limit exceeded for this account/endpoint.
+  remediation: 'Retry with a gradually increasing delay, per
+    https://developer.mycarrier.io/docs/api-rate-limits.'
+  declared_in_spec: false
+  note: 'Documented in prose but NOT declared as a response in any published contract —
+    a generated client will not know 429 is reachable.'
+- status: 500
+  title: Internal Server Error
+  detail: Internal server error occurred.
+  operations: all
+- status: 503
+  title: Service Unavailable
+  detail: Service temporarily unavailable.
+  operations: shipping-locations
+error_sources:
+  enum: [Carrier, MyCarrier, ThirdParty, Validation]
+  schema: MC.Quote.Common.Enums.Response.Source
+  note: 'Rating and dispatch responses attribute each note to its origin, which lets a
+    client distinguish a carrier rejection from a MyCarrier validation failure.'
+error_severity:
+  enum: [Success, Info, Warning, Error]
+  schema: MC.Quote.Common.Enums.Response.Status
+code_registry:
+  published: false
+  example_code: VALIDATION_001
+  note: 'The Note schema documents a `code` field with the example "VALIDATION_001" and
+    a 50-character max length, but MyCarrier publishes NO registry of the codes that
+    field can contain. A client can read a code but cannot look it up.'
+gaps:
+- No published error-code registry.
+- Four different error envelopes across one product surface.
+- Three of the four envelopes carry no machine-readable code at all.
+- 429 is documented in prose but absent from every contract.
