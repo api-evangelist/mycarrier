@@ -33,86 +33,694 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: mycarrier-public-api
-  name: MyCarrier Public API
-  description: 'The documented MyCarrier Public API — order creation and management,
-    rate quoting and dispatch, routing-guide rules, shipping locations and shipment
-    detail retrieval. 17 operations over HTTP Basic authentication using the account
-    admin email as username and the Order API Key as password.'
+- aid: mycarrier:mycarrier-bulkimport-api
+  name: MyCarrier Bulk Import API
+  description: The BulkImport API from MyCarrier — 4 operation(s) for bulkimport.
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
-  - Orders
-  - Rating
-  - Dispatch
-  - Routing Guide
-  - Shipments
+  - BulkImport
   properties:
   - type: OpenAPI
-    url: openapi/mycarrier-public-api-openapi.json
+    url: openapi/mycarrier-bulkimport-api-openapi.yml
   - type: Documentation
     url: https://developer.mycarrier.io/docs/getting-started
   - type: APIReference
     url: https://developer.mycarrier.io/reference/getrates-1
-  - type: Overlay
-    url: overlays/mycarrier-public-api-overlay.yaml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-carrierinvoicesetting-api
+  name: MyCarrier Carrier Invoice Setting API
+  description: The CarrierInvoiceSetting API from MyCarrier — 5 operation(s) for carrierinvoicesetting.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - CarrierInvoiceSetting
+  properties:
   - type: OpenAPI
-    url: openapi/mycarrier-rating-api-openapi.json
-- aid: mycarrier-order-api
-  name: MyCarrier Order API
-  description: 'The MyCarrier Order Public API — create or modify an order, delete an
-    order by reference ID, and retrieve an order by reference ID. Served from its own
-    host with HTTP Basic authentication (email / api-key).'
-  humanURL: https://developer.mycarrier.io/docs/order-management
-  baseURL: https://order-public-api.api.mycarriertms.com
+    url: openapi/mycarrier-carrierinvoicesetting-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-customerinvoicesetting-api
+  name: MyCarrier Customer Invoice Setting API
+  description: >-
+    The CustomerInvoiceSetting API from MyCarrier — 6 operation(s) for customerinvoicesetting.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - CustomerInvoiceSetting
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-customerinvoicesetting-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-dispatch-api
+  name: MyCarrier Dispatch API
+  description: The Dispatch API from MyCarrier — 1 operation(s) for dispatch.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Dispatch
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-dispatch-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-dispute-api
+  name: MyCarrier Dispute API
+  description: The Dispute API from MyCarrier — 6 operation(s) for dispute.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Dispute
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-dispute-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-download-api
+  name: MyCarrier Download API
+  description: The Download API from MyCarrier — 1 operation(s) for download.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Download
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-download-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-export-api
+  name: MyCarrier Export API
+  description: The Export API from MyCarrier — 6 operation(s) for export.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Export
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-export-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-freightassist-api
+  name: MyCarrier Freight Assist API
+  description: The FreightAssist API from MyCarrier — 2 operation(s) for freightassist.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - FreightAssist
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-freightassist-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-freightaudit-api
+  name: MyCarrier Freight Audit API
+  description: The FreightAudit API from MyCarrier — 11 operation(s) for freightaudit.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - FreightAudit
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-freightaudit-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-import-api
+  name: MyCarrier Import API
+  description: The Import API from MyCarrier — 2 operation(s) for import.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Import
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-import-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-integrations-api
+  name: MyCarrier Integrations API
+  description: The Integrations API from MyCarrier — 5 operation(s) for integrations.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-invoice-api
+  name: MyCarrier Invoice API
+  description: The Invoice API from MyCarrier — 3 operation(s) for invoice.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Invoice
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-invoice-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-invoice-management-api
+  name: MyCarrier Invoice Management API
+  description: The Invoice Management API from MyCarrier — 4 operation(s) for invoice management.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Invoice Management
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-invoice-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-invoiceanalytics-api
+  name: MyCarrier Invoice Analytics API
+  description: The InvoiceAnalytics API from MyCarrier — 5 operation(s) for invoiceanalytics.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - InvoiceAnalytics
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-invoiceanalytics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-invoiceoverviewv3-api
+  name: MyCarrier Invoice Overview V3 API
+  description: The InvoiceOverviewV3 API from MyCarrier — 3 operation(s) for invoiceoverviewv3.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - InvoiceOverviewV3
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-invoiceoverviewv3-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-invoicev3-api
+  name: MyCarrier Invoice V3 API
+  description: The InvoiceV3 API from MyCarrier — 4 operation(s) for invoicev3.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - InvoiceV3
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-invoicev3-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-notes-api
+  name: MyCarrier Notes API
+  description: The Notes API from MyCarrier — 2 operation(s) for notes.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Notes
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-notes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-notes-management-api
+  name: MyCarrier Notes Management API
+  description: The Notes Management API from MyCarrier — 2 operation(s) for notes management.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Notes Management
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-notes-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-orders-api
+  name: MyCarrier Orders API
+  description: The Orders API from MyCarrier — 5 operation(s) for orders.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
   tags:
   - Orders
   properties:
   - type: OpenAPI
-    url: openapi/mycarrier-order-public-api-openapi.json
+    url: openapi/mycarrier-orders-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
   - type: Documentation
     url: https://developer.mycarrier.io/docs/order-management
-  - type: Overlay
-    url: overlays/mycarrier-order-public-api-overlay.yaml
-- aid: mycarrier-freightaudit-api
-  name: MyCarrier FreightAudit API
-  description: 'The MyCarrier FreightAudit (Invoice Hub) API — freight bill audit,
-    invoice filtering and retrieval, disputes, notes, tags, bulk import/export, payments
-    and remittance, invoice analytics and shipment linking. Bearer JWT on the live
-    contract; the documented public subset uses HTTP Basic.'
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-payment-api
+  name: MyCarrier Payment API
+  description: The Payment API from MyCarrier — 5 operation(s) for payment.
   humanURL: https://developer.mycarrier.io/docs/getting-started
-  baseURL: https://invoice.mycarriertms.com
-  tags:
-  - Invoicing
-  - Freight Audit
-  - Payments
-  - Disputes
-  properties:
-  - type: OpenAPI
-    url: openapi/mycarrier-freightaudit-api-openapi.json
-  - type: OpenAPI
-    url: openapi/mycarrier-freightaudit-public-api-openapi.json
-  - type: Overlay
-    url: overlays/mycarrier-freightaudit-api-overlay.yaml
-- aid: mycarrier-webhook-api
-  name: MyCarrier Webhook Registration API
-  description: 'The MyCarrier webhook registration surface (ITM.Services.Webhook.Api)
-    — register, update and delete webhook subscriptions, webhook types and additional
-    outbound HTTP headers. Bearer JWT. The published contract declares no servers[]
-    block, so the host is not stated in the spec.'
-  humanURL: https://developer.mycarrier.io/docs/webhooks
   baseURL: https://api.mycarriertms.com
   tags:
-  - Webhooks
-  - Events
+  - Payment
   properties:
   - type: OpenAPI
-    url: openapi/mycarrier-webhook-api-openapi.json
+    url: openapi/mycarrier-payment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-payment-management-api
+  name: MyCarrier Payment Management API
+  description: The Payment Management API from MyCarrier — 2 operation(s) for payment management.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Payment Management
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-payment-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-paymentv3-api
+  name: MyCarrier Payment V3 API
+  description: The PaymentV3 API from MyCarrier — 1 operation(s) for paymentv3.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - PaymentV3
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-paymentv3-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-rating-api
+  name: MyCarrier Rating API
+  description: The Rating API from MyCarrier — 2 operation(s) for rating.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Rating
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-rating-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-routing-guide-api
+  name: MyCarrier Routing Guide API
+  description: The Routing Guide API from MyCarrier — 7 operation(s) for routing guide.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Routing Guide
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-routing-guide-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-shipmentdetails-api
+  name: MyCarrier Shipment Details API
+  description: The ShipmentDetails API from MyCarrier — 1 operation(s) for shipmentdetails.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - ShipmentDetails
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-shipmentdetails-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-shipments-api
+  name: MyCarrier Shipments API
+  description: The Shipments API from MyCarrier — 5 operation(s) for shipments.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Shipments
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-shipments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-shippinglocations-api
+  name: MyCarrier Shipping Locations API
+  description: The ShippingLocations API from MyCarrier — 2 operation(s) for shippinglocations.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - ShippingLocations
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-shippinglocations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-tags-api
+  name: MyCarrier Tags API
+  description: The Tags API from MyCarrier — 3 operation(s) for tags.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-tags-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-userinvoicesettingv3-api
+  name: MyCarrier User Invoice Setting V3 API
+  description: The UserInvoiceSettingV3 API from MyCarrier — 2 operation(s) for userinvoicesettingv3.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - UserInvoiceSettingV3
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-userinvoicesettingv3-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-view-invoices-api
+  name: MyCarrier View Invoices API
+  description: The View Invoices API from MyCarrier — 2 operation(s) for view invoices.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - View Invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-view-invoices-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-view-notes-api
+  name: MyCarrier View Notes API
+  description: The View Notes API from MyCarrier — 1 operation(s) for view notes.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - View Notes
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-view-notes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-webhook-api
+  name: MyCarrier Webhook API
+  description: The Webhook API from MyCarrier — 5 operation(s) for webhook.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Webhook
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-webhook-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-webhookhttpheader-api
+  name: MyCarrier Webhook HTTP Header API
+  description: The WebhookHttpHeader API from MyCarrier — 2 operation(s) for webhookhttpheader.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - WebhookHttpHeader
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-webhookhttpheader-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-webhooktype-api
+  name: MyCarrier Webhook Type API
+  description: The WebhookType API from MyCarrier — 2 operation(s) for webhooktype.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - WebhookType
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-webhooktype-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
   - type: Documentation
     url: https://developer.mycarrier.io/docs/webhooks
   - type: Webhooks
     url: asyncapi/mycarrier-events-webhooks.yml
 common:
+- type: Overlay
+  url: overlays/mycarrier-public-api-overlay.yaml
+- type: Overlay
+  url: overlays/mycarrier-order-public-api-overlay.yaml
+- type: Overlay
+  url: overlays/mycarrier-freightaudit-api-overlay.yaml
 - type: Website
   url: https://go.mycarrier.io/
 - type: DeveloperPortal
