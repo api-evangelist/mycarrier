@@ -9,6 +9,18 @@ description: 'MyCarrier is a transportation management system (TMS) for less-tha
   and dispatch, routing-guide rules, shipping locations, shipment detail retrieval, and
   a FreightAudit / invoice surface for freight bill audit, disputes, notes and payments.
   It also publishes a webhook catalog for shipment and invoice lifecycle events.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://apporderprocessprodsa.blob.core.windows.net/$web/images/tms-logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/mycarrier/refs/heads/main/apis.yml
 x-type: company
@@ -715,6 +727,9 @@ apis:
   - type: Webhooks
     url: asyncapi/mycarrier-events-webhooks.yml
 common:
+- type: CapabilityMap
+  url: capabilities/mycarrier-capability-edges.yml
+  name: MyCarrier Business Capability Map
 - type: Overlay
   url: overlays/mycarrier-public-api-overlay.yaml
 - type: Overlay
