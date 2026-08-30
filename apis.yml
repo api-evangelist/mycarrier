@@ -51,6 +51,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Bulk Import
+  tags_raw:
   - BulkImport
   properties:
   - type: OpenAPI
@@ -152,6 +154,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Downloads
+  tags_raw:
   - Download
   properties:
   - type: OpenAPI
@@ -212,6 +216,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Freight Audit
+  tags_raw:
   - FreightAudit
   properties:
   - type: OpenAPI
@@ -252,6 +258,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -412,6 +420,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -532,6 +542,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Shipment details
+  tags_raw:
   - ShipmentDetails
   properties:
   - type: OpenAPI
