@@ -1,0 +1,393 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Export API
+  version: v1
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: Export
+paths:
+  /api/Export/Template/Save:
+    post:
+      tags:
+      - Export
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse'
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/Export/Template/List:
+    get:
+      tags:
+      - Export
+      parameters:
+      - name: customerId
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: includeSystem
+        in: query
+        schema:
+          type: boolean
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Response.ExportTemplateResponse'
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/Export/Template/{templateId}:
+    delete:
+      tags:
+      - Export
+      parameters:
+      - name: templateId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/Export/Invoices/csv:
+    post:
+      tags:
+      - Export
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportRequest'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      deprecated: true
+      security:
+      - Bearer: []
+  /api/Export/Invoices/pdf:
+    post:
+      tags:
+      - Export
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportRequestBase'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportRequestBase'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v2/Export/Invoices/csv:
+    post:
+      tags:
+      - Export
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportRequest'
+      responses:
+        '202':
+          description: Accepted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.API.Dtos.Export.Request.ExportRequestBase:
+      type: object
+      properties:
+        recordIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Request.ExportTemplateRequest:
+      required:
+      - columns
+      - customerId
+      - name
+      type: object
+      properties:
+        customerId:
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+          format: int32
+        name:
+          minLength: 1
+          type: string
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Request.ExportRequest:
+      type: object
+      properties:
+        recordIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+        exportAllRecords:
+          type:
+          - boolean
+          - 'null'
+        templateName:
+          type:
+          - string
+          - 'null'
+        columns:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        templateType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.ExportTemplateType'
+        columns:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.ExportTemplateType:
+      enum:
+      - Custom
+      - System
+      type: string
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

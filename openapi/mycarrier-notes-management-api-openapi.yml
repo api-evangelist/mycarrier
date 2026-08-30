@@ -1,0 +1,165 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Public Notes Management API
+  version: public
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: Notes Management
+paths:
+  /api/v2/Integrations/Notes/Save:
+    post:
+      tags:
+      - Notes Management
+      summary: Saving notes for the selected invoice.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest'
+      responses:
+        '200':
+          description: The operation was successfully completed.
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PostAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationSaveNotesRequest>()\n            {\n               InvoiceRecordId = Guid.Parse(\"bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\"),\n               Content = \"Some note\",\n               RequestedBy = \"MyCarrier TMS\"\n            },\n        Encoding.UTF8, \"application/json\");\n\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.PostAsync(\n        \"https://localhost:7205/api/v2/Integrations/Notes/Save\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: "curl --location 'https://localhost:7205/api/v2/Integrations/Notes/Save' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic amFtZXNmX2FlZTMyMC02YWI2LTQZTg5Njg0MjI4OWU=' \\\n--data '{\n    \"InvoiceRecordId\" : \"bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\",\n    \"Content\" : \"Some note\",\n    \"RequestedBy\": \"MyCarrier TMS\"\n}'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'POST',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    {\n       invoiceRecordId: 'bb1e7f78-ac4f-48d0-9a11-b31b2c36087f',\n       content: 'Some note',\n       requestedBy: 'MyCarrier TMS'\n    }\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Notes/Save', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+  /api/v2/Integrations/Notes/Remove:
+    delete:
+      tags:
+      - Notes Management
+      summary: Deletes notes for the selected invoice.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest'
+      responses:
+        '200':
+          description: The operation was successfully completed.
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: If user not authorized to perform requested action
+        '404':
+          description: Invoice not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task DeleteAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationDeleteNotesRequest() {\n               InvoiceRecordId = Guid.Parse(\"bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\"),\n               NoteId = Guid.Parse(\"bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\"),\n               RequestedBy = \"MyCarrier TMS\"\n        },\n        Encoding.UTF8, \"application/json\");\n\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.DeleteAsync(\n        \"https://localhost:7205/api/v2/Integrations/Notes/Remove\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: "curl --location --request DELETE 'https://localhost:7205/api/v2/Integrations/Notes/Remove' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic amFtZXNmX2F0X21hbG91ZZTg5Njg0MjI4OWU=' \\\n--data '{\n    \"InvoiceRecordId\": \"bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\",\n    \"NoteId\": \"69c5910d-3c16-5303-b1e0-c212761ce041\",\n    \"RequestedBy\" : \"MyCarrier TMS\"\n}'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'DELETE',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    {\n       invoiceRecordId: 'bb1e7f78-ac4f-48d0-9a11-b31b2c36087f',\n       noteId: 'bb1e7f78-ac4f-48d0-9a11-b31b2c36087f',\n       requestedBy: 'MyCarrier TMS'\n    }\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Notes/Remove', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+components:
+  schemas:
+    Microsoft.AspNetCore.Mvc.ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest:
+      required:
+      - invoiceRecordId
+      - noteId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        noteId:
+          type: string
+          format: uuid
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest:
+      required:
+      - content
+      - invoiceRecordId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        content:
+          maxLength: 300
+          minLength: 1
+          type: string
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

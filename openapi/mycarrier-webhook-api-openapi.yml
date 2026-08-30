@@ -1,0 +1,670 @@
+openapi: 3.2.0
+info:
+  title: Mycarrier Webhook API
+  version: v1
+  description: 'Operations tagged Webhook across 2 of this provider''s published API definitions: mycarrier-public-api-openapi.json, mycarrier-webhook-api-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Production
+  url: https://api.mycarriertms.com
+tags:
+- name: Webhook
+paths:
+  /carrierintegrations/webhook/smc3/documents:
+    post:
+      operationId: POST/carrierintegrations/webhook/smc3/documents
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: Environment
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: Traceparent
+        schema:
+          type: string
+      - in: header
+        name: User-Agent
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WebhookDocumentRequet'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDocumentRequet'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+        '202':
+          description: Accepted
+        '500':
+          description: Internal Server Error
+      security: []
+      tags:
+      - Webhook
+    servers:
+    - description: Production
+      url: https://api.mycarriertms.com
+  /carrierintegrations/webhook/smc3/status:
+    post:
+      operationId: POST/carrierintegrations/webhook/smc3/status
+      parameters:
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: Environment
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: Traceparent
+        schema:
+          type: string
+      - in: header
+        name: User-Agent
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WebhookStatusRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookStatusRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+        '202':
+          description: Accepted
+        '500':
+          description: Internal Server Error
+      security: []
+      tags:
+      - Webhook
+    servers:
+    - description: Production
+      url: https://api.mycarriertms.com
+  /Filtered:
+    get:
+      tags:
+      - Webhook
+      summary: Returns a list of registered Webhooks
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+      - name: customerId
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: webhookType
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a page of Webhooks
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+      security:
+      - Bearer: []
+  /Composed:
+    get:
+      tags:
+      - Webhook
+      summary: Returns a registered Webhook with headers
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+      - name: customerId
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: webhookType
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a Webhook with headers
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookComposed'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookComposed'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookComposed'
+      security:
+      - Bearer: []
+  /Webhook:
+    get:
+      tags:
+      - Webhook
+      summary: Returns a list of registered Webhooks
+      responses:
+        '200':
+          description: Returns a page of Webhooks
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - Webhook
+      summary: Attempts to delete the Webhook specificed by name
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+      - name: customerId
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: webhookType
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The Webhook was deleted
+      security:
+      - Bearer: []
+    post:
+      tags:
+      - Webhook
+      summary: Attempts to create a new Webhook
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+      responses:
+        '201':
+          description: The Webhook was created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '400':
+          description: Bad request due to data validation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      security:
+      - Bearer: []
+    put:
+      tags:
+      - Webhook
+      summary: Attempts to update the User for the provided id
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+      responses:
+        '200':
+          description: The User was updated
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '400':
+          description: Bad request due to data validation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: No User was able to be found for the provided id
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    StatusRequest:
+      additionalProperties: false
+      properties:
+        carrierDescription:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+        date:
+          type:
+          - string
+          - 'null'
+        stateProvince:
+          type:
+          - string
+          - 'null'
+        time:
+          type:
+          - string
+          - 'null'
+        utc:
+          type:
+          - string
+          - 'null'
+      type: object
+    DeliveryRequest:
+      additionalProperties: false
+      properties:
+        actualDate:
+          type:
+          - string
+          - 'null'
+        actualTime:
+          type:
+          - string
+          - 'null'
+        appointment:
+          $ref: '#/components/schemas/AppointmentRequest'
+        estimatedDate:
+          type:
+          - string
+          - 'null'
+        estimatedTime:
+          type:
+          - string
+          - 'null'
+        signature:
+          type:
+          - string
+          - 'null'
+      type: object
+    WebhookDocumentRequet:
+      additionalProperties: false
+      properties:
+        documentType:
+          type:
+          - string
+          - 'null'
+        fileType:
+          type:
+          - string
+          - 'null'
+        images:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        messageStatus:
+          $ref: '#/components/schemas/MessageStatusRequest'
+        proNumber:
+          type:
+          - string
+          - 'null'
+        scac:
+          type:
+          - string
+          - 'null'
+        transactionId:
+          type:
+          - string
+          - 'null'
+      type: object
+    InformationRequest:
+      additionalProperties: false
+      properties:
+        message:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+      type: object
+    TransitRequest:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/DeliveryRequest'
+        pickupDate:
+          type:
+          - string
+          - 'null'
+      type: object
+    ShipmentInfoRequest:
+      additionalProperties: false
+      properties:
+        weight:
+          type:
+          - string
+          - 'null'
+      type: object
+    WebhookStatusRequest:
+      additionalProperties: false
+      properties:
+        destination:
+          $ref: '#/components/schemas/AddressWebhookRequest'
+        messageStatus:
+          $ref: '#/components/schemas/MessageStatusRequest'
+        origin:
+          $ref: '#/components/schemas/AddressWebhookRequest'
+        proNumber:
+          type:
+          - string
+          - 'null'
+        referenceNumbers:
+          $ref: '#/components/schemas/ReferenceNumberRequest'
+        scac:
+          type:
+          - string
+          - 'null'
+        shipmentInfo:
+          $ref: '#/components/schemas/ShipmentInfoRequest'
+        status:
+          $ref: '#/components/schemas/StatusRequest'
+        statusHistory:
+          items:
+            $ref: '#/components/schemas/StatusRequest'
+          type:
+          - array
+          - 'null'
+        transactionId:
+          type:
+          - string
+          - 'null'
+        transit:
+          $ref: '#/components/schemas/TransitRequest'
+      type: object
+    AppointmentRequest:
+      additionalProperties: false
+      properties:
+        date:
+          type:
+          - string
+          - 'null'
+        endTime:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        startTime:
+          type:
+          - string
+          - 'null'
+      type: object
+    MessageStatusRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+        information:
+          items:
+            $ref: '#/components/schemas/InformationRequest'
+          type:
+          - array
+          - 'null'
+        message:
+          type:
+          - string
+          - 'null'
+        resolution:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - string
+          - 'null'
+      type: object
+    AddressWebhookRequest:
+      additionalProperties: false
+      properties:
+        postalCode:
+          type:
+          - string
+          - 'null'
+      type: object
+    ReferenceNumberRequest:
+      additionalProperties: false
+      properties:
+        bol:
+          type:
+          - string
+          - 'null'
+        customerReference:
+          type:
+          - string
+          - 'null'
+        pickup:
+          type:
+          - string
+          - 'null'
+        po:
+          type:
+          - string
+          - 'null'
+        proNumber:
+          type:
+          - string
+          - 'null'
+      type: object
+    WebhookComposed:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        credentialUserName:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        uri:
+          type:
+          - string
+          - 'null'
+        headers:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/WebhookHttpHeaderComposed'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    Webhook:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        credentialUserName:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        uri:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    WebhookHttpHeaderComposed:
+      type: object
+      properties:
+        headerKey:
+          type:
+          - string
+          - 'null'
+        headerValue:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- mycarrier-public-api-openapi.json
+- mycarrier-webhook-api-openapi.json

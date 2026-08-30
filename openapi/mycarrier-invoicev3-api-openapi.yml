@@ -1,0 +1,1498 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Invoice V3 API
+  version: v1
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: InvoiceV3
+paths:
+  /api/v3/invoices/filter:
+    post:
+      tags:
+      - InvoiceV3
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceFilterRequestV2'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceFilterRequestV2'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterResponseV2'
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v3/invoices/{id}:
+    get:
+      tags:
+      - InvoiceV3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Responses.V3.InvoiceDetailV3Response'
+        '404':
+          description: Not Found
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - InvoiceV3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v3/invoices/{id}/viewed:
+    patch:
+      tags:
+      - InvoiceV3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v3/invoices/{id}/documents:
+    get:
+      tags:
+      - InvoiceV3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MC.Invoice.API.Responses.V3.InvoiceDocumentV3Response'
+        '404':
+          description: Not Found
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    MC.Invoice.API.Dtos.Generic.PaginationRequest:
+      type: object
+      properties:
+        skip:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          description: Specifies the number of records to exclude from the beginning of the query results
+          format: int32
+        take:
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+          description: Can be used to set the number of records that you want to receive in response
+          format: int32
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.SourceChargeResponse:
+      type: object
+      properties:
+        chargeCode:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.DisputeStatusType:
+      enum:
+      - Created
+      - Submitted
+      - Accepted
+      - Denied
+      - Deleted
+      - AutoClosed
+      type: string
+    MC.Invoice.Data.Mongo.Entities.PaymentActivityLog:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        userName:
+          type:
+          - string
+          - 'null'
+        activityType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.PaymentActivityType'
+        data:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.PaymentActivityLog_Metadata'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoiceQuoteAuditResponse:
+      type: object
+      properties:
+        summary:
+          type:
+          - string
+          - 'null'
+        invoiceDifferences:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceDifferenceResponse'
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_ShipmentImageV3Response:
+      type: object
+      properties:
+        shipmentImageId:
+          type: integer
+          format: int32
+        imageUrl:
+          type:
+          - string
+          - 'null'
+        documentType:
+          type:
+          - string
+          - 'null'
+        isImage:
+          type: boolean
+        documentInfo:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoiceInsightsResponse:
+      type: object
+      properties:
+        differenceSuggestion:
+          $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceQuoteAuditResponse'
+        userExperience:
+          $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.UserExperienceResponse'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceSortingRequest:
+      type: object
+      properties:
+        sortingField:
+          type:
+          - string
+          - 'null'
+        sortingType:
+          $ref: '#/components/schemas/MC.Invoice.Common.Enums.SortingType'
+        topStatus:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V3.InvoiceDocumentV3Response:
+      type: object
+      properties:
+        documentId:
+          type:
+          - string
+          - 'null'
+        documentUrl:
+          type:
+          - string
+          - 'null'
+        documentType:
+          type:
+          - string
+          - 'null'
+        documentName:
+          type:
+          - string
+          - 'null'
+        isImage:
+          type: boolean
+        isOriginalInvoice:
+          type: boolean
+      additionalProperties: false
+    MongoDB.Bson.ObjectId:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int32
+          readOnly: true
+        creationTime:
+          type: string
+          format: date-time
+          readOnly: true
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_ShipmentHandlingUnitV3Response:
+      type: object
+      properties:
+        shipmentHandlingUnitId:
+          type: integer
+          format: int32
+        handlingUnitNumber:
+          type: integer
+          format: int32
+        stackable:
+          type: boolean
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+        length:
+          type: number
+          format: double
+        packagingType:
+          type:
+          - string
+          - 'null'
+        shipmentCommodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_ShipmentCommodityV3Response'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.PaymentActivityType:
+      enum:
+      - Fps
+      - Created
+      - Updated
+      - Deleted
+      type: string
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse:
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+        recordId:
+          type: string
+          format: uuid
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        invoiceAmount:
+          type: number
+          format: double
+        amountDue:
+          type: number
+          format: double
+        differenceAmount:
+          type: number
+          format: double
+        invoiceDateTime:
+          type: string
+          format: date-time
+        invoiceDueDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        poNumber:
+          type:
+          - string
+          - 'null'
+        quoteAmount:
+          type: number
+          format: double
+        referenceNumber:
+          type:
+          - string
+          - 'null'
+        shipmentId:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        invoiceType:
+          type:
+          - string
+          - 'null'
+        deliveryDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        pickupDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdDateTime:
+          type: string
+          format: date-time
+        modifiedDateTime:
+          type: string
+          format: date-time
+        hasVersions:
+          type: boolean
+        requiresAttention:
+          type: boolean
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.InvoiceTagResponse'
+        statusTransitions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        shipperInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse_CompanyInfo'
+        consigneeInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse_CompanyInfo'
+        payments:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoicePaymentFilterItemResponse'
+        hasReceipt:
+          type: boolean
+        hasIntegrationFee:
+          type: boolean
+        isArchive:
+          type: boolean
+        carrierSmallLogo:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.StatusReasonMetadata:
+      type: object
+      properties:
+        reason:
+          type:
+          - string
+          - 'null'
+        otherNotes:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V2.InvoiceTagResponse:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V2.InvoiceVersionHistoryResponse:
+      type: object
+      properties:
+        versionRecordId:
+          type: string
+          format: uuid
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        invoiceDateTime:
+          type: string
+          format: date-time
+        dateReceived:
+          type: string
+          format: date-time
+        totalAmount:
+          type: number
+          format: double
+        version:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_CompanyInfoV3Response:
+      type: object
+      properties:
+        actionDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse_CompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V2.QuoteDetailResponse_CompanyInfoResponse:
+      type: object
+      properties:
+        actionDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.DisputeEmail:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/MongoDB.Bson.ObjectId'
+        disputeId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        carrierId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        from:
+          type:
+          - string
+          - 'null'
+        to:
+          type:
+          - string
+          - 'null'
+        subject:
+          type:
+          - string
+          - 'null'
+        body:
+          type:
+          - string
+          - 'null'
+        documentIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoicePaymentFilterItemResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
+          type: number
+          format: double
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+        isRemoved:
+          type: boolean
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V2.ShipmentPriceDetailResponse:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+        chargeCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoicePaymentDetailResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
+          type: number
+          format: double
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+        receiptUrl:
+          type:
+          - string
+          - 'null'
+        activityLog:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.PaymentActivityLog'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceFilterRequestV2:
+      type: object
+      properties:
+        searchText:
+          type:
+          - string
+          - 'null'
+        invoiceDateTime:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest'
+        invoiceDueDate:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest'
+        statuses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        carrierNames:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        poNumbers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        proNumbers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        bolNumbers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        hasOvercharge:
+          type:
+          - boolean
+          - 'null'
+        pagination:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.PaginationRequest'
+        sorting:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceSortingRequest'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoiceDifferenceResponse:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int32
+        reasonCode:
+          type:
+          - string
+          - 'null'
+        subReasonCodes:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        reasonDescription:
+          type:
+          - string
+          - 'null'
+        differenceAmount:
+          type: number
+          format: double
+        explanation:
+          type:
+          - string
+          - 'null'
+        invoiceSourceCharges:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
+        quoteSourceCharges:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
+        chargeBreakdowns:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.ChargeBreakdownResponse'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V3.InvoiceDetailV3Response:
+      type: object
+      properties:
+        invoice:
+          $ref: '#/components/schemas/MC.Invoice.API.Responses.V3.InvoiceRecordDetailV3Response'
+        originalQuote:
+          $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response'
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_ShipmentCommodityV3Response:
+      type: object
+      properties:
+        shipmentCommodityId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        commodityDescription:
+          type:
+          - string
+          - 'null'
+        nmfcCode:
+          type:
+          - string
+          - 'null'
+        nmfcSubCode:
+          type:
+          - string
+          - 'null'
+        piecesNumber:
+          type: integer
+          format: int32
+        freightClassCode:
+          type:
+          - string
+          - 'null'
+        weight:
+          type:
+          - number
+          - 'null'
+          format: double
+        isHazmat:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Common.Enums.SortingType:
+      enum:
+      - Asc
+      - Desc
+      type: string
+    MC.Invoice.API.Responses.V2.InvoiceDisputeResponse:
+      type: object
+      properties:
+        disputeId:
+          type: string
+          format: uuid
+        reasons:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        disputeAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        notes:
+          type:
+          - string
+          - 'null'
+        otherReason:
+          type:
+          - string
+          - 'null'
+        createdDateTime:
+          type: string
+          format: date-time
+        createdBy:
+          type:
+          - string
+          - 'null'
+        proofOfDeliveryUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+        bolUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+        documents:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.DisputeFile'
+        emails:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.DisputeEmail'
+        activityLogs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceDisputeResponse_InvoiceDisputeActivityLogResponse'
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.DisputeStatusType'
+        isActive:
+          type: boolean
+        alias:
+          type:
+          - string
+          - 'null'
+        lastSent:
+          $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceDisputeResponse_InvoiceDisputeActivityLogResponse'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoiceDisputeResponse_InvoiceDisputeActivityLogResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.DisputeActivityType'
+        updatedBy:
+          type:
+          - string
+          - 'null'
+        dateTime:
+          type: string
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V2.QuoteDetailResponse_ShipmentCommodityResponse:
+      type: object
+      properties:
+        shipmentCommodityId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        commodityDescription:
+          type:
+          - string
+          - 'null'
+        freightClassCode:
+          type:
+          - string
+          - 'null'
+        weight:
+          type:
+          - number
+          - 'null'
+          format: double
+        length:
+          type:
+          - number
+          - 'null'
+          format: double
+        width:
+          type:
+          - number
+          - 'null'
+          format: double
+        height:
+          type:
+          - number
+          - 'null'
+          format: double
+        isHazmat:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoiceFullActivityLogResponse:
+      type: object
+      properties:
+        category:
+          type:
+          - string
+          - 'null'
+        dateTime:
+          type: string
+          format: date-time
+        userName:
+          type:
+          - string
+          - 'null'
+        activityType:
+          type:
+          - string
+          - 'null'
+        metadata: {}
+      additionalProperties: false
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.API.Responses.V2.ChargeBreakdownResponse:
+      type: object
+      properties:
+        categoryName:
+          type:
+          - string
+          - 'null'
+        reasonCode:
+          type:
+          - string
+          - 'null'
+        subReasonCode:
+          type:
+          - string
+          - 'null'
+        invoiceSourceCharges:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
+        invoiceAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        quoteSourceCharges:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
+        quoteAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        differenceAmount:
+          type: number
+          format: double
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
+    MC.Invoice.Contracts.Responses.V2.InvoiceNoteResponse:
+      type: object
+      properties:
+        noteId:
+          type: string
+          format: uuid
+        updatedAt:
+          type: string
+          format: date-time
+        content:
+          type:
+          - string
+          - 'null'
+        userName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.PaymentActivityLog_Metadata:
+      type: object
+      properties:
+        transactionId:
+          type:
+          - string
+          - 'null'
+        paymentMethodType:
+          type:
+          - string
+          - 'null'
+        paymentMethodName:
+          type:
+          - string
+          - 'null'
+        paymentScope:
+          type:
+          - string
+          - 'null'
+        last4:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: number
+          format: double
+        transactionFee:
+          type: number
+          format: double
+        integrationFee:
+          type: number
+          format: double
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest:
+      type: object
+      properties:
+        from:
+          type:
+          - string
+          - 'null'
+          description: Specifies the start date for filtering invoices based on the invoiced date
+          format: date-time
+        to:
+          type:
+          - string
+          - 'null'
+          description: Specifies the end date for filtering invoices based on the invoiced date
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.API.Responses.V3.InvoiceRecordDetailV3Response:
+      type: object
+      properties:
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        referenceNumber:
+          type:
+          - string
+          - 'null'
+        totalAmount:
+          type: number
+          format: double
+        carrierName:
+          type:
+          - string
+          - 'null'
+        shipmentPriceDetails:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.ShipmentPriceDetailResponse'
+        recordId:
+          type: string
+          format: uuid
+        shipmentId:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        invoiceDateTime:
+          type: string
+          format: date-time
+        dateReceived:
+          type: string
+          format: date-time
+        originalDocumentUrl:
+          type:
+          - string
+          - 'null'
+        dueDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        amountDue:
+          type: number
+          format: double
+        processingFees:
+          type: number
+          format: double
+        integrationFee:
+          type: number
+          format: double
+        amountPaid:
+          type: number
+          format: double
+        insights:
+          $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceInsightsResponse'
+        approvedDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        approvedBy:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        hasReceipt:
+          type: boolean
+        hasIntegrationFee:
+          type: boolean
+        requiresAttention:
+          type: boolean
+        version:
+          type: integer
+          format: int32
+        invoiceVersionHistory:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.InvoiceVersionHistoryResponse'
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.InvoiceTagResponse'
+        payments:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoicePaymentDetailResponse'
+        disputes:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceDisputeResponse'
+        fullActivityLog:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.InvoiceFullActivityLogResponse'
+        origin:
+          $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.QuoteDetailResponse_CompanyInfoResponse'
+        destination:
+          $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.QuoteDetailResponse_CompanyInfoResponse'
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.QuoteDetailResponse_ShipmentCommodityResponse'
+        statusTransitions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        notes:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.InvoiceNoteResponse'
+        currentApprovedReason:
+          $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.StatusReasonMetadata'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterResponseV2:
+      type: object
+      properties:
+        totalInvoiceCount:
+          type: integer
+          format: int64
+        invoices:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.UserExperienceResponse:
+      type: object
+      properties:
+        userName:
+          type:
+          - string
+          - 'null'
+        voteType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.UserVoteType'
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.UserVoteType:
+      enum:
+      - Neutral
+      - Like
+      - Dislike
+      type: string
+    MC.Invoice.Data.Mongo.Enums.DisputeActivityType:
+      enum:
+      - Created
+      - Submitted
+      - Accepted
+      - Denied
+      - Deleted
+      - AutoClosed
+      - ReasonsUpdated
+      - UnknownActivity
+      type: string
+    MC.Invoice.Data.Mongo.Entities.DisputeFile:
+      type: object
+      properties:
+        fileName:
+          type:
+          - string
+          - 'null'
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        createdDateTime:
+          type: string
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response:
+      type: object
+      properties:
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        referenceNumber:
+          type:
+          - string
+          - 'null'
+        totalAmount:
+          type: number
+          format: double
+        carrierName:
+          type:
+          - string
+          - 'null'
+        shipmentPriceDetails:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.ShipmentPriceDetailResponse'
+        capacityQuoteNumber:
+          type:
+          - string
+          - 'null'
+        quoteDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        origin:
+          $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_CompanyInfoV3Response'
+        destination:
+          $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_CompanyInfoV3Response'
+        shipmentImages:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_ShipmentImageV3Response'
+        shipmentHandlingUnits:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V3.ShipmentQuoteDetailV3Response_ShipmentHandlingUnitV3Response'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

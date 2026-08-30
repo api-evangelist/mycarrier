@@ -1,0 +1,620 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  title: MyCarrier Public Shipment Details API
+  version: v1
+servers:
+- description: Production
+  url: https://api.mycarriertms.com
+tags:
+- name: ShipmentDetails
+paths:
+  /api/v1/shipments/{id}:
+    get:
+      description: Get a shipments full details by any shipment identifier
+      operationId: ShipmentDetails
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: Environment
+        schema:
+          type: string
+      - in: header
+        name: Traceparent
+        schema:
+          type: string
+      - in: header
+        name: User-Agent
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      - description: Shipment Id or Quote Reference Id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.ApiResponse_MC.Shipment.Contracts.Responses.PublicShipmentDto'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Get Shipment Details by reference id
+      tags:
+      - ShipmentDetails
+components:
+  schemas:
+    MC.Shipment.Contracts.Responses.PublicShipmentPickupDateDto:
+      additionalProperties: false
+      properties:
+        actualPickupDate:
+          description: Actual Shipment pickup date
+          format: date
+          type:
+          - string
+          - 'null'
+        estimatedPickupDate:
+          description: Estimated Shipment pickup date
+          format: date
+          type:
+          - string
+          - 'null'
+        pickupEndTime:
+          description: The DateTime that the Shipment must be picked up by
+          format: date-time
+          type:
+          - string
+          - 'null'
+        pickupStartTime:
+          description: The DateTime that the Shipment is available to be picked up
+          format: date-time
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentHandlingUnitDetailDto:
+      additionalProperties: false
+      properties:
+        handlingUnits:
+          description: The collection of handling units on this shipment
+          items:
+            $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentHandlingUnitDto'
+          type:
+          - array
+          - 'null'
+        linearFeet:
+          description: The number of feet this shipment will take up in the truck
+          format: double
+          type:
+          - number
+          - 'null'
+        totalWeight:
+          description: The total weight of handling units on this shipment
+          format: double
+          type:
+          - number
+          - 'null'
+        weightUnit:
+          description: The unit of weight for this shipment
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentDeliveryDateDto:
+      additionalProperties: false
+      properties:
+        actualDeliveryDate:
+          description: Actual Shipment delivery date
+          format: date
+          type:
+          - string
+          - 'null'
+        deliveryEndTime:
+          description: The DateTime that the Shipment must be dropped off by
+          format: date-time
+          type:
+          - string
+          - 'null'
+        deliveryStartTime:
+          description: The DateTime that the Shipment is available to be dropped off
+          format: date-time
+          type:
+          - string
+          - 'null'
+        estimatedDeliveryDate:
+          description: Estimated Shipment delivery date
+          format: date
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentAdditionalAccessorialDto:
+      additionalProperties: false
+      properties:
+        closeDateTime:
+          description: Close date time
+          format: date-time
+          type:
+          - string
+          - 'null'
+        code:
+          description: Accessorial code
+          type: string
+        internalCode:
+          description: Accessorial internal code
+          type: string
+        name:
+          description: Accessorial name
+          type: string
+        readyDateTime:
+          description: Ready date time
+          format: date-time
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentHazardousDetailDto:
+      additionalProperties: false
+      properties:
+        hazardousClass:
+          description: The hazardous class for hazardous materials
+          type:
+          - string
+          - 'null'
+        hazardousShippingName:
+          description: The shipping name for hazardous materials
+          type:
+          - string
+          - 'null'
+        packingGroup:
+          description: The packing group for hazardous materials
+          type:
+          - string
+          - 'null'
+        unCode:
+          description: The UN code for hazardous materials
+          type:
+          - string
+          - 'null'
+        unNumber:
+          description: The UN number for hazardous materials
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentDetailContactDto:
+      additionalProperties: false
+      properties:
+        email:
+          description: Contact Email Address
+          type: string
+        firstName:
+          description: Contact First Name
+          type: string
+        lastName:
+          description: Contact Last Name
+          type: string
+        phone:
+          description: Contact Phone Number
+          type: string
+      type: object
+    MC.Shipment.Contracts.Responses.ApiResponse_MC.Shipment.Contracts.Responses.PublicShipmentDto:
+      additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentDto'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentDto:
+      additionalProperties: false
+      properties:
+        accessorials:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentAccessorialDto'
+        appointmentDetails:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentDateDto'
+        indentifiers:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentIdentifierDto'
+        isCanceled:
+          description: Whether the shipment has been canceled or not
+          type: boolean
+        laneType:
+          description: The lane type (DIRECT, INTERLINE, UNSPECIFIED)
+          type: string
+        paymentTerms:
+          description: The party being invoiced for the Shipment
+          type: string
+        priceDetails:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentPriceDetailDto'
+        service:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentServiceDto'
+        shipmentAdditionalAccessorials:
+          description: A list of additional accessorials
+          items:
+            $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentAdditionalAccessorialDto'
+          type: array
+        shipmentDocuments:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentLinkDto'
+        shippingDetails:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentHandlingUnitDetailDto'
+        statusCode:
+          description: The status of the shipment (BOOKED, PICKED_UP, IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED)
+          type: string
+        stops:
+          description: The details of all the stops for this shipment
+          items:
+            $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentDetailDto'
+          type: array
+        thirdParty:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentThirdPartyDto'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentChargeItemDto:
+      additionalProperties: false
+      properties:
+        amount:
+          description: Amount of the price detail
+          format: double
+          type:
+          - number
+          - 'null'
+        description:
+          description: Description of the package
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentDateDto:
+      additionalProperties: false
+      properties:
+        bookedDate:
+          description: Date the Shipment was booked
+          format: date
+          type:
+          - string
+          - 'null'
+        delivery:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentDeliveryDateDto'
+        pickup:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentPickupDateDto'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentThirdPartyDto:
+      additionalProperties: false
+      properties:
+        addressId:
+          description: Unique identifier for the address
+          format: int32
+          type: integer
+        city:
+          description: City
+          type: string
+        contact:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentDetailContactDto'
+        country:
+          description: Country Code
+          type: string
+        name:
+          description: The name of the business at this address
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Zip/Postal Code
+          type: string
+        stateProvince:
+          description: Two character State/Province abreviation
+          type: string
+        streetLine1:
+          description: Address Street Line 1
+          type: string
+        streetLine2:
+          description: Address Street Line 2
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentAccessorialDto:
+      additionalProperties: false
+      properties:
+        codes:
+          description: The list of accessorial codes for this shipment
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentIdentifierDto:
+      additionalProperties: false
+      properties:
+        bolNumber:
+          description: Bill Of Lading Number
+          type:
+          - string
+          - 'null'
+        carrierQuoteNumber:
+          description: Shipment Number
+          type:
+          - string
+          - 'null'
+        customerReferenceNumber:
+          description: Customer Reference Number
+          type:
+          - string
+          - 'null'
+        orderId:
+          description: Order Id of Shipment created through Order API
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        pickupNumber:
+          description: Pickup Number
+          type:
+          - string
+          - 'null'
+        poNumber:
+          description: PO Number
+          type:
+          - string
+          - 'null'
+        proNumber:
+          description: PRO Number with check digit (separated by -)
+          type:
+          - string
+          - 'null'
+        proNumberCheckDigit:
+          description: PRO Number check digit
+          type:
+          - string
+          - 'null'
+        proNumberWithoutCheckDigit:
+          description: PRO Number without check digit
+          type:
+          - string
+          - 'null'
+        shipmentId:
+          description: Integer Id of the Shipment
+          format: int32
+          type: integer
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentCommodityDto:
+      additionalProperties: false
+      properties:
+        description:
+          description: The total number of packages on this shipment
+          type:
+          - string
+          - 'null'
+        freightClass:
+          description: Freight class of the package
+          type:
+          - string
+          - 'null'
+        hazardous:
+          description: Indicates if the package contains hazardous materials
+          type:
+          - boolean
+          - 'null'
+        hazardousDetails:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentHazardousDetailDto'
+        nmfc:
+          description: National Motor Freight Classification (NMFC) code
+          type:
+          - string
+          - 'null'
+        nmfcSub:
+          description: NMFC sub code
+          type:
+          - string
+          - 'null'
+        orderNumber:
+          description: Order number for this shipment
+          type:
+          - string
+          - 'null'
+        packageType:
+          description: Type of package for this shipment
+          type:
+          - string
+          - 'null'
+        pieces:
+          description: Number of pieces in the package
+          format: int32
+          type:
+          - integer
+          - 'null'
+        weight:
+          description: Weight of the package
+          format: double
+          type:
+          - number
+          - 'null'
+        weightUnit:
+          description: Unit of weight for the package
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentServiceDto:
+      additionalProperties: false
+      properties:
+        carrier:
+          description: The Carrier transporting the shipment
+          type: string
+        equipmentType:
+          description: The type of vehicle transporting the shipment
+          type: string
+        level:
+          description: Service Level Code (STD, GUR, EXP, etc)
+          type: string
+        type:
+          description: Type of Shipment (LTL, VLTL, TL, GFP, PARCEL)
+          type: string
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentDetailDto:
+      additionalProperties: false
+      properties:
+        addressId:
+          description: Unique identifier for the address
+          format: int32
+          type: integer
+        city:
+          description: City
+          type: string
+        contact:
+          $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentDetailContactDto'
+        country:
+          description: Country Code
+          type: string
+        instructionNote:
+          description: Special instructions for this location
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of the business at this address
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Zip/Postal Code
+          type: string
+        stateProvince:
+          description: Two character State/Province abreviation
+          type: string
+        stopType:
+          description: Unique identifier for the address
+          type: string
+        streetLine1:
+          description: Address Street Line 1
+          type: string
+        streetLine2:
+          description: Address Street Line 2
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentLinkDto:
+      additionalProperties: false
+      properties:
+        bol:
+          description: The signed Bill Of Lading from the carrier
+          type:
+          - string
+          - 'null'
+        deliveryReceipt:
+          description: The delivery receipt or proof of delivery
+          type:
+          - string
+          - 'null'
+        invoice:
+          description: The invoice for this shipment
+          type:
+          - string
+          - 'null'
+        originalBol:
+          description: The Bill Of Lading MyCarrier generated for this shipment
+          type:
+          - string
+          - 'null'
+        palletLabel:
+          description: The shipping label for this shipment
+          type:
+          - string
+          - 'null'
+        trackingLink:
+          description: The tracking link for this shipment
+          type:
+          - string
+          - 'null'
+        weightCertificate:
+          description: The weight certificate for the shipment
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentPriceDetailDto:
+      additionalProperties: false
+      properties:
+        chargeItems:
+          description: Amount of the price detail
+          items:
+            $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentChargeItemDto'
+          type:
+          - array
+          - 'null'
+        currency:
+          description: Currency
+          type:
+          - string
+          - 'null'
+        totalCost:
+          description: Total cost of the Shipment
+          format: double
+          type:
+          - number
+          - 'null'
+      type: object
+    MC.Shipment.Contracts.Responses.PublicShipmentHandlingUnitDto:
+      additionalProperties: false
+      properties:
+        commodities:
+          description: The collection of commodities
+          items:
+            $ref: '#/components/schemas/MC.Shipment.Contracts.Responses.PublicShipmentCommodityDto'
+          type: array
+        count:
+          description: The count of handling units
+          format: int32
+          type: integer
+        dimensionsUnit:
+          description: The unit of dimension
+          type: string
+        height:
+          description: The height of the package
+          format: double
+          type: number
+        length:
+          description: The length of the package
+          format: double
+          type: number
+        packageType:
+          description: The type of package
+          type: string
+        stackable:
+          description: Indicates if the package is stackable
+          type: boolean
+        width:
+          description: The width of the package
+          format: double
+          type: number
+      type: object

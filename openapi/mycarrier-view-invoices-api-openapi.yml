@@ -1,0 +1,770 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Public View Invoices API
+  version: public
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: View Invoices
+paths:
+  /api/v1/Integrations/Invoices/Filter:
+    post:
+      tags:
+      - View Invoices
+      summary: Search invoices by filter.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationsInvoiceFilterRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationsInvoiceFilterRequest'
+      responses:
+        '200':
+          description: Returns found invoices by requested filter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceFilterResponse'
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PostAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationsInvoiceFilterRequest()\n        {\n            Statuses = new[] {\n                InvoiceStatusType.Open,\n                InvoiceStatusType.Approved\n            },\n            Pagination = new()\n            {\n                Skip = 0,\n                Take = 10\n            }\n        }),\n        Encoding.UTF8, \"application/json\");\n\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.PostAsync(\n        \"https://localhost:7205/api/v1/integrations/invoices/filter\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: "curl --location 'https://localhost:7205/api/v1/integrations/invoices/filter' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic dHJhdmlzaF9hdF9kZGdsb2JhbC5jb21AaW50ZWdyYXRlZHRtLmR' \\\n--data '{\n    \"statuses\": [\"Open\",\"Approved\"],\n    \"pagination\": {\n        \"skip\" : 0,\n        \"take\" : 10\n    }\n}'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'POST',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify({\n       statuses: ['Open','Approved'],\n       pagination: {\n            skip: 0,\n            take: 10\n       },    \n    })\n};\n\nfetch('https://localhost:7205/api/v1/integrations/invoices/filter', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));\";"
+  /api/v2/Integrations/Invoices/{recordId}:
+    get:
+      tags:
+      - View Invoices
+      summary: Returns an invoice record for the requested invoice identifier.
+      parameters:
+      - name: recordId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Returns the invoice record for the requested invoice identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceSummaryResponse'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '404':
+          description: No invoices were able to be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task GetAsync(HttpClient httpClient)\n{\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.GetAsync(\"https://localhost:7205/api/v2/Integrations/Invoices/bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\");\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: 'curl --location ''https://localhost:7205/api/v2/Integrations/Invoices/bb1e7f78-ac4f-48d0-9a11-b31b2c36087f'' \
+
+          --header ''Content-Type: application/json'' \
+
+          --header ''Authorization: Basic ZW1haWKAKNFPOdf76YXBpLWtleQ65rhG'''
+      - lang: JavaScript
+        source: "const invoiceRecordId = 'bb1e7f78-ac4f-48d0-9a11-b31b2c36087f';\n\nconst options = {\n  method: 'GET',\n  headers: {accept: '*/*'},\n};\n\nfetch(`https://localhost:7205/api/v2/Integrations/Invoices/${invoiceRecordId}`, options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+components:
+  schemas:
+    Microsoft.AspNetCore.Mvc.ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceFilterResponse:
+      type: object
+      properties:
+        totalInvoicesCount:
+          type: integer
+          format: int64
+        totalFiltered:
+          type: integer
+          format: int32
+          readOnly: true
+        invoices:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceDetailResponse'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.ShippingTimeline:
+      type: object
+      properties:
+        estimatedDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actualDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceDetailResponse:
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        shipment:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceShipment'
+        shipmentIdentificationNumber:
+          type:
+          - string
+          - 'null'
+        interchangeDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        currencyIdentifier:
+          type:
+          - string
+          - 'null'
+        termsOfSaleDueDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invoiceTransactionControlNumber:
+          type:
+          - string
+          - 'null'
+        invoiceNumber:
+          type:
+          - string
+          - 'null'
+        invoiceDateTime:
+          type: string
+          format: date-time
+        invoiceType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceCategoryType'
+        identificationCode:
+          type:
+          - string
+          - 'null'
+        uploadedDateTime:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceTagResponse'
+        notes:
+          type:
+          - string
+          - 'null'
+        quoteAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        invoiceAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        quoteReferenceId:
+          type:
+          - string
+          - 'null'
+        quoteId:
+          type:
+          - integer
+          - 'null'
+          format: int64
+      additionalProperties: false
+    MC.Invoice.Data.Entities.HandlingUnit:
+      type: object
+      properties:
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Entities.Commodity'
+      additionalProperties: false
+    MC.Invoice.Data.Entities.CompanyInfoExtended:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCommodityItem:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        piecesNumber:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        freightClassCode:
+          type:
+          - string
+          - 'null'
+        packingType:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceShipmentResponse:
+      type: object
+      properties:
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        delivery:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.ShippingTimeline'
+        pickup:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.ShippingTimeline'
+        shipperInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.InvoiceCompanyInfo'
+        consigneeInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.InvoiceCompanyInfo'
+        requesterInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.InvoiceCompanyAddress'
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCommodityItem'
+        lineItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Entities.ShipmentPriceDetail'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.InvoiceCompanyAddress:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Entities.ShipmentPriceDetail:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: number
+          format: double
+        chargeCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.InvoiceCompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        contactName:
+          type:
+          - string
+          - 'null'
+        contactEmail:
+          type:
+          - string
+          - 'null'
+        contactPhone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceShipment:
+      type: object
+      properties:
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        estimatedDeliveryDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        totalShipmentWeight:
+          type: number
+          format: double
+        pickupDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actualPickupDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        carrierInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Entities.InvoiceCarrierInfo'
+        shipperInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Entities.CompanyInfoExtended'
+        consigneeInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Entities.CompanyInfo'
+        requesterInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Entities.CompanyInfo'
+        handlingUnits:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Entities.HandlingUnit'
+        shipmentPriceDetails:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Entities.ShipmentPriceDetail'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceTagResponse:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceDetailsResponse:
+      type: object
+      properties:
+        invoiceAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        invoiceAmountDue:
+          type:
+          - number
+          - 'null'
+          format: double
+        totalAmountPaid:
+          type:
+          - number
+          - 'null'
+          format: double
+        currencyIdentifier:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
+        notes:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationsInvoiceFilterRequest:
+      type: object
+      properties:
+        statuses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        quoteReferenceIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        isArchived:
+          type:
+          - boolean
+          - 'null'
+        pagination:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.PaginationRequest'
+        invoiceDateTime:
+          $ref: '#/components/schemas/MC.Invoice.Data.Dtos.DateRange'
+      additionalProperties: false
+    MC.Invoice.Data.Entities.CompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Entities.InvoiceCarrierInfo:
+      type: object
+      properties:
+        carrierCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Entities.Commodity:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        piecesNumber:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        freightClass:
+          $ref: '#/components/schemas/MC.Invoice.Data.Entities.FreightClass'
+        packingType:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Entities.FreightClass:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
+          type: number
+          format: double
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - ShortPaid
+      type: string
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceSummaryResponse:
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        invoiceNumber:
+          type:
+          - string
+          - 'null'
+        carrierCode:
+          type:
+          - string
+          - 'null'
+        identificationCode:
+          type:
+          - string
+          - 'null'
+        invoiceTransactionControlNumber:
+          type:
+          - string
+          - 'null'
+        invoiceDateTime:
+          type: string
+          format: date-time
+        termsOfSaleDueDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invoiceDetails:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceDetailsResponse'
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceTagResponse'
+        paymentHistory:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse'
+        shipment:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceShipmentResponse'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Generic.PaginationRequest:
+      type: object
+      properties:
+        skip:
+          type: integer
+          format: int32
+        take:
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+          format: int32
+      additionalProperties: false
+    MC.Invoice.Data.Enums.InvoiceCategoryType:
+      enum:
+      - New
+      - Correction
+      - Cancellation
+      - RB
+      - Unknown
+      type: string
+    MC.Invoice.Data.Dtos.DateRange:
+      type: object
+      properties:
+        from:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        to:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

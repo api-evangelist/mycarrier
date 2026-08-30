@@ -1,0 +1,610 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Integrations API
+  version: v1
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: Integrations
+paths:
+  /api/v1/Integrations/{encodedKey}:
+    get:
+      tags:
+      - Integrations
+      parameters:
+      - name: encodedKey
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v1/Integrations/YourEDI/Create:
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest'
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      deprecated: true
+      security:
+      - Bearer: []
+  /api/FreightAudit/Invoice/Update:
+    patch:
+      tags:
+      - Integrations
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v1/Integrations/Invoices/UpdateStatus:
+    patch:
+      tags:
+      - Integrations
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/v2/Integrations/Mailgun/Inbound:
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                From:
+                  type: string
+                To:
+                  type: string
+                subject:
+                  type: string
+                stripped-text:
+                  type: string
+                timestamp:
+                  type: integer
+                  format: int32
+                token:
+                  type: string
+                signature:
+                  type: string
+                content-id-map:
+                  type: string
+            encoding:
+              From:
+                style: form
+              To:
+                style: form
+              subject:
+                style: form
+              stripped-text:
+                style: form
+              timestamp:
+                style: form
+              token:
+                style: form
+              signature:
+                style: form
+              content-id-map:
+                style: form
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                From:
+                  type: string
+                To:
+                  type: string
+                subject:
+                  type: string
+                stripped-text:
+                  type: string
+                timestamp:
+                  type: integer
+                  format: int32
+                token:
+                  type: string
+                signature:
+                  type: string
+                content-id-map:
+                  type: string
+            encoding:
+              From:
+                style: form
+              To:
+                style: form
+              subject:
+                style: form
+              stripped-text:
+                style: form
+              timestamp:
+                style: form
+              token:
+                style: form
+              signature:
+                style: form
+              content-id-map:
+                style: form
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: If Authorization header not present, has no value or no valid jwt bearer token
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest:
+      required:
+      - identificationCode
+      - invoiceDateTime
+      - invoiceNumber
+      type: object
+      properties:
+        shipment:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest_CreateInvoiceShipment'
+        shipmentIdentificationNumber:
+          type:
+          - string
+          - 'null'
+        interchangeDateTime:
+          type:
+          - string
+          - 'null'
+        currencyIdentifier:
+          type:
+          - string
+          - 'null'
+        termsOfSaleDueDate:
+          type:
+          - string
+          - 'null'
+        invoiceTransactionControlNumber:
+          type:
+          - string
+          - 'null'
+        invoiceNumber:
+          minLength: 1
+          type: string
+        invoiceDateTime:
+          minLength: 1
+          type: string
+        identificationCode:
+          minLength: 1
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        invoiceType:
+          type:
+          - string
+          - 'null'
+        invoiceTotalAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: number
+          format: double
+        chargeCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.Data.Mongo.Entities.CompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.CompanyInfoExtended:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest:
+      required:
+      - recordId
+      - statusType
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        statusType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        approvedReason:
+          type:
+          - string
+          - 'null'
+        approvedOtherNotes:
+          type:
+          - string
+          - 'null'
+        updatedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
+    MC.Invoice.Data.Mongo.Entities.HandlingUnit:
+      type: object
+      properties:
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.Commodity'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.FreightClass:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest_CreateInvoiceShipment:
+      required:
+      - carrierProNumber
+      type: object
+      properties:
+        carrierProNumber:
+          minLength: 1
+          type: string
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        estimatedDeliveryDate:
+          type:
+          - string
+          - 'null'
+        pickupDate:
+          type:
+          - string
+          - 'null'
+        totalShipmentWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        actualPickupDate:
+          type:
+          - string
+          - 'null'
+        actualDeliveryDate:
+          type:
+          - string
+          - 'null'
+        carrierInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.InvoiceCarrierInfo'
+        shipperInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CompanyInfoExtended'
+        consigneeInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CompanyInfoExtended'
+        requesterInfo:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CompanyInfo'
+        handlingUnits:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.HandlingUnit'
+        shipmentPriceDetails:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.InvoiceCarrierInfo:
+      type: object
+      properties:
+        carrierCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.Commodity:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        piecesNumber:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        freightClass:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.FreightClass'
+        packingType:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,111 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Public View Notes API
+  version: public
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: View Notes
+paths:
+  /api/v2/Integrations/Notes/{invoiceRecordId}:
+    get:
+      tags:
+      - View Notes
+      summary: Returns an invoice notes for the requested invoice identifier.
+      parameters:
+      - name: invoiceRecordId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: The operation was successfully completed.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceNoteResponse'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '404':
+          description: Invoice not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task GetAsync(HttpClient httpClient)\n{\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.GetAsync(\"https://localhost:7205/api/v2/Integrations/Notes/bb1e7f78-ac4f-48d0-9a11-b31b2c36087f\");\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: 'curl --location ''https://localhost:7205/api/v2/Integrations/Notes/bb1e7f78-ac4f-48d0-9a11-b31b2c36087f'' \
+
+          --header ''Content-Type: application/json'' \
+
+          --header ''Authorization: Basic amFtZXN2LTQzNzYtODc2YS0zZTg5Njg0MjI4OWU='''
+      - lang: JavaScript
+        source: "const invoiceRecordId = 'bb1e7f78-ac4f-48d0-9a11-b31b2c36087f';\n\nconst options = {\n  method: 'GET',\n  headers: {accept: '*/*'},\n};\n\nfetch(`https://localhost:7205/api/v2/Integrations/Notes/${invoiceRecordId}`, options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+components:
+  schemas:
+    Microsoft.AspNetCore.Mvc.ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceNoteResponse:
+      type: object
+      properties:
+        noteId:
+          type: string
+          format: uuid
+        updatedAt:
+          type: string
+          format: date-time
+        content:
+          type:
+          - string
+          - 'null'
+        userName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

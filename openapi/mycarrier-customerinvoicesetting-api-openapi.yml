@@ -1,0 +1,558 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Customer Invoice Setting API
+  version: v1
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: CustomerInvoiceSetting
+paths:
+  /api/CustomerSettings/Customer/{customerId}:
+    get:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.CustomerInvoiceSettingResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/CustomerSettings:
+    post:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.Domain.Dtos.CustomerSettings.UpsertCustomerInvoiceSettingRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.Domain.Dtos.CustomerSettings.UpsertCustomerInvoiceSettingRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.CustomerInvoiceSettingResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/CustomerSettings/EdiMapping:
+    post:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.CustomerInvoiceSettingResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.CustomerInvoiceSettingResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/CustomerSettings/DisputeEmail/{carrierScac}:
+    get:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: carrierScac
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/CustomerSettings/DisputeEmail/{invoiceRecordId}:
+    get:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: invoiceRecordId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Environment
+        in: header
+        example: dev
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingResponse'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '403':
+          description: If user not authorized to perform requested action
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/CustomerSettings/DisputeEmail:
+    post:
+      tags:
+      - CustomerInvoiceSetting
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    MC.Invoice.API.Dtos.CustomerSettings.CustomerInvoiceSettingResponse:
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+        invoiceParsingInboundEmail:
+          type:
+          - string
+          - 'null'
+        emailKey:
+          type:
+          - string
+          - 'null'
+        autoApproveInvoiceAmountThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoicePercentageThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoiceUnderageAmountThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoiceUnderagePercentageThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        newInvoiceVersionEmailNotificationFrequency:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
+        newInvoiceEmailNotificationFrequency:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
+        ediMappingInformation:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.EdiMapping'
+        newInvoiceNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        newInvoiceVersionNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        carrierDisputeEmailSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings'
+        isPaymentReceiptNotificationEnabled:
+          type:
+          - boolean
+          - 'null'
+        paymentReceiptNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        environment:
+          type:
+          - string
+          - 'null'
+        version:
+          type: integer
+          format: int32
+          readOnly: true
+      additionalProperties: false
+    MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest:
+      required:
+      - carrierId
+      - customerId
+      - identificationCode
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+        identificationCode:
+          minLength: 1
+          type: string
+        carrierId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType:
+      enum:
+      - Hourly
+      - Daily
+      - Weekly
+      type: string
+    MC.Invoice.Domain.Dtos.CustomerSettings.UpsertCustomerInvoiceSettingRequest:
+      required:
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+        autoApproveInvoiceAmountThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoicePercentageThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoiceUnderageAmountThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoiceUnderagePercentageThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        newInvoiceVersionEmailNotificationFrequency:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
+        newInvoiceEmailNotificationFrequency:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
+        newInvoiceNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        newInvoiceVersionNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        carrierDisputeEmailSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings'
+        isPaymentReceiptNotificationEnabled:
+          type:
+          - boolean
+          - 'null'
+        paymentReceiptNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        isSelected:
+          type: boolean
+      additionalProperties: false
+    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest:
+      required:
+      - carrierName
+      - carrierScac
+      - disputeEmail
+      type: object
+      properties:
+        carrierName:
+          minLength: 1
+          type: string
+        carrierScac:
+          minLength: 1
+          type: string
+        disputeEmail:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings:
+      type: object
+      properties:
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierScac:
+          type:
+          - string
+          - 'null'
+        disputeEmail:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.EdiMapping:
+      type: object
+      properties:
+        carrierId:
+          type: integer
+          format: int32
+        identificationCode:
+          type:
+          - string
+          - 'null'
+        isProcessed:
+          type: boolean
+        createdDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingResponse:
+      type: object
+      properties:
+        carrierScac:
+          type:
+          - string
+          - 'null'
+        disputeEmail:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

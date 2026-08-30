@@ -1,0 +1,476 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Public Invoice Management API
+  version: public
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: Invoice Management
+paths:
+  /api/v2/Integrations/Invoices/Status/{status}:
+    patch:
+      tags:
+      - Invoice Management
+      summary: Updates status for the identified invoice.
+      parameters:
+      - name: status
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.IntegrationInvoiceStatusType'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest'
+      responses:
+        '200':
+          description: The operation was successfully completed.
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PatchAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationInvoiceUpdateRequest()\n        {\n            RecordId = Guid.Parse(\"6b727121-309f-4536-be35-a4838edf6662\"),\n            UpdatedBy = \"MyCarrier TMS\"\n        }),\n        Encoding.UTF8,\n        \"application/json\");\n\n    using HttpResponseMessage response = await httpClient.PatchAsync(\n        \"https://localhost:7205/api/v2/Integrations/Invoices/Status/Open\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n\n}"
+      - lang: CURL
+        source: "curl --location --request PATCH 'https://localhost:7205/api/v2/Integrations/Invoices/Status/Open' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic dHJhdmlzaF9hdF9kZGdsb2JhbC5jb21AaW50ZWdyYXRlZHRtLmRl' \\\n--data '{\n  \"recordId\": \"543b840b-935e-4d23-af4b-792af029e1f2\",\n  \"updatedBy\": \"MyCarrier TMS\"\n}'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'PATCH',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    {\n      'recordId': '543b840b-935e-4d23-af4b-792af029e1f2',\n      'updatedBy': 'MyCarrier TMS'\n    })\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Invoices/Status/Open', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));\";"
+  /api/v2/Integrations/Invoices/Status/Approve/Reason:
+    patch:
+      tags:
+      - Invoice Management
+      summary: Updates approval reason for the identified invoice.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceApprovalReasonRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceApprovalReasonRequest'
+      responses:
+        '200':
+          description: The operation was successfully completed.
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PatchAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationInvoiceApprovalReasonRequest()\n        {\n            RecordId = Guid.Parse(\"6b727121-309f-4536-be35-a4838edf6662\"),\n            UpdatedBy = \"MyCarrier TMS\",\n            ApprovedReason = \"Incorrect Weight When Shipped\",\n            ApprovedOtherNotes = \"Some Notes\"\n        }),\n        Encoding.UTF8,\n        \"application/json\");\n\n    using HttpResponseMessage response = await httpClient.PatchAsync(\n        \"https://localhost:7205/api/v2/Integrations/Invoices/Status/Approve/Reason\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n\n}"
+      - lang: CURL
+        source: "curl --location --request PATCH 'https://localhost:7205/api/v2/Integrations/Invoices/Status/Approve/Reason' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic dHJhdmlzaF9hdF9kZGdsb2JhbC5jb21AaW50ZWdyYXRlZHRtLmRl' \\\n--data '{\n  \"recordId\": \"543b840b-935e-4d23-af4b-792af029e1f2\",\n  \"updatedBy\": \"MyCarrier TMS\",\n  \"approvedReason\": \"Incorrect Weight When Shipped\",\n  \"approvedOtherNotes\": \"Some Notes\"\n}'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'PATCH',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    {\n      'recordId': '543b840b-935e-4d23-af4b-792af029e1f2',\n      'updatedBy': 'MyCarrier TMS',\n      'approvedReason': 'Incorrect Weight When Shipped',\n      'approvedOtherNotes': 'Some Notes'\n    })\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Invoices/Status/Approve/Reason', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));\";"
+  /api/v2/Integrations/Invoices/ArchiveToggle/{type}:
+    patch:
+      tags:
+      - Invoice Management
+      summary: Archive or Unarchive the identified invoice.
+      parameters:
+      - name: type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceArchivingType'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest'
+      responses:
+        '200':
+          description: The operation was successfully completed.
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PatchAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationInvoiceUpdateRequest()\n        {\n            RecordId = Guid.Parse(\"3ca85f64-5717-4562-b3fc-5d953f66afa6\"),\n            UpdatedBy = \"MyCarrier TMS\",\n        }),\n        Encoding.UTF8,\n        \"application/json\");\n\n    using HttpResponseMessage response = await httpClient.PatchAsync(\n        \"https://localhost:7205/api/v2/Integrations/Invoices/ArchiveToggle/Archive\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n\n}"
+      - lang: CURL
+        source: "curl --location --request PATCH 'https://localhost:7205/api/v2/Integrations/Invoices/ArchiveToggle/Archive' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic dHJhdmlzaF9hdF9kZGdsb2JhbC5jb21AaW50ZWdyYXR' \\\n--data '{\n  \"recordId\": \"3ca85f64-5717-4562-b3fc-5d953f66afa6\",\n  \"updatedBy\": \"MyCarrier TMS\"\n}'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'PATCH',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    {\n      'recordId': '3ca85f64-5717-4562-b3fc-5d953f66afa6',\n      'updatedBy': 'MyCarrier TMS'\n    })\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Invoices/ArchiveToggle/Archive', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));\";"
+  /api/v2/Integrations/Invoices/Create:
+    post:
+      tags:
+      - Invoice Management
+      summary: Creates new invoices that a customer needs to pay.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest'
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest'
+      responses:
+        '200':
+          description: The operation was successfully completed.
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PostAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new List<IntegrationCreateInvoiceRequest>() {\n            new ()\n            {\n               InvoiceNumber = \"23224234234\",\n               CarrierCode = \"SAIA\",\n               InvoiceDateTime = DateTime.Parse(\"2024-04-15T00:00:00\"),\n               Shipment = new ()\n               {\n                 CarrierProNumber = \"23224234234\"\n               }\n            }\n        }),\n        Encoding.UTF8, \"application/json\");\n\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.PostAsync(\n        \"https://localhost:7205/api/v2/Integrations/Invoices/Create\",\n        jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: "curl --location 'https://localhost:7205/api/v2/Integrations/Invoices/Create' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ZW1haWKAKNFPOdf76YXBpLWtleQ65rhG' \\\n--data '[\n    {\n        \n        \"invoiceNumber\": \"23224234234\",\n        \"invoiceDateTime\": \"2024-04-15T00:00:00\",\n        \"carrierCode\": \"SAIA\",\n        \"shipment\": {\n            \"carrierPRONumber\": \"23224234234\"\n        }\n    }\n]'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'POST',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    [{\n       invoiceNumber: '23224234234',\n       carrierCode: 'SAIA',\n       invoiceDateTime: '2024-04-15T16:20:40.144Z',\n       shipment:\n       {\n         carrierProNumber: '23224234234'\n       }\n    }]\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Payments/BulkPay', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));\";"
+components:
+  schemas:
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline:
+      type: object
+      properties:
+        estimatedDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actualDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    Microsoft.AspNetCore.Mvc.ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    MC.Invoice.Data.Enums.IntegrationInvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Paid
+      - ShortPaid
+      type: string
+    MC.Invoice.Data.Entities.ShipmentPriceDetail:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: number
+          format: double
+        chargeCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest:
+      required:
+      - recordId
+      - updatedBy
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        updatedBy:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        contactName:
+          type:
+          - string
+          - 'null'
+        contactEmail:
+          type:
+          - string
+          - 'null'
+        contactPhone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        piecesNumber:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        freightClassCode:
+          type:
+          - string
+          - 'null'
+        packingType:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Enums.InvoiceArchivingType:
+      enum:
+      - Unarchive
+      - Archive
+      type: string
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceApprovalReasonRequest:
+      required:
+      - approvedReason
+      - recordId
+      - updatedBy
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        updatedBy:
+          minLength: 1
+          type: string
+        approvedReason:
+          minLength: 1
+          type: string
+        approvedOtherNotes:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_CreateInvoiceShipment:
+      required:
+      - carrierProNumber
+      type: object
+      properties:
+        carrierProNumber:
+          minLength: 1
+          type: string
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        delivery:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline'
+        pickup:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline'
+        shipperInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo'
+        consigneeInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo'
+        requesterInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress'
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity'
+        lineItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Entities.ShipmentPriceDetail'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest:
+      required:
+      - carrierCode
+      - invoiceDateTime
+      - invoiceNumber
+      type: object
+      properties:
+        invoiceNumber:
+          minLength: 1
+          type: string
+        carrierCode:
+          minLength: 1
+          type: string
+        invoiceDateTime:
+          type: string
+          format: date-time
+        termsOfSaleDueDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdBy:
+          type:
+          - string
+          - 'null'
+        shipment:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_CreateInvoiceShipment'
+      additionalProperties: false
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

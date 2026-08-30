@@ -1,0 +1,157 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Notes API
+  version: v1
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: Notes
+paths:
+  /api/Notes/Save:
+    post:
+      tags:
+      - Notes
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Notes.Requests.SaveNotesRequest'
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Notes.Requests.SaveNotesRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+  /api/Notes/Delete:
+    delete:
+      tags:
+      - Notes
+      parameters:
+      - name: Environment
+        in: header
+        example: dev
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Notes.Requests.DeleteNotesRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Notes.Requests.DeleteNotesRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '403':
+          description: If user not authorized to perform requested action
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailsResponse'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.API.Dtos.Notes.Requests.SaveNotesRequest:
+      required:
+      - content
+      - invoiceRecordId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        noteId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        content:
+          maxLength: 300
+          minLength: 1
+          type: string
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Notes.Requests.DeleteNotesRequest:
+      required:
+      - invoiceRecordId
+      - noteId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        noteId:
+          type: string
+          format: uuid
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

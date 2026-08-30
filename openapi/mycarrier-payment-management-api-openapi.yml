@@ -1,0 +1,240 @@
+openapi: 3.2.0
+info:
+  title: FreightAudit Public Payment Management API
+  version: public
+servers:
+- url: https://invoice.mycarriertms.com
+tags:
+- name: Payment Management
+paths:
+  /api/v2/Integrations/Payments/Record:
+    post:
+      tags:
+      - Payment Management
+      summary: Records payment on the identified invoice.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceRecordPaymentRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceRecordPaymentRequest'
+      responses:
+        '200':
+          description: Returns a successfully added payment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse'
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '404':
+          description: No invoices found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PostAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationInvoiceRecordPaymentRequest() {\n\n                InvoiceRecordId = Guid.Parse(\"d3517fee-71e0-4ea7-bde9-a63e77faa746\"),\n                PaymentDate = DateTime.Parse(\"2024-03-19T16:20:40.144Z\"),\n                PaymentNotes = \"Some notes\",\n                CreatedBy = \"MyCarrier TMS\",\n                ReceiptNumber = \"59687\",\n                ConfirmationNumber = \"2224\",\n                AchNumber = \"123456789\",\n                PaymentAmount = 20\n        },\n        Encoding.UTF8, \"application/json\");\n\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.PostAsync(\n        \"https://localhost:7205/api/v2/Integrations/Payments/Record\",jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: "curl --location 'https://localhost:7205/api/v2/Integrations/Payments/Record' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ZW1haWKAKNFPOdf76YXBpLWtleQ65rhG' \\\n--data '[\n  {\n    \"invoiceRecordId\": \"d3517fee-71e0-4ea7-bde9-a63e77faa746\",\n    \"paymentDate\": \"2024-03-19T16:20:40.144Z\",\n    \"paymentNotes\": \"Some notes\",\n    \"createdBy\": \"MyCarrier TMS\",\n    \"receiptNumber\": \"59687\",\n    \"confirmationNumber\": \"2224\",\n    \"achNumber\": \"123456789\",\n    \"paymentAmount\": 20\n  }\n]'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'POST',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    [{\n       invoiceRecordId: 'd3517fee-71e0-4ea7-bde9-a63e77faa746',\n       paymentDate: '2024-03-19T16:20:40.144Z',\n       paymentNotes: 'Some notes',\n       createdBy: 'MyCarrier TMS',\n       receiptNumber: '59687',\n       confirmationNumber: '2224',\n       achNumber: '123456789',\n       paymentAmount: 20\n    }]\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Payments/Record', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+  /api/v2/Integrations/Payments/{paymentId}:
+    put:
+      tags:
+      - Payment Management
+      summary: Modify the specific payment for the identified invoice.
+      parameters:
+      - name: paymentId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceRecordPaymentRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceRecordPaymentRequest'
+      responses:
+        '200':
+          description: Returns a successfully updated payment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse'
+        '400':
+          description: Bad request due to data validation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '401':
+          description: Unauthorized. The username or password provided is incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '403':
+          description: Access to the requested resource is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+        '404':
+          description: No invoices found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails'
+      security:
+      - BasicAuth:
+        - AuthenticationSchemes:BasicAuthentication
+      x-code-samples:
+      - lang: C#
+        source: "static async Task PutAsync(HttpClient httpClient)\n{\n    using StringContent jsonContent = new(\n        JsonSerializer.Serialize(new IntegrationInvoiceRecordPaymentRequest() {\n                InvoiceRecordId = Guid.Parse(\"d3517fee-71e0-4ea7-bde9-a63e77faa746\"),\n                PaymentDate = DateTime.Parse(\"2024-03-19T16:20:40.144Z\"),\n                PaymentNotes = \"Some notes\",\n                CreatedBy = \"MyCarrier TMS\",\n                ReceiptNumber = \"59687\",\n                ConfirmationNumber = \"2224\",\n                AchNumber = \"123456789\",\n                PaymentAmount = 20\n        }),\n        Encoding.UTF8, \"application/json\");\n\n    string username = \"username\";\n    string password = \"password\";\n    string authString = Convert.ToBase64String(\n        Encoding.UTF8.GetBytes($\"{username}:{password}\"));\n\n    httpClient.DefaultRequestHeaders.Authorization =\n        new AuthenticationHeaderValue(\"Basic\", authString);\n\n    using HttpResponseMessage response = await httpClient.PutAsync(\n        \"https://localhost:7205/api/v2/Integrations/Payments/3fa85f64-5717-4562-b3fc-2c963f66afa6\",jsonContent);\n\n    response.EnsureSuccessStatusCode();\n\n    var jsonResponse = await response.Content.ReadAsStringAsync();\n}"
+      - lang: CURL
+        source: "curl --location --request PUT 'https://localhost:7205/api/v2/Integrations/Payments/3fa85f64-5717-4562-b3fc-2c963f66afa6' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ZW1haWKAKNFPOdf76YXBpLWtleQ65rhG' \\\n--data '[\n  {\n    \"invoiceRecordId\": \"d3517fee-71e0-4ea7-bde9-a63e77faa746\",\n    \"paymentDate\": \"2024-03-19T16:20:40.144Z\",\n    \"paymentNotes\": \"Some notes\",\n    \"createdBy\": \"MyCarrier TMS\",\n    \"receiptNumber\": \"59687\",\n    \"confirmationNumber\": \"2224\",\n    \"achNumber\": \"123456789\",\n    \"paymentAmount\": 20\n  }\n]'"
+      - lang: JavaScript
+        source: "const options = {\n  method: 'PUT',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    [{\n       invoiceRecordId: 'd3517fee-71e0-4ea7-bde9-a63e77faa746',\n       paymentDate: '2024-03-19T16:20:40.144Z',\n       paymentNotes: 'Some notes',\n       createdBy: 'MyCarrier TMS',\n       receiptNumber: '59687',\n       confirmationNumber: '2224',\n       achNumber: '123456789',\n       paymentAmount: 20\n    }]\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Payments/3fa85f64-5717-4562-b3fc-2c963f66afa6', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+components:
+  schemas:
+    Microsoft.AspNetCore.Mvc.ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
+          type: number
+          format: double
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceRecordPaymentRequest:
+      required:
+      - invoiceRecordId
+      - paymentDate
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        paymentAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        paymentDate:
+          type: string
+          format: date-time
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+        receiptNumber:
+          type:
+          - string
+          - 'null'
+        confirmationNumber:
+          type:
+          - string
+          - 'null'
+        achNumber:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - ShortPaid
+      type: string
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse:
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        invoiceStatus:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse'
+      additionalProperties: false
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

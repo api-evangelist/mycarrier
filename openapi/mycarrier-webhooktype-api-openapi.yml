@@ -1,0 +1,230 @@
+openapi: 3.2.0
+info:
+  title: ITM.Services.Webhook.Api Webhook Type API
+  version: v1
+tags:
+- name: WebhookType
+paths:
+  /WebhookType/{name}:
+    get:
+      tags:
+      - WebhookType
+      summary: Returns a list of registered WebhookTypes
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a page of WebhookTypes
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - WebhookType
+      summary: Attempts to delete the WebhookType specificed by name
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The WebhookType was deleted
+      security:
+      - Bearer: []
+    put:
+      tags:
+      - WebhookType
+      summary: Attempts to update the User for the provided id
+      parameters:
+      - name: name
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+      responses:
+        '200':
+          description: The User was updated
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+        '400':
+          description: Bad request due to data validation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: No User was able to be found for the provided id
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      security:
+      - Bearer: []
+  /WebhookType:
+    get:
+      tags:
+      - WebhookType
+      summary: Returns a list of registered WebhookTypes
+      responses:
+        '200':
+          description: Returns a page of WebhookTypes
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookType'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookType'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookType'
+      security:
+      - Bearer: []
+    post:
+      tags:
+      - WebhookType
+      summary: Attempts to create a new WebhookType
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WebhookType'
+      responses:
+        '201':
+          description: The WebhookType was created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WebhookType'
+        '400':
+          description: Bad request due to data validation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    WebhookType:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

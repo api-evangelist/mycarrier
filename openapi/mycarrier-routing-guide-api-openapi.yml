@@ -1,0 +1,494 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  title: MyCarrier Public Routing Guide API
+  version: v1
+servers:
+- description: Production
+  url: https://api.mycarriertms.com
+tags:
+- name: Routing Guide
+paths:
+  /api/v1/routing-guide/delete/{id}:
+    delete:
+      description: Deletes a specific routing guide entry from the system.
+      operationId: DeleteRoutingGuide
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      - description: Id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Delete Rule
+      tags:
+      - Routing Guide
+  /api/v1/routing-guide/download/rules:
+    get:
+      description: Exports all saved routing guide records for a customer in Excel format.
+      operationId: DownloadRoutingGuide
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Download Rules
+      tags:
+      - Routing Guide
+  /api/v1/routing-guide/download/template:
+    get:
+      description: Provides a standardized Excel template for preparing routing guide uploads.
+      operationId: DownloadRoutingGuideTemplate
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Download Excel Template
+      tags:
+      - Routing Guide
+  /api/v1/routing-guide/fetch:
+    get:
+      description: Retrieves all saved routing guide entries for a customer.
+      operationId: FetchRoutingGuide
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Get Saved Rules
+      tags:
+      - Routing Guide
+  /api/v1/routing-guide/match:
+    post:
+      description: Filters routing guides based on specified parameters and returns the details of a single carrier that matches the criteria.
+      operationId: MatchRoutingGuide
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Requests.PublicMatchRoutingGuideRequestDto'
+              description: Atleast any one of these parameters should be provided
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Requests.PublicMatchRoutingGuideRequestDto'
+              description: Atleast any one of these parameters should be provided
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfMC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Match Rule
+      tags:
+      - Routing Guide
+  /api/v1/routing-guide/upload:
+    post:
+      description: Enables uploading multiple routing guide records for a customer via an Excel file.
+      operationId: UploadRoutingGuide
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  format: binary
+                  type: string
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Upload Rules
+      tags:
+      - Routing Guide
+  /api/v1/routing-guide/upsert:
+    post:
+      description: Creates or updates a routing guide rule based on provided data.
+      operationId: UpsertRoutingGuide
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto'
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized. The username or password provided is incorrect
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Upsert Rule
+      tags:
+      - Routing Guide
+components:
+  schemas:
+    MC.RoutingGuide.Client.Contracts.Requests.PublicMatchRoutingGuideRequestDto:
+      additionalProperties: false
+      description: Atleast any one of these parameters should be provided
+      properties:
+        destinationState:
+          description: DestinationState used to match against saved routing guide rules
+          type: string
+        destinationZip:
+          description: DestinationZip used to match against saved routing guide rules
+          type: string
+        originState:
+          description: OriginState used to match against saved routing guide rules
+          type: string
+        originZip:
+          description: OriginZip used to match against saved routing guide rules
+          type: string
+        tradingPartner:
+          description: Trading Partner used to match against saved routing guide rules
+          type: string
+      type: object
+    MC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto:
+      additionalProperties: false
+      properties:
+        carrierName:
+          description: The carrier name associated for this routing guide rule
+          type: string
+        carrierScac:
+          description: The carrier scac associated for this routing guide rule
+          type: string
+        carrierService:
+          description: The carrier service associated for this routing guide rule
+          type: string
+        id:
+          description: The id being used for the routing guide rule
+          format: int32
+          type: integer
+        routingRuleApplied:
+          description: The routing guide rule associated for this routing guide
+          type: string
+        unpreferredCarriers:
+          description: A comma-separated list of carrier SCACs to be excluded for this routing guide rule.
+          type: string
+      type: object
+    MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto:
+      additionalProperties: false
+      properties:
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierSCAC:
+          type:
+          - string
+          - 'null'
+        carrierService:
+          type:
+          - string
+          - 'null'
+        destinationState:
+          type:
+          - string
+          - 'null'
+        destinationZip:
+          type:
+          - string
+          - 'null'
+        id:
+          format: int32
+          type: integer
+        originState:
+          type:
+          - string
+          - 'null'
+        originZip:
+          type:
+          - string
+          - 'null'
+        tradingPartner:
+          type:
+          - string
+          - 'null'
+        unpreferredCarriers:
+          type:
+          - string
+          - 'null'
+      type: object
+    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfMC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto
+    : additionalProperties: false
+      properties:
+        data:
+          allOf:
+          - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
+    MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object:
+      additionalProperties: false
+      properties:
+        data: {}
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
+    MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto:
+      additionalProperties: false
+      properties:
+        carrierName:
+          description: The carrier name
+          type:
+          - string
+          - 'null'
+        carrierSCAC:
+          description: The carrier SCAC code
+          type:
+          - string
+          - 'null'
+        carrierService:
+          description: The carrier service name
+          type:
+          - string
+          - 'null'
+        destinationState:
+          description: The destination state
+          type: string
+        destinationZip:
+          description: The destination zip
+          type: string
+        id:
+          description: The unique id being used for the routing guide rule
+          format: int32
+          type: integer
+        isRemoveRule:
+          description: Set this flag to true if the request is for deleting a rule
+          type: boolean
+        originState:
+          description: The origin state
+          type: string
+        originZip:
+          description: The origin zip
+          type: string
+        tradingPartner:
+          description: The trading partner name
+          type: string
+        unpreferredCarriers:
+          description: A comma-separated list of carrier SCACs to be excluded for this routing guide rule.
+          type:
+          - string
+          - 'null'
+      type: object
+    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto
+    : additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto'
+          type:
+          - array
+          - 'null'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
+    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto
+    : additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto'
+          type:
+          - array
+          - 'null'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object

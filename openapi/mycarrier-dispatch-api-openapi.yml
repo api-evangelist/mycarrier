@@ -1,0 +1,1074 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  title: MyCarrier Public Dispatch API
+  version: v1
+servers:
+- description: Production
+  url: https://api.mycarriertms.com
+tags:
+- name: Dispatch
+paths:
+  /api/v1/quote/dispatch:
+    post:
+      description: Dispatch, Manual Dispatch or Edit Dispatch
+      operationId: DispatchQuote
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: Environment
+        schema:
+          type: string
+      - in: header
+        name: Traceparent
+        schema:
+          type: string
+      - in: header
+        name: User-Agent
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchQuoteRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchQuoteRequest'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchQuoteRequest'
+        description: The dispatch request with all of the details for booking the shipment.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Quote.Contracts.Responses.ApiResponseOfMC.Quote.Contracts.Responses.Dispatch.DispatchQuoteResponse'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal Server Error
+      security: []
+      summary: Dispatches a quote that we quoted through the rate API.
+      tags:
+      - Dispatch
+components:
+  schemas:
+    MC.Quote.Contracts.Requests.Dispatch.DispatchPriceDetailsRequest:
+      additionalProperties: false
+      properties:
+        chargeItems:
+          description: Detailed breakdown of individual charges and fees comprising the total cost
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchChargeItemRequest'
+          type:
+          - array
+          - 'null'
+        totalCost:
+          description: Total cost for the shipment including all charges and fees
+          example: '1245.75'
+          format: double
+          type: number
+      type: object
+    MC.Quote.Contracts.Requests.Rate.AppointmentDetailsRequest:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.DeliveryRequest'
+        pickup:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.PickupRequest'
+      type: object
+    MC.Infrastructure.Static.Data.Enums.DimensionUnitCode:
+      enum:
+      - IN
+      - CM
+      type: string
+    MC.Infrastructure.Static.Data.Enums.HazardClassCode:
+      enum:
+      - NA
+      - I
+      - II
+      - III
+      type: string
+    MC.Quote.Contracts.Requests.Dispatch.DispatchAdditionalAccessorialsRequest:
+      additionalProperties: false
+      properties:
+        closeDate:
+          description: Close date in yyyy/MM/dd format for the special accessorial.
+          example: 2025/12/18
+          type:
+          - string
+          - 'null'
+        closeTime:
+          description: Close time in 24-hour HH:mm format for the special accessorial.
+          example: '18:00'
+          type:
+          - string
+          - 'null'
+        code:
+          description: Special accessorial code for specific Carrier
+          example: LV1
+          type:
+          - string
+          - 'null'
+        internalCode:
+          description: Special accessorial internal code for specific Carrier
+          example: LV1
+          type:
+          - string
+          - 'null'
+        name:
+          description: Special accessorial name for specific Carrier
+          example: MABD Service Level 1
+          type:
+          - string
+          - 'null'
+        readyDate:
+          description: Ready date in yyyy/MM/dd format for the special accessorial.
+          example: 2025/12/18
+          type:
+          - string
+          - 'null'
+        readyTime:
+          description: Ready time in 24-hour HH:mm format for the special accessorial.
+          example: '9:00'
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Requests.Dispatch.DispatchQuoteRequest:
+      additionalProperties: false
+      properties:
+        accessorials:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchAccessorialsRequest'
+        billingAddress:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchBillingAddressRequest'
+        fullValueCoverageDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchFullValueCoverageDetailsRequest'
+        identifiers:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchIdentifiersRequest'
+        mode:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.DispatchMode'
+        paymentTerms:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PaymentTermCode'
+        priceDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchPriceDetailsRequest'
+        service:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchServiceRequest'
+        shippingDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchShippingDetailsRequest'
+        stops:
+          description: Collection of pickup and delivery stops for the shipment
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchStopRequest'
+          required:
+          - stops
+          type:
+          - array
+          - 'null'
+      required:
+      - stops
+      type: object
+    MC.Quote.Contracts.Requests.Rate.CommodityRequest:
+      additionalProperties: false
+      properties:
+        description:
+          description: Descriptive name or description of the commodity being shipped
+          example: Electronic Equipment
+          maxLength: 500
+          type:
+          - string
+          - 'null'
+        freightClass:
+          description: Freight classification code for pricing determination ("50", "55", "60", "65", "70", "77.5", "85", "92.5", "100", "110", "125", "150", "175", "200", "250", "300", "400", "500")
+          enum:
+          - '50'
+          - '55'
+          - '60'
+          - '65'
+          - '70'
+          - '77.5'
+          - '85'
+          - '92.5'
+          - '100'
+          - '110'
+          - '125'
+          - '150'
+          - '175'
+          - '200'
+          - '250'
+          - '300'
+          - '400'
+          - '500'
+          example: '85'
+          required:
+          - freightClass
+          type:
+          - string
+          - 'null'
+        hazardous:
+          description: Indicates whether the commodity contains hazardous materials
+          example: 'false'
+          type: boolean
+        hazardousDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.HazardousDetailsRequest'
+        nmfc:
+          description: National Motor Freight Classification code for the commodity
+          example: '1105'
+          maxLength: 6
+          minLength: 4
+          type:
+          - string
+          - 'null'
+        nmfcSub:
+          description: NMFC sub-classification code for more specific commodity classification
+          example: '01'
+          maxLength: 10
+          type:
+          - string
+          - 'null'
+        orderNumber:
+          description: Customer order number reference
+          example: ORD-2024-001234
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        packageType:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PackageTypeCode'
+        pieces:
+          description: Number of individual pieces for this commodity
+          format: int32
+          maximum: 99999
+          minimum: 1
+          required:
+          - pieces
+          type: integer
+        weight:
+          description: Total weight of the commodity
+          format: int32
+          maximum: 999999
+          minimum: 1
+          required:
+          - weight
+          type: integer
+      required:
+      - weight
+      - pieces
+      - freightClass
+      type: object
+    MC.Quote.Contracts.Requests.Rate.HandlingUnitRequest:
+      additionalProperties: false
+      properties:
+        carpetRollSquareYards:
+          description: Carpet roll square yards for carpet rates.
+          format: int32
+          maximum: 9999
+          type:
+          - integer
+          - 'null'
+        commodities:
+          description: Collection of commodities contained within this handling unit
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.CommodityRequest'
+          required:
+          - commodities
+          type:
+          - array
+          - 'null'
+        count:
+          description: Quantity of identical handling units of this specification
+          format: int32
+          maximum: 999
+          minimum: 1
+          required:
+          - count
+          type: integer
+        freightClass:
+          description: Freight classification code for pricing determination ("50", "55", "60", "65", "70", "77.5", "85", "92.5", "100", "110", "125", "150", "175", "200", "250", "300", "400", "500")
+          enum:
+          - '50'
+          - '55'
+          - '60'
+          - '65'
+          - '70'
+          - '77.5'
+          - '85'
+          - '92.5'
+          - '100'
+          - '110'
+          - '125'
+          - '150'
+          - '175'
+          - '200'
+          - '250'
+          - '300'
+          - '400'
+          - '500'
+          example: '85'
+          type:
+          - string
+          - 'null'
+        height:
+          description: Height dimension in specified measurement units
+          format: int32
+          maximum: 9999
+          minimum: 1
+          required:
+          - height
+          type: integer
+        length:
+          description: Length dimension in specified measurement units
+          format: int32
+          maximum: 9999
+          minimum: 1
+          required:
+          - length
+          type: integer
+        packageType:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PackageTypeCode'
+        stackable:
+          description: Indicates whether the handling unit can be stacked with others for space efficiency
+          example: 'true'
+          required:
+          - stackable
+          type: boolean
+        width:
+          description: Width dimension in specified measurement units
+          format: int32
+          maximum: 9999
+          minimum: 1
+          required:
+          - width
+          type: integer
+      required:
+      - count
+      - length
+      - width
+      - height
+      - stackable
+      - commodities
+      type: object
+    MC.Quote.Contracts.Requests.Dispatch.DispatchShippingDetailsRequest:
+      additionalProperties: false
+      properties:
+        dimensionsUnit:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.DimensionUnitCode'
+        emergencyPersonName:
+          description: The name of the person to contact in case of an emergency, must be populated if shipment contains any hazardous commodities.
+          example: Jane Doe
+          type:
+          - string
+          - 'null'
+        emergencyPersonPhone:
+          description: The phone number to call in case of an emergency, must be populated if shipment contains any hazardous commodities.
+          example: 800-999-1111
+          type:
+          - string
+          - 'null'
+        handlingUnits:
+          description: Detailed collection of individual handling units with their specifications
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.HandlingUnitRequest'
+          required:
+          - handlingUnits
+          type:
+          - array
+          - 'null'
+        instructions:
+          description: Special instructions for the shipment.
+          example: These are some special instructions for this shipment.
+          type:
+          - string
+          - 'null'
+        linearFeet:
+          description: Linear feet measurement for VLTL.
+          format: double
+          maximum: 999
+          type:
+          - number
+          - 'null'
+        totalHandlingUnitCount:
+          description: Total count of all handling units in the shipment
+          format: int32
+          maximum: 9999
+          minimum: 1
+          type:
+          - integer
+          - 'null'
+        totalWeight:
+          description: Total weight of the entire shipment in specified weight units
+          format: int32
+          maximum: 99999
+          minimum: 1
+          type:
+          - integer
+          - 'null'
+        weightUnit:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.WeightUnitCode'
+      required:
+      - handlingUnits
+      type: object
+    MC.Infrastructure.Static.Data.Enums.PaymentTermCode:
+      enum:
+      - PREPAID
+      - INBOUND_COLLECT
+      - THIRD_PARTY
+      - COLLECT
+      type: string
+    MC.Quote.Common.Enums.Response.Source:
+      enum:
+      - Carrier
+      - MyCarrier
+      - ThirdParty
+      - Validation
+      type: string
+    MC.Infrastructure.Static.Data.Enums.ServiceMode:
+      enum:
+      - LTL
+      - VLTL
+      - TL
+      - GFP
+      - PARCEL
+      type: string
+    MC.Quote.Common.Enums.StopType:
+      enum:
+      - ORIGIN
+      - DESTINATION
+      type: string
+    MC.Quote.Contracts.Requests.Rate.ContactRequest:
+      additionalProperties: false
+      properties:
+        email:
+          description: Email address for sending notifications and coordination messages
+          example: john.smith@example.com
+          maxLength: 320
+          type:
+          - string
+          - 'null'
+        firstName:
+          description: First name of the contact person responsible for shipment coordination
+          example: John
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        lastName:
+          description: Last name of the contact person responsible for shipment coordination
+          example: Smith
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        phone:
+          description: Phone number for contacting this person during pickup or delivery
+          example: 555-123-4567
+          maxLength: 20
+          type:
+          - string
+          - 'null'
+        phoneExtension:
+          description: Phone number extension for contacting this person during pickup or delivery
+          example: '4561'
+          maxLength: 10
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Infrastructure.Static.Data.Enums.WeightUnitCode:
+      enum:
+      - LB
+      - KG
+      type: string
+    MC.Quote.Contracts.Requests.Dispatch.DispatchBillingAddressRequest:
+      additionalProperties: false
+      properties:
+        accountNumber:
+          description: Account number of business being billed
+          example: Account123
+          maxLength: 100
+          type:
+          - string
+          - 'null'
+        addressLine1:
+          description: Primary street address line including number and street name
+          example: 123 Main Street
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        addressLine2:
+          description: Secondary address line for suite, apartment, or building information
+          example: Suite 100
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        city:
+          description: City name for the billing (required if addressId not provided)
+          example: Chicago
+          maxLength: 100
+          type:
+          - string
+          - 'null'
+        contact:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ContactRequest'
+        country:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.Country'
+        name:
+          description: Company or business name being billed
+          example: ABC Manufacturing
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal or ZIP code for the billing (required if addressId not provided)
+          example: '60601'
+          maxLength: 6
+          type:
+          - string
+          - 'null'
+        stateProvince:
+          description: State or province abbreviation code (required if addressId not provided)
+          example: IL
+          maxLength: 2
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Infrastructure.Static.Data.Enums.PackageTypeCode:
+      enum:
+      - BAG
+      - BALE
+      - BOX
+      - BUCKET
+      - BUNDLE
+      - CARTON
+      - CASE
+      - CRATE
+      - CYLINDER
+      - DRUM
+      - PAIL
+      - PLT
+      - REEL
+      - ROLL
+      - SKID
+      - TUBE
+      - TOTE
+      - PIECES
+      type: string
+    MC.Quote.Contracts.Responses.Dispatch.DispatchQuoteResponse:
+      additionalProperties: false
+      properties:
+        bolNumber:
+          type:
+          - string
+          - 'null'
+        pickupNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        proNumber:
+          type:
+          - string
+          - 'null'
+        proNumberCheckDigit:
+          type:
+          - string
+          - 'null'
+        referenceNumber:
+          type:
+          - string
+          - 'null'
+        securityKey:
+          format: uuid
+          type:
+          - string
+          - 'null'
+        shipmentId:
+          format: int32
+          type:
+          - integer
+          - 'null'
+        statusInfo:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.StatusInfo'
+      type: object
+    MC.Infrastructure.Static.Data.Enums.CurrencyCode:
+      enum:
+      - USD
+      - CAD
+      - MEX
+      type: string
+    MC.Quote.Contracts.Requests.Rate.DeliveryRequest:
+      additionalProperties: false
+      properties:
+        closeTime:
+          description: Closing time for delivery window in 24-hour HH:mm format
+          example: '16:00'
+          type:
+          - string
+          - 'null'
+        deliveryDate:
+          description: Delivery date in yyyy/MM/dd format. This is required for destination stops
+          example: 2025/12/18
+          type:
+          - string
+          - 'null'
+        openTime:
+          description: Opening time for delivery window in 24-hour HH:mm format
+          example: 09:00
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Requests.Dispatch.DispatchFullValueCoverageDetailsRequest:
+      additionalProperties: false
+      properties:
+        cargoValue:
+          description: Declared monetary value for insurance coverage calculation
+          format: double
+          type:
+          - number
+          - 'null'
+        currency:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.CurrencyCode'
+      type: object
+    MC.Quote.Contracts.Requests.Rate.HazardousDetailsRequest:
+      additionalProperties: false
+      properties:
+        hazardousClass:
+          description: Hazardous class classification
+          example: 1.1F
+          type:
+          - string
+          - 'null'
+        hazardousPackingGroup:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.HazardClassCode'
+        hazardousProductName:
+          description: Optional hazardous product name for hazardous material as per regulations
+          example: Paint supplies
+          maxLength: 128
+          type:
+          - string
+          - 'null'
+        hazardousShippingName:
+          description: Proper shipping name for hazardous material as per regulations
+          example: Paint related material
+          maxLength: 512
+          type:
+          - string
+          - 'null'
+        unnaNumber:
+          description: UN identification number for the hazardous material
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Infrastructure.Static.Data.Enums.AccessorialCode:
+      enum:
+      - HAZM
+      - RESPU
+      - CNVPU
+      - INPU
+      - LGPU
+      - PFZ
+      - PFZC
+      - ELS_8
+      - ELS_9
+      - ELS_10
+      - ELS_11
+      - ELS_12
+      - ELS_13
+      - ELS_14
+      - ELS_15
+      - ELS_16
+      - ELS_17
+      - ELS_18
+      - ELS_19
+      - ELS_20
+      - ELS_21
+      - ELS_22
+      - ELS_23
+      - ELS_24
+      - ELS_25
+      - ELS_26
+      - ELS_27
+      - ELS_28
+      - ELS_29
+      - ELS_30
+      - SINGSHIP
+      - BOND
+      - ELS_7
+      - ELS_6
+      - CAMPPU
+      - CHRCPU
+      - CLUBPU
+      - CONPU
+      - EDUPU
+      - GOVPU
+      - GROPU
+      - HOSPU
+      - HOTLPU
+      - MILPU
+      - MINEPU
+      - NARPU
+      - NURSPU
+      - PARKPU
+      - PIERPU
+      - PRISPU
+      - RSRTPU
+      - SSTORPU
+      - UTLPU
+      - LTDPU
+      - AIRPU
+      - FARMPU
+      - RESDEL
+      - CNVDEL
+      - NOTIFY
+      - LGDEL
+      - SORTDEL
+      - INDEL
+      - APPTDEL
+      - CAMPDEL
+      - CHRCDEL
+      - CLUBDEL
+      - CONDEL
+      - EDUDEL
+      - GOVDEL
+      - GRODEL
+      - HOSDEL
+      - HOTLDEL
+      - MILDEL
+      - MINEDEL
+      - NARDEL
+      - NURSDEL
+      - PARKDEL
+      - PIERDEL
+      - PRISDEL
+      - RSRTDEL
+      - SSTORDEL
+      - UTLDEL
+      - LTDDEL
+      - AIRDEL
+      - FARMDEL
+      - OVN
+      - THDL
+      - THPU
+      - WGDL
+      - WGPU
+      - TWPD
+      - TWPP
+      type: string
+    MC.Quote.Contracts.Requests.Dispatch.DispatchAccessorialsRequest:
+      additionalProperties: false
+      properties:
+        additionalAccessorials:
+          description: Collection of special accessorials for shipments with specific carriers that have them set up (ODFL, Estes).
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Dispatch.DispatchAdditionalAccessorialsRequest'
+          type:
+          - array
+          - 'null'
+        codes:
+          description: Collection of accessorial service codes for special requirements like liftgate, appointment delivery, inside pickup, etc.
+          items:
+            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.AccessorialCode'
+          type:
+          - array
+          - 'null'
+      type: object
+    MC.Quote.Common.Enums.DispatchMode:
+      enum:
+      - AUTO_DISPATCH
+      - MANUAL_DISPATCH
+      - AUTO_OR_MANUAL_DISPATCH
+      type: string
+    MC.Infrastructure.Static.Data.Enums.Country:
+      enum:
+      - USA
+      - CAN
+      - MEX
+      type: string
+    MC.Quote.Contracts.Responses.Note:
+      additionalProperties: false
+      properties:
+        code:
+          description: Error or reference code for programmatic handling of this note
+          example: VALIDATION_001
+          maxLength: 50
+          type:
+          - string
+          - 'null'
+        message:
+          description: Descriptive message providing details about this specific aspect
+          example: The 'weight' field is required and must be greater than 0
+          maxLength: 1000
+          type:
+          - string
+          - 'null'
+        source:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Source'
+        status:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Status'
+      type: object
+    MC.Quote.Contracts.Requests.Rate.PickupRequest:
+      additionalProperties: false
+      properties:
+        closeTime:
+          description: Closing time for pickup window in 24-hour HH:mm format
+          example: '17:00'
+          type:
+          - string
+          - 'null'
+        openTime:
+          description: Opening time for pickup window in 24-hour HH:mm format
+          example: 08:00
+          type:
+          - string
+          - 'null'
+        pickupDate:
+          description: Pickup date in yyyy/MM/dd format. This is required for origin stops
+          example: 2024/12/15
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Requests.Dispatch.DispatchServiceRequest:
+      additionalProperties: false
+      properties:
+        carrier:
+          description: Carrier SCAC code of carrier delivering the shipment
+          example: SAIA
+          required:
+          - carrier
+          type:
+          - string
+          - 'null'
+        equipmentType:
+          description: Equipment type specification
+          example: Van
+          type:
+          - string
+          - 'null'
+        level:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceLevelCode'
+        mode:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceMode'
+        vicsBol:
+          description: Flag for VICS BOL Shipments, must also pass GS1CompanyPrefix if set to true
+          type:
+          - boolean
+          - 'null'
+      required:
+      - carrier
+      type: object
+    MC.Infrastructure.Static.Data.Enums.ServiceLevelCode:
+      enum:
+      - ALL
+      - STD
+      - GUR
+      - GUR_AM
+      - GUR_PM
+      - GUR_NOON
+      type: string
+    MC.Quote.Contracts.Requests.Dispatch.DispatchChargeItemRequest:
+      additionalProperties: false
+      properties:
+        amount:
+          description: Monetary amount for this charge item
+          example: '150.75'
+          format: double
+          type: number
+        code:
+          description: Charge code identifier for the fee or service
+          example: FUEL
+          type:
+          - string
+          - 'null'
+        description:
+          description: Human-readable description of the charge
+          example: Fuel Surcharge
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Common.Enums.Response.Status:
+      enum:
+      - Success
+      - Info
+      - Warning
+      - Error
+      type: string
+    MC.Quote.Contracts.Requests.Dispatch.DispatchStopRequest:
+      additionalProperties: false
+      properties:
+        addressId:
+          description: Unique identifier (primary key) that can be used to specify an address that is already saved in the MyCarrier platform, required when payment terms is “PREPAID” and stopType is ORIGIN, required when payment terms is “COLLECT” and stopType is DESTINATION
+          example: '1'
+          type:
+          - string
+          - 'null'
+        addressLine1:
+          description: Primary street address line including number and street name
+          example: 123 Main Street
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        addressLine2:
+          description: Secondary address line for suite, apartment, or building information
+          example: Suite 100
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        appointmentDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.AppointmentDetailsRequest'
+        city:
+          description: City name for the stop location (required if addressId not provided)
+          example: Chicago
+          maxLength: 100
+          type:
+          - string
+          - 'null'
+        contact:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ContactRequest'
+        country:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.Country'
+        instructions:
+          description: Set of instructions for this stop.
+          example: Ring door for delivery.
+          maxLength: 512
+          type:
+          - string
+          - 'null'
+        name:
+          description: Company or business name at this stop location
+          example: ABC Manufacturing
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal or ZIP code for the stop location (required if addressId not provided)
+          example: '60601'
+          maxLength: 6
+          type:
+          - string
+          - 'null'
+        stateProvince:
+          description: State or province abbreviation code (required if addressId not provided)
+          example: IL
+          maxLength: 2
+          type:
+          - string
+          - 'null'
+        stopType:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.StopType'
+      type: object
+    MC.Quote.Contracts.Requests.Dispatch.DispatchIdentifiersRequest:
+      additionalProperties: false
+      properties:
+        bolNumber:
+          description: The bill of lading number for the shipment.
+          type:
+          - string
+          - 'null'
+        carrierQuoteNumber:
+          description: The carrier quote number that may be returned from the rate api response.
+          type:
+          - string
+          - 'null'
+        gS1CompanyPrefix:
+          description: The company prefix for VICS BOL.
+          type:
+          - string
+          - 'null'
+        orderId:
+          description: Collection of order identifiers for shipment tracking and reference purposes
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        poNumber:
+          description: The PO Number for the shipment.
+          type:
+          - string
+          - 'null'
+        quoteId:
+          description: Optional quote id of the quote being dispatched. Only populate when applicable.
+          format: int32
+          type:
+          - integer
+          - 'null'
+        referenceNumber:
+          description: The reference number for the shipment.
+          type:
+          - string
+          - 'null'
+        shipmentId:
+          description: The shipment id for editing a shipment dispatch. Only populate for edit.
+          format: int32
+          type:
+          - integer
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Responses.StatusInfo:
+      additionalProperties: false
+      properties:
+        message:
+          description: Main message describing the response status or any errors
+          example: Transaction was successful.
+          maxLength: 500
+          type:
+          - string
+          - 'null'
+        notes:
+          description: Collection of detailed notes providing additional information about the response
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Note'
+          type:
+          - array
+          - 'null'
+        status:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Status'
+      type: object
+    MC.Quote.Contracts.Responses.ApiResponseOfMC.Quote.Contracts.Responses.Dispatch.DispatchQuoteResponse:
+      additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Dispatch.DispatchQuoteResponse'
+        errors:
+          description: Response errors
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
+      type: object

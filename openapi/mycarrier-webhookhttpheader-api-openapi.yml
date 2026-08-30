@@ -1,0 +1,251 @@
+openapi: 3.2.0
+info:
+  title: ITM.Services.Webhook.Api Webhook HTTP Header API
+  version: v1
+tags:
+- name: WebhookHttpHeader
+paths:
+  /HttpHeaderFiltered:
+    get:
+      tags:
+      - WebhookHttpHeader
+      summary: Returns a list of additional HTTP headers.
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+      - name: customerId
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: webhookType
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a page of HTTP headers
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookHttpHeader'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookHttpHeader'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookHttpHeader'
+      security:
+      - Bearer: []
+  /WebhookHttpHeader:
+    post:
+      tags:
+      - WebhookHttpHeader
+      summary: Attempts to create a new HTTP Header.
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+      responses:
+        '201':
+          description: The HTTP header was created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/WebhookHttpHeader'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookHttpHeader'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WebhookHttpHeader'
+        '400':
+          description: Bad request due to data validation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      security:
+      - Bearer: []
+    put:
+      tags:
+      - WebhookHttpHeader
+      summary: Attempts to update existing HTTP Header by header key
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WebhookHttpHeader'
+      responses:
+        '200':
+          description: The User was updated
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/WebhookHttpHeader'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookHttpHeader'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WebhookHttpHeader'
+        '400':
+          description: Bad request due to data validation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: No User was able to be found for the provided id
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - WebhookHttpHeader
+      summary: Attempts to delete the HTTP Header by header key
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DeleteHttpHeaderRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteHttpHeaderRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DeleteHttpHeaderRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DeleteHttpHeaderRequest'
+      responses:
+        '200':
+          description: The Webhook was deleted
+      security:
+      - Bearer: []
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    WebhookHttpHeader:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        headerKey:
+          type:
+          - string
+          - 'null'
+        headerValue:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    DeleteHttpHeaderRequest:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        headerKey:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Enter JWT Bearer token **_only_**
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,497 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  title: MyCarrier Public Shipping Locations API
+  version: v1
+servers:
+- description: Production
+  url: https://api.mycarriertms.com
+tags:
+- name: ShippingLocations
+paths:
+  /api/v1/address/shipping-locations:
+    get:
+      description: Get shipping locations for a current customer
+      operationId: GetShippingLocations
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: Environment
+        schema:
+          type: string
+      - in: header
+        name: Traceparent
+        schema:
+          type: string
+      - in: header
+        name: User-Agent
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      - description: Number of records to skip.
+        in: query
+        name: skip
+        schema:
+          type: integer
+      - description: Number of records to take.
+        in: query
+        name: take
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized - Authentication token is missing or invalid
+        '403':
+          description: Forbidden - User does not have permission to access this resource
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error occurred
+        '503':
+          description: Service temporarily unavailable
+      security: []
+      summary: Get Shipping Locations List
+      tags:
+      - ShippingLocations
+  /api/v1/address/shipping-locations/{locationId}:
+    get:
+      description: Get detailed shipping location information by location ID for the current customer
+      operationId: GetShippingLocationByLocationId
+      parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+      - in: header
+        name: Environment
+        schema:
+          type: string
+      - in: header
+        name: Traceparent
+        schema:
+          type: string
+      - in: header
+        name: User-Agent
+        schema:
+          type: string
+      - in: header
+        name: X-Mc-Api-Key
+        schema:
+          type: string
+      - description: Shipping location identifier.
+        in: path
+        name: locationId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
+          description: Request was successfully executed
+        '400':
+          description: Request has missing/invalid values
+        '401':
+          description: Unauthorized - Authentication token is missing or invalid
+        '403':
+          description: Forbidden - User does not have permission to access this resource
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error occurred
+        '503':
+          description: Service temporarily unavailable
+      security: []
+      summary: Get Shipping Location by Location ID
+      tags:
+      - ShippingLocations
+components:
+  schemas:
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse:
+      additionalProperties: false
+      properties:
+        accessorials:
+          description: Accessorial services
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.Accessorial'
+          type:
+          - array
+          - 'null'
+        addressLine1:
+          description: Address line 1
+          example: 123 Main St
+          type:
+          - string
+          - 'null'
+        addressLine2:
+          description: Address line 2
+          example: Suite 200
+          type:
+          - string
+          - 'null'
+        appointmentDetails:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentDetails'
+        city:
+          description: City
+          example: Salt Lake City
+          type:
+          - string
+          - 'null'
+        contacts:
+          description: Contact information
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.Contact'
+          type:
+          - array
+          - 'null'
+        country:
+          description: Country
+          example: USA
+          type:
+          - string
+          - 'null'
+        integratedCarriers:
+          description: Integrated carrier configurations
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.IntegratedCarrier'
+          type:
+          - array
+          - 'null'
+        locationId:
+          description: Location ID
+          example: LOC-UT-001
+          type:
+          - string
+          - 'null'
+        name:
+          description: Location name
+          example: Acme Distribution
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal code
+          example: '84101'
+          type:
+          - string
+          - 'null'
+        settings:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AddressSettings'
+        stateProvince:
+          description: State or province code
+          example: UT
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocation:
+      additionalProperties: false
+      properties:
+        addressId:
+          description: Address ID
+          example: '12345'
+          format: int32
+          type: integer
+        city:
+          description: City
+          example: New York
+          type:
+          - string
+          - 'null'
+        companyName:
+          description: Company name
+          example: Acme Corporation
+          type:
+          - string
+          - 'null'
+        country:
+          description: Country
+          example: USA
+          type:
+          - string
+          - 'null'
+        locationId:
+          description: Location ID
+          example: LOC-123
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal code
+          example: '10001'
+          type:
+          - string
+          - 'null'
+        stateCode:
+          description: State code
+          example: NY
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          description: Street line 1
+          example: 123 Main St
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          description: Street line 2
+          example: Suite 100
+          type:
+          - string
+          - 'null'
+      type: object
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
+    : additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
+        errors:
+          description: Response errors
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AddressSettings:
+      additionalProperties: false
+      properties:
+        isAutoAssignProEnabled:
+          description: Indicates whether auto-assign Pro is enabled for this location
+          example: 'true'
+          type: boolean
+        isBillingAddress:
+          description: Indicates whether this is set as a third party billing address
+          example: 'false'
+          type: boolean
+        isBillingAddressOnly:
+          description: Indicates whether this is a billing address only
+          example: 'null'
+          type:
+          - boolean
+          - 'null'
+        isDedicatedThirdParty:
+          description: Indicates whether this is a dedicated third party location
+          example: 'false'
+          type: boolean
+        isShippingLocation:
+          description: Indicates whether this is a shipping location
+          example: 'true'
+          type: boolean
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AppointmentWindow:
+      additionalProperties: false
+      properties:
+        closeTime:
+          description: Close time
+          example: '17:00'
+          type:
+          - string
+          - 'null'
+        instructions:
+          description: Instructions
+          example: Deliver to receiving entrance. Appointment required.
+          type:
+          - string
+          - 'null'
+        openTime:
+          description: Open time
+          example: 08:00
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.IntegratedCarrier:
+      additionalProperties: false
+      properties:
+        carrierScac:
+          description: Carrier SCAC code
+          example: FEDX
+          type:
+          - string
+          - 'null'
+        hasWarning:
+          description: Indicates whether there is an issue with your connection to the carrier
+          example: 'false'
+          type: boolean
+        isCarpetEnabled:
+          description: Indicates whether carpet rating is enabled for this carrier
+          example: 'true'
+          type: boolean
+        isDisabled:
+          description: Indicates whether the carrier is disabled
+          example: 'false'
+          type: boolean
+        ratingType:
+          description: Rating type code (Contract, Pallet, Dynamic, Broker)
+          example: Pallet
+          type:
+          - string
+          - 'null'
+        vltlOverrideEmail:
+          description: VLTL override email
+          example: override@example.com
+          type:
+          - string
+          - 'null'
+        warningMessage:
+          description: Warning message. Can be used to troubleshoot connection issues
+          example: This carrier has limited coverage
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse:
+      additionalProperties: false
+      properties:
+        isTruncated:
+          description: Indicates whether the results are truncated
+          example: 'true'
+          type: boolean
+        returnedCount:
+          description: Number of returned results
+          example: '10'
+          format: int64
+          type: integer
+        shippingLocations:
+          description: Shipping locations
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocation'
+          type:
+          - array
+          - 'null'
+        totalCount:
+          description: Total count of results
+          example: '100'
+          format: int64
+          type: integer
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.Contact:
+      additionalProperties: false
+      properties:
+        addressContactId:
+          description: Address contact ID
+          example: '12345'
+          format: int32
+          type: integer
+        email:
+          description: Email address
+          example: john.doe@example.com
+          type:
+          - string
+          - 'null'
+        ext:
+          description: Phone extension
+          example: '123'
+          type:
+          - string
+          - 'null'
+        firstName:
+          description: First name
+          example: John
+          type:
+          - string
+          - 'null'
+        isPrimary:
+          description: Indicates whether this is the primary contact
+          example: 'true'
+          type: boolean
+        lastName:
+          description: Last name
+          example: Doe
+          type:
+          - string
+          - 'null'
+        phone:
+          description: Phone number
+          example: 555-123-4567
+          type:
+          - string
+          - 'null'
+        position:
+          description: Position
+          example: Manager
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
+      enum:
+      - 0
+      - 1
+      format: int32
+      type: integer
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse
+    : additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse'
+        errors:
+          description: Response errors
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.Accessorial:
+      additionalProperties: false
+      properties:
+        code:
+          description: Accessorial code
+          example: LFTG
+          type:
+          - string
+          - 'null'
+        name:
+          description: Accessorial name
+          example: Liftgate Delivery
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AccessorialType'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AppointmentDetails:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+        pickup:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+      type: object
