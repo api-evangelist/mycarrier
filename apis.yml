@@ -61,28 +61,6 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: mycarrier:mycarrier-bulkimport-api
-  name: MyCarrier Bulk Import API
-  description: The BulkImport API from MyCarrier — 4 operation(s) for bulkimport.
-  humanURL: https://developer.mycarrier.io/docs/getting-started
-  baseURL: https://api.mycarriertms.com
-  tags:
-  - Bulk Import
-  tags_raw:
-  - BulkImport
-  properties:
-  - type: OpenAPI
-    url: openapi/mycarrier-bulkimport-api-openapi.yml
-  - type: Documentation
-    url: https://developer.mycarrier.io/docs/getting-started
-  - type: APIReference
-    url: https://developer.mycarrier.io/reference/getrates-1
-  - type: Documentation
-    url: https://developer.mycarrier.io/docs/order-management
-  - type: Documentation
-    url: https://developer.mycarrier.io/docs/webhooks
-  - type: Webhooks
-    url: asyncapi/mycarrier-events-webhooks.yml
 - aid: mycarrier:mycarrier-carrierinvoicesetting-api
   name: MyCarrier Carrier Invoice Setting API
   description: The CarrierInvoiceSetting API from MyCarrier — 5 operation(s) for carrierinvoicesetting.
@@ -552,28 +530,6 @@ apis:
     url: https://developer.mycarrier.io/docs/webhooks
   - type: Webhooks
     url: asyncapi/mycarrier-events-webhooks.yml
-- aid: mycarrier:mycarrier-shipmentdetails-api
-  name: MyCarrier Shipment Details API
-  description: The ShipmentDetails API from MyCarrier — 1 operation(s) for shipmentdetails.
-  humanURL: https://developer.mycarrier.io/docs/getting-started
-  baseURL: https://api.mycarriertms.com
-  tags:
-  - Shipment details
-  tags_raw:
-  - ShipmentDetails
-  properties:
-  - type: OpenAPI
-    url: openapi/mycarrier-shipmentdetails-api-openapi.yml
-  - type: Documentation
-    url: https://developer.mycarrier.io/docs/getting-started
-  - type: APIReference
-    url: https://developer.mycarrier.io/reference/getrates-1
-  - type: Documentation
-    url: https://developer.mycarrier.io/docs/order-management
-  - type: Documentation
-    url: https://developer.mycarrier.io/docs/webhooks
-  - type: Webhooks
-    url: asyncapi/mycarrier-events-webhooks.yml
 - aid: mycarrier:mycarrier-shipments-api
   name: MyCarrier Shipments API
   description: The Shipments API from MyCarrier — 5 operation(s) for shipments.
@@ -744,6 +700,46 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/mycarrier-webhooktype-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-bulk-import-api
+  name: MyCarrier Bulk Import API
+  description: The Bulk Import API from MyCarrier — 4 operation(s) for bulk import.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Bulk Import
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-bulk-import-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/getting-started
+  - type: APIReference
+    url: https://developer.mycarrier.io/reference/getrates-1
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/order-management
+  - type: Documentation
+    url: https://developer.mycarrier.io/docs/webhooks
+  - type: Webhooks
+    url: asyncapi/mycarrier-events-webhooks.yml
+- aid: mycarrier:mycarrier-shipment-details-api
+  name: MyCarrier Shipment details API
+  description: The Shipment details API from MyCarrier — 1 operation(s) for shipment details.
+  humanURL: https://developer.mycarrier.io/docs/getting-started
+  baseURL: https://api.mycarriertms.com
+  tags:
+  - Shipment details
+  properties:
+  - type: OpenAPI
+    url: openapi/mycarrier-shipment-details-api-openapi.yml
   - type: Documentation
     url: https://developer.mycarrier.io/docs/getting-started
   - type: APIReference
