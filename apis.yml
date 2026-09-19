@@ -274,6 +274,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Invoices
+  tags_raw:
   - Invoice
   properties:
   - type: OpenAPI
@@ -436,6 +438,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Payments
+  tags_raw:
   - Payment
   properties:
   - type: OpenAPI
@@ -496,6 +500,8 @@ apis:
   humanURL: https://developer.mycarrier.io/docs/getting-started
   baseURL: https://api.mycarriertms.com
   tags:
+  - Ratings
+  tags_raw:
   - Rating
   properties:
   - type: OpenAPI
