@@ -1,0 +1,170 @@
+slug: mycarrier
+provider: MyCarrier
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 15
+edges:
+- tag: FreightAudit
+  spec_file: mycarrier-freightaudit-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.9
+  evidence: POST /api/FreightAudit/Invoice/Filter; POST /api/FreightAudit/Invoice/OriginalQuote with MatchOriginalQuoteRequest;
+    POST /api/FreightAudit/Remittance/PDF; InvoicePaymentFilterItemResponse
+  reason: Retrieval, versioning, quote-matching, remittance generation and payment status of carrier freight
+    invoices for a shipper-side TMS — this is plainly audit of carrier invoices and execution of carrier
+    payment.
+- tag: Payment
+  spec_file: mycarrier-payment-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.85
+  evidence: POST /api/Payment/BulkPay; POST /api/Payment/PayNow; GET /api/Payment/Receipt/{transactionId};
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType
+  reason: Executes and records payment of audited carrier freight invoices from the shipper side, which
+    is exactly freight audit and payment management.
+- tag: Dispatch
+  spec_file: mycarrier-dispatch-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.8
+  evidence: POST /api/v1/quote/dispatch — 'Dispatches a quote that we quoted through the rate API', with
+    DispatchShippingDetailsRequest, HandlingUnitRequest, ServiceMode, StopType
+  reason: The operation books/tenders a freight shipment to a carrier with shipping details, commodities
+    and appointment data — transport execution, i.e. logistics operations management. Slight ambiguity
+    between logistics execution and order fulfilment, hence 0.8.
+  recovered_from: sweep-20260829T005356Z-edges.json
+- tag: Invoice
+  spec_file: mycarrier-invoice-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.8
+  evidence: openapi title "FreightAudit Invoice API"; PATCH /api/v2/Invoice/BulkUpdateStatus/{status};
+    schema MC.Invoice.Data.Mongo.Enums.InvoiceStatusType
+  reason: Operations update the status and status reasons of freight invoices within MyCarrier's FreightAudit
+    product, i.e. the shipper-side audit and approval of carrier freight invoices.
+- tag: Invoice Management
+  spec_file: mycarrier-invoice-management-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.8
+  evidence: '"Creates new invoices that a customer needs to pay"; "Updates approval reason for the identified
+    invoice"; schema ShipmentPriceDetail'
+  reason: Integration endpoints ingest freight invoices with shipment price detail and drive approval
+    status — the freight-invoice audit and payment flow of the FreightAudit product, not general AR/AP.
+- tag: InvoiceAnalytics
+  spec_file: mycarrier-invoiceanalytics-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.8
+  evidence: POST /api/InvoiceAnalytics/Overcharges; POST /api/InvoiceAnalytics/ApprovalAndDisputeFrequency;
+    InvoiceCarrierPerformanceAnalyticsResponse
+  reason: Analytics over carrier invoice overcharges, approvals and disputes is reporting on the freight
+    audit function; it measures audit outcomes rather than being generic BI.
+- tag: InvoiceV3
+  spec_file: mycarrier-invoicev3-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.8
+  evidence: GET /api/v3/invoices/{id}/documents; MC.Invoice.Data.Mongo.Enums.DisputeStatusType; MC.Invoice.API.Responses.V2.InvoiceQuoteAuditResponse
+  reason: Retrieval, filtering and dispute/quote-audit detail of carrier freight invoices — the core freight
+    invoice audit surface of the FreightAudit API.
+- tag: Payment Management
+  spec_file: mycarrier-payment-management-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.8
+  evidence: '"Records payment on the identified invoice"; IntegrationInvoiceRecordPaymentRequest'
+  reason: Integration endpoints record and modify payments against freight invoices in the FreightAudit
+    product — carrier invoice payment execution.
+- tag: Rating
+  spec_file: mycarrier-rating-api-openapi.yml
+  capability_id: BC-2520
+  capability_id_l1: BC-2520
+  capability_name: Freight Rating & Tariff Management
+  confidence: 0.8
+  evidence: POST /api/v1/quote/rate GetRates Get Rates; POST /rating requestquote "Getting quote from
+    carriers"; MC.Quote.Contracts.Responses.Rate.PriceDetailsResponse, AccessorialsResponse
+  reason: Requests and returns freight rates and accessorial pricing from carriers for a shipment — freight
+    rating/tariff pricing; the evidence does not clearly distinguish spot-rate vs rating-engine sub-capability.
+- tag: Shipments
+  spec_file: mycarrier-shipments-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.8
+  evidence: POST /api/Shipment/CreateShipmentFromInvoice; GET /api/Shipment/ValidateShipmentCandidate/{invoiceRecordId};
+    PATCH /api/Shipment/LinkShipment
+  reason: Operations sit in the FreightAudit surface (MC.Invoice.API.Dtos.Shipments) and exist to link
+    or create shipment records against carrier invoice records — the shipment-to-invoice matching step
+    of freight bill audit, not transport execution.
+- tag: Dispute
+  spec_file: mycarrier-dispute-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.78
+  evidence: POST /api/Dispute/Save; POST /api/Dispute/BulkCreate; POST /api/Dispute/SendEmail; MC.Invoice.API.Dtos.Disputes.Requests.EmailDisputeRequest
+  reason: Disputes raised against carrier freight invoices inside the FreightAudit product, including
+    supporting file attachments and emailing the dispute to the carrier — the core of shipper-side carrier
+    invoice audit. Not cargo claims, since the objects are invoices, not loss/damage.
+- tag: FreightAssist
+  spec_file: mycarrier-freightassist-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.75
+  evidence: GET /api/v1/Invoice/{recordId}/Quote/Audit; PATCH /api/v1/Invoice/{recordId}/Quote/Audit/Vote;
+    InvoiceQuoteAuditResponse, InvoiceDifferenceResponse, ChargeBreakdownResponse
+  reason: Compares a carrier invoice against the original quote, surfacing charge breakdowns and differences
+    plus a human vote on audit suggestions — assisted audit of carrier freight invoices.
+- tag: ShipmentDetails
+  spec_file: mycarrier-shipment-details-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.75
+  evidence: GET /api/v1/shipments/{id}  "Get Shipment Details by reference id"; schemas PublicShipmentPickupDateDto,
+    PublicShipmentDeliveryDateDto, PublicShipmentHazardousDetailDto
+  reason: Retrieves freight shipment records including pickup/delivery dates, handling units and charges
+    — transport execution data, i.e. logistics operations.
+  recovered_from: sweep-20260829T005356Z-edges.json
+  reanchored_from: mycarrier-shipmentdetails-api-openapi.yml
+- tag: View Invoices
+  spec_file: mycarrier-view-invoices-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.75
+  evidence: POST /api/v1/Integrations/Invoices/Filter  Search invoices by filter; schemas InvoiceCarrierInfo,
+    IntegrationInvoicePaymentResponse, ShipmentPriceDetail
+  reason: FreightAudit read surface over carrier invoice records including carrier info, shipment price
+    detail and payment status — the shipper-side audit and payment of carrier freight bills. Mapped to
+    freight audit and payment rather than customer freight invoicing because the invoices originate from
+    carriers.
+- tag: InvoiceOverviewV3
+  spec_file: mycarrier-invoiceoverviewv3-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.7
+  evidence: GET /api/v3/invoices/overview/action-required; MC.Invoice.Contracts.Responses.V3.InvoiceOverviewAnalyticsV3Response
+  reason: Work-queue and overview surface for freight invoices requiring action within the FreightAudit
+    product; thin operation detail so moderate confidence on the audit sub-capability.
