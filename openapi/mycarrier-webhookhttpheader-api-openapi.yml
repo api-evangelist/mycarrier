@@ -9,7 +9,7 @@ paths:
     get:
       tags:
       - WebhookHttpHeader
-      summary: Returns a list of additional HTTP headers.
+      summary: Returns a list of additional HTTP headers
       parameters:
       - name: environment
         in: query
@@ -45,11 +45,13 @@ paths:
                   $ref: '#/components/schemas/WebhookHttpHeader'
       security:
       - Bearer: []
+      operationId: getHttpHeaderFiltered
+      x-operation-id-source: derived
   /WebhookHttpHeader:
     post:
       tags:
       - WebhookHttpHeader
-      summary: Attempts to create a new HTTP Header.
+      summary: Attempts to create a new HTTP Header
       requestBody:
         description: ''
         content:
@@ -92,6 +94,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
       security:
       - Bearer: []
+      operationId: postWebhookHttpHeader
+      x-operation-id-source: derived
     put:
       tags:
       - WebhookHttpHeader
@@ -150,6 +154,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
       security:
       - Bearer: []
+      operationId: putWebhookHttpHeader
+      x-operation-id-source: derived
     delete:
       tags:
       - WebhookHttpHeader
@@ -174,8 +180,52 @@ paths:
           description: The Webhook was deleted
       security:
       - Bearer: []
+      operationId: deleteWebhookHttpHeader
+      x-operation-id-source: derived
 components:
   schemas:
+    DeleteHttpHeaderRequest:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        headerKey:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    WebhookHttpHeader:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        headerKey:
+          type:
+          - string
+          - 'null'
+        headerValue:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ProblemDetails:
       type: object
       properties:
@@ -201,48 +251,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    WebhookHttpHeader:
-      type: object
-      properties:
-        environment:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type: integer
-          format: int32
-        webhookType:
-          type:
-          - string
-          - 'null'
-        headerKey:
-          type:
-          - string
-          - 'null'
-        headerValue:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    DeleteHttpHeaderRequest:
-      type: object
-      properties:
-        environment:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type: integer
-          format: int32
-        webhookType:
-          type:
-          - string
-          - 'null'
-        headerKey:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

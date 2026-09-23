@@ -11,7 +11,7 @@ paths:
     get:
       tags:
       - View Notes
-      summary: Returns an invoice notes for the requested invoice identifier.
+      summary: Returns an invoice notes for the requested invoice identifier
       parameters:
       - name: invoiceRecordId
         in: path
@@ -60,6 +60,8 @@ paths:
           --header ''Authorization: Basic amFtZXN2LTQzNzYtODc2YS0zZTg5Njg0MjI4OWU='''
       - lang: JavaScript
         source: "const invoiceRecordId = 'bb1e7f78-ac4f-48d0-9a11-b31b2c36087f';\n\nconst options = {\n  method: 'GET',\n  headers: {accept: '*/*'},\n};\n\nfetch(`https://localhost:7205/api/v2/Integrations/Notes/${invoiceRecordId}`, options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+      operationId: getApiV2IntegrationsNotesByInvoiceRecordId
+      x-operation-id-source: derived
 components:
   schemas:
     Microsoft.AspNetCore.Mvc.ProblemDetails:

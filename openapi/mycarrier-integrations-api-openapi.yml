@@ -47,6 +47,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api integrations by encoded key
+      x-summary-source: derived
+      operationId: getApiV1IntegrationsByEncodedKey
+      x-operation-id-source: derived
   /api/v1/Integrations/YourEDI/Create:
     post:
       tags:
@@ -89,6 +93,10 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Create api integrations your edi create
+      x-summary-source: derived
+      operationId: postApiV1IntegrationsYourEDICreate
+      x-operation-id-source: derived
   /api/FreightAudit/Invoice/Update:
     patch:
       tags:
@@ -132,6 +140,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Update api freight audit invoice update
+      x-summary-source: derived
+      operationId: patchApiFreightAuditInvoiceUpdate
+      x-operation-id-source: derived
   /api/v1/Integrations/Invoices/UpdateStatus:
     patch:
       tags:
@@ -175,6 +187,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Update api integrations invoices update status
+      x-summary-source: derived
+      operationId: patchApiV1IntegrationsInvoicesUpdateStatus
+      x-operation-id-source: derived
   /api/v2/Integrations/Mailgun/Inbound:
     post:
       tags:
@@ -282,8 +298,104 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api integrations mailgun inbound
+      x-summary-source: derived
+      operationId: postApiV2IntegrationsMailgunInbound
+      x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
+    MC.Invoice.Data.Mongo.Entities.CompanyInfoExtended:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.InvoiceCarrierInfo:
+      type: object
+      properties:
+        carrierCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.HandlingUnit:
+      type: object
+      properties:
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.Commodity'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: number
+          format: double
+        chargeCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest:
       required:
       - identificationCode
@@ -336,17 +448,58 @@ components:
           - 'null'
           format: double
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail:
+    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest:
+      required:
+      - recordId
+      - statusType
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        statusType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        approvedReason:
+          type:
+          - string
+          - 'null'
+        approvedOtherNotes:
+          type:
+          - string
+          - 'null'
+        updatedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.FreightClass:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.Commodity:
       type: object
       properties:
         description:
           type:
           - string
           - 'null'
-        amount:
-          type: number
-          format: double
-        chargeCode:
+        piecesNumber:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        freightClass:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.FreightClass'
+        packingType:
           type:
           - string
           - 'null'
@@ -379,139 +532,6 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
-    MC.Invoice.Data.Mongo.Entities.CompanyInfo:
-      type: object
-      properties:
-        companyName:
-          type:
-          - string
-          - 'null'
-        streetLine1:
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
-          type:
-          - string
-          - 'null'
-        country:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.CompanyInfoExtended:
-      type: object
-      properties:
-        companyName:
-          type:
-          - string
-          - 'null'
-        streetLine1:
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
-          type:
-          - string
-          - 'null'
-        country:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-        phone:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest:
-      required:
-      - recordId
-      - statusType
-      type: object
-      properties:
-        recordId:
-          type: string
-          format: uuid
-        statusType:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
-        approvedReason:
-          type:
-          - string
-          - 'null'
-        approvedOtherNotes:
-          type:
-          - string
-          - 'null'
-        updatedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - Archived
-      - ShortPaid
-      - NeedsReview
-      - Created
-      - Deleted
-      type: string
-    MC.Invoice.Data.Mongo.Entities.HandlingUnit:
-      type: object
-      properties:
-        commodities:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.Commodity'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.FreightClass:
-      type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest_CreateInvoiceShipment:
       required:
       - carrierProNumber
@@ -570,34 +590,34 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail'
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.InvoiceCarrierInfo:
+    MC.Invoice.Data.Mongo.Entities.CompanyInfo:
       type: object
       properties:
-        carrierCode:
+        companyName:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.Commodity:
-      type: object
-      properties:
-        description:
+        streetLine1:
           type:
           - string
           - 'null'
-        piecesNumber:
+        streetLine2:
           type:
-          - integer
+          - string
           - 'null'
-          format: int32
-        totalWeight:
+        city:
           type:
-          - integer
+          - string
           - 'null'
-          format: int32
-        freightClass:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.FreightClass'
-        packingType:
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
           type:
           - string
           - 'null'

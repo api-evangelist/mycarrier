@@ -50,6 +50,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Delete api payments manual payments
+      x-summary-source: derived
+      operationId: deleteApiV3PaymentsManualPayments
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetailsResponse:

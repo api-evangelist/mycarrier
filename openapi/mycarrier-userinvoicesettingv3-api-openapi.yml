@@ -42,6 +42,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api user settings
+      x-summary-source: derived
+      operationId: getApiV3UserSettings
+      x-operation-id-source: derived
   /api/v3/user-settings/navigation-tabs/reorder:
     patch:
       tags:
@@ -81,8 +85,41 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Update api user settings navigation tabs reorder
+      x-summary-source: derived
+      operationId: patchApiV3UserSettingsNavigationTabsReorder
+      x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.Data.Mongo.Enums.InvoiceTab:
+      enum:
+      - Overview
+      - Invoices
+      - Wallet
+      - Analytics
+      type: string
+    MC.Invoice.API.Responses.V3.TabItemV3Response:
+      type: object
+      properties:
+        tabItem:
+          type:
+          - string
+          - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
+      required:
+      - navigationTabs
+      type: object
+      properties:
+        navigationTabs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceTab'
+      additionalProperties: false
     ProblemDetailsResponse:
       type: object
       properties:
@@ -130,35 +167,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Responses.V3.TabItemV3Response'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.InvoiceTab:
-      enum:
-      - Overview
-      - Invoices
-      - Wallet
-      - Analytics
-      type: string
-    MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
-      required:
-      - navigationTabs
-      type: object
-      properties:
-        navigationTabs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceTab'
-      additionalProperties: false
-    MC.Invoice.API.Responses.V3.TabItemV3Response:
-      type: object
-      properties:
-        tabItem:
-          type:
-          - string
-          - 'null'
-        icon:
-          type:
-          - string
-          - 'null'
       additionalProperties: false
   securitySchemes:
     Bearer:

@@ -292,6 +292,20 @@ paths:
       - Routing Guide
 components:
   schemas:
+    MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object:
+      additionalProperties: false
+      properties:
+        data: {}
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
     MC.RoutingGuide.Client.Contracts.Requests.PublicMatchRoutingGuideRequestDto:
       additionalProperties: false
       description: Atleast any one of these parameters should be provided
@@ -335,6 +349,41 @@ components:
           description: A comma-separated list of carrier SCACs to be excluded for this routing guide rule.
           type: string
       type: object
+    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfMC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto
+    : additionalProperties: false
+      properties:
+        data:
+          allOf:
+          - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
+    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto
+    : additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto'
+          type:
+          - array
+          - 'null'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
     MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto:
       additionalProperties: false
       properties:
@@ -377,36 +426,6 @@ components:
           type:
           - string
           - 'null'
-      type: object
-    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfMC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto
-    : additionalProperties: false
-      properties:
-        data:
-          allOf:
-          - $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto'
-        errors:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          format: int32
-          type: integer
-      type: object
-    MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object:
-      additionalProperties: false
-      properties:
-        data: {}
-        errors:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          format: int32
-          type: integer
       type: object
     MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto:
       additionalProperties: false
@@ -460,25 +479,6 @@ components:
         data:
           items:
             $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto'
-          type:
-          - array
-          - 'null'
-        errors:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          format: int32
-          type: integer
-      type: object
-    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto
-    : additionalProperties: false
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto'
           type:
           - array
           - 'null'

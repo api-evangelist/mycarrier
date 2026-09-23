@@ -11,7 +11,7 @@ paths:
     post:
       tags:
       - Payment Management
-      summary: Records payment on the identified invoice.
+      summary: Records payment on the identified invoice
       requestBody:
         content:
           application/json:
@@ -61,11 +61,13 @@ paths:
         source: "curl --location 'https://localhost:7205/api/v2/Integrations/Payments/Record' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ZW1haWKAKNFPOdf76YXBpLWtleQ65rhG' \\\n--data '[\n  {\n    \"invoiceRecordId\": \"d3517fee-71e0-4ea7-bde9-a63e77faa746\",\n    \"paymentDate\": \"2024-03-19T16:20:40.144Z\",\n    \"paymentNotes\": \"Some notes\",\n    \"createdBy\": \"MyCarrier TMS\",\n    \"receiptNumber\": \"59687\",\n    \"confirmationNumber\": \"2224\",\n    \"achNumber\": \"123456789\",\n    \"paymentAmount\": 20\n  }\n]'"
       - lang: JavaScript
         source: "const options = {\n  method: 'POST',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    [{\n       invoiceRecordId: 'd3517fee-71e0-4ea7-bde9-a63e77faa746',\n       paymentDate: '2024-03-19T16:20:40.144Z',\n       paymentNotes: 'Some notes',\n       createdBy: 'MyCarrier TMS',\n       receiptNumber: '59687',\n       confirmationNumber: '2224',\n       achNumber: '123456789',\n       paymentAmount: 20\n    }]\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Payments/Record', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+      operationId: postApiV2IntegrationsPaymentsRecord
+      x-operation-id-source: derived
   /api/v2/Integrations/Payments/{paymentId}:
     put:
       tags:
       - Payment Management
-      summary: Modify the specific payment for the identified invoice.
+      summary: Modify the specific payment for the identified invoice
       parameters:
       - name: paymentId
         in: path
@@ -122,6 +124,8 @@ paths:
         source: "curl --location --request PUT 'https://localhost:7205/api/v2/Integrations/Payments/3fa85f64-5717-4562-b3fc-2c963f66afa6' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ZW1haWKAKNFPOdf76YXBpLWtleQ65rhG' \\\n--data '[\n  {\n    \"invoiceRecordId\": \"d3517fee-71e0-4ea7-bde9-a63e77faa746\",\n    \"paymentDate\": \"2024-03-19T16:20:40.144Z\",\n    \"paymentNotes\": \"Some notes\",\n    \"createdBy\": \"MyCarrier TMS\",\n    \"receiptNumber\": \"59687\",\n    \"confirmationNumber\": \"2224\",\n    \"achNumber\": \"123456789\",\n    \"paymentAmount\": 20\n  }\n]'"
       - lang: JavaScript
         source: "const options = {\n  method: 'PUT',\n  headers:\n{\n    'Content-Type': 'application/json',\n    'Authorization': 'Basic ' + btoa('username:password') },\n    body: JSON.stringify(\n    [{\n       invoiceRecordId: 'd3517fee-71e0-4ea7-bde9-a63e77faa746',\n       paymentDate: '2024-03-19T16:20:40.144Z',\n       paymentNotes: 'Some notes',\n       createdBy: 'MyCarrier TMS',\n       receiptNumber: '59687',\n       confirmationNumber: '2224',\n       achNumber: '123456789',\n       paymentAmount: 20\n    }]\n  )\n};\n\nfetch('https://localhost:7205/api/v2/Integrations/Payments/3fa85f64-5717-4562-b3fc-2c963f66afa6', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+      operationId: putApiV2IntegrationsPaymentsByPaymentId
+      x-operation-id-source: derived
 components:
   schemas:
     Microsoft.AspNetCore.Mvc.ProblemDetails:
@@ -149,6 +153,32 @@ components:
           - string
           - 'null'
       additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse:
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        invoiceStatus:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse'
+      additionalProperties: false
+    MC.Invoice.Data.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - ShortPaid
+      type: string
     MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse:
       type: object
       properties:
@@ -207,32 +237,6 @@ components:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - ShortPaid
-      type: string
-    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse:
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        invoiceStatus:
-          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse'
       additionalProperties: false
   securitySchemes:
     BasicAuth:

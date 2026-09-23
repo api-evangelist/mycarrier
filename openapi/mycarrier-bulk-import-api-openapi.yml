@@ -5,12 +5,12 @@ info:
 servers:
 - url: https://invoice.mycarriertms.com
 tags:
-- name: BulkImport
+- name: Bulk Import
 paths:
   /api/BulkImport/Validate:
     post:
       tags:
-      - BulkImport
+      - Bulk Import
       parameters:
       - name: Environment
         in: header
@@ -49,10 +49,14 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Create api bulk import validate
+      x-summary-source: derived
+      operationId: postApiBulkImportValidate
+      x-operation-id-source: derived
   /api/BulkImport/Validate/{customerId}:
     post:
       tags:
-      - BulkImport
+      - Bulk Import
       parameters:
       - name: customerId
         in: path
@@ -96,10 +100,14 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Create api bulk import validate by customer id
+      x-summary-source: derived
+      operationId: postApiBulkImportValidateByCustomerId
+      x-operation-id-source: derived
   /api/BulkImport/Template/Download:
     get:
       tags:
-      - BulkImport
+      - Bulk Import
       parameters:
       - name: Environment
         in: header
@@ -131,10 +139,14 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api bulk import template download
+      x-summary-source: derived
+      operationId: getApiBulkImportTemplateDownload
+      x-operation-id-source: derived
   /api/BulkImport/Import:
     post:
       tags:
-      - BulkImport
+      - Bulk Import
       parameters:
       - name: Environment
         in: header
@@ -169,33 +181,119 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Create api bulk import import
+      x-summary-source: derived
+      operationId: postApiBulkImportImport
+      x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.BulkImport.Requests.ImportInvoiceRequestWrapper:
+    MC.Invoice.Domain.Dtos.BulkImport.InvoiceLineItem:
       type: object
       properties:
-        invoices:
+        description:
           type:
-          - array
+          - string
           - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.BulkImport.Requests.ImportInvoiceRequest'
-        updatedBy:
+        code:
+          type:
+          - string
+          - 'null'
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+      additionalProperties: false
+    MC.Invoice.Domain.Dtos.BulkImport.InvoiceCompanyAddress:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
           type:
           - string
           - 'null'
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.InvoiceSourceType:
-      enum:
-      - Unknown
-      - YourEDI
-      - CSVImport
-      - ImageImport
-      - Integrations
-      - ImageImportEmail
-      - ImageImportSMC3
-      - YourEDIV2
-      type: string
+    MC.Invoice.Domain.Dtos.BulkImport.InvoiceCompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        contactName:
+          type:
+          - string
+          - 'null'
+        contactEmail:
+          type:
+          - string
+          - 'null'
+        contactPhone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Domain.Dtos.BulkImport.ShippingTimeline:
+      type: object
+      properties:
+        estimatedDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actualDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
     MC.Invoice.API.Dtos.BulkImport.Requests.ImportInvoiceRequest:
       required:
       - carrier
@@ -277,145 +375,16 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.Domain.Dtos.BulkImport.InvoiceCommodity'
       additionalProperties: false
-    MC.Invoice.Domain.Dtos.BulkImport.ShippingTimeline:
+    MC.Invoice.API.Dtos.BulkImport.Requests.ImportInvoiceRequestWrapper:
       type: object
       properties:
-        estimatedDate:
+        invoices:
           type:
-          - string
+          - array
           - 'null'
-          format: date-time
-        actualDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      additionalProperties: false
-    ProblemDetailsResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          description: A URI reference that identifies the problem type
-          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
-        title:
-          type: string
-          description: A short, human-readable summary of the problem type
-          example: Bad Request
-        status:
-          type: integer
-          description: The HTTP status code
-          example: 400
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem
-          example: The invoice amount must be greater than zero
-        instance:
-          type: string
-          description: A URI reference that identifies the specific occurrence of the problem
-          example: /api/v1/invoices
-        traceId:
-          type: string
-          description: The OpenTelemetry trace ID for correlating logs and distributed traces
-          example: a1b2c3d4e5f67890abcdef1234567890
-      description: RFC 7807 Problem Details response with traceId for error correlation
-    MC.Invoice.Domain.Dtos.BulkImport.InvoiceCompanyInfo:
-      type: object
-      properties:
-        companyName:
-          type:
-          - string
-          - 'null'
-        streetLine1:
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
-          type:
-          - string
-          - 'null'
-        country:
-          type:
-          - string
-          - 'null'
-        contactName:
-          type:
-          - string
-          - 'null'
-        contactEmail:
-          type:
-          - string
-          - 'null'
-        contactPhone:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Domain.Dtos.BulkImport.InvoiceLineItem:
-      type: object
-      properties:
-        description:
-          type:
-          - string
-          - 'null'
-        code:
-          type:
-          - string
-          - 'null'
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-      additionalProperties: false
-    MC.Invoice.Domain.Dtos.BulkImport.InvoiceCarrierInfo:
-      type: object
-      properties:
-        scacCode:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Domain.Dtos.BulkImport.InvoiceCompanyAddress:
-      type: object
-      properties:
-        companyName:
-          type:
-          - string
-          - 'null'
-        streetLine1:
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
-          type:
-          - string
-          - 'null'
-        country:
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.BulkImport.Requests.ImportInvoiceRequest'
+        updatedBy:
           type:
           - string
           - 'null'
@@ -445,6 +414,53 @@ components:
           - integer
           - 'null'
           format: int32
+      additionalProperties: false
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.Data.Mongo.Enums.InvoiceSourceType:
+      enum:
+      - Unknown
+      - YourEDI
+      - CSVImport
+      - ImageImport
+      - Integrations
+      - ImageImportEmail
+      - ImageImportSMC3
+      - YourEDIV2
+      type: string
+    MC.Invoice.Domain.Dtos.BulkImport.InvoiceCarrierInfo:
+      type: object
+      properties:
+        scacCode:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
     Bearer:

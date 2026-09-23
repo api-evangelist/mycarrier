@@ -44,6 +44,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api notes save
+      x-summary-source: derived
+      operationId: postApiNotesSave
+      x-operation-id-source: derived
   /api/Notes/Delete:
     delete:
       tags:
@@ -79,6 +83,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Delete api notes delete
+      x-summary-source: derived
+      operationId: deleteApiNotesDelete
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetailsResponse:
@@ -109,6 +117,23 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.API.Dtos.Notes.Requests.DeleteNotesRequest:
+      required:
+      - invoiceRecordId
+      - noteId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        noteId:
+          type: string
+          format: uuid
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     MC.Invoice.API.Dtos.Notes.Requests.SaveNotesRequest:
       required:
       - content
@@ -127,23 +152,6 @@ components:
           maxLength: 300
           minLength: 1
           type: string
-        requestedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Notes.Requests.DeleteNotesRequest:
-      required:
-      - invoiceRecordId
-      - noteId
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        noteId:
-          type: string
-          format: uuid
         requestedBy:
           type:
           - string

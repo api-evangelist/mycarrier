@@ -48,6 +48,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api tags list
+      x-summary-source: derived
+      operationId: getApiTagsList
+      x-operation-id-source: derived
   /api/Tags/BulkSave:
     post:
       tags:
@@ -85,6 +89,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api tags bulk save
+      x-summary-source: derived
+      operationId: postApiTagsBulkSave
+      x-operation-id-source: derived
   /api/Tags/BulkDelete:
     delete:
       tags:
@@ -128,6 +136,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Delete api tags bulk delete
+      x-summary-source: derived
+      operationId: deleteApiTagsBulkDelete
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetailsResponse:

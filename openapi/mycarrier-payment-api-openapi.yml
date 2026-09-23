@@ -46,6 +46,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Delete api payment delete payment
+      x-summary-source: derived
+      operationId: deleteApiPaymentDeletePayment
+      x-operation-id-source: derived
   /api/Payment/Record:
     post:
       tags:
@@ -89,6 +93,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api payment record
+      x-summary-source: derived
+      operationId: postApiPaymentRecord
+      x-operation-id-source: derived
   /api/Payment/BulkPay:
     post:
       tags:
@@ -133,6 +141,10 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Create api payment bulk pay
+      x-summary-source: derived
+      operationId: postApiPaymentBulkPay
+      x-operation-id-source: derived
   /api/Payment/PayNow:
     post:
       tags:
@@ -166,6 +178,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api payment pay now
+      x-summary-source: derived
+      operationId: postApiPaymentPayNow
+      x-operation-id-source: derived
   /api/Payment/Receipt/{transactionId}:
     get:
       tags:
@@ -207,28 +223,26 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api payment receipt by transaction id
+      x-summary-source: derived
+      operationId: getApiPaymentReceiptByTransactionId
+      x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Responses.V2.BulkInvoicePaymentResponse:
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        invoiceStatus:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.InvoicePaymentResponse'
-      additionalProperties: false
-    MC.Payment.Contracts.Models.PaymentMethodType:
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
       enum:
-      - Unknown
-      - Card
-      - Ach
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
       type: string
     MC.Invoice.Contracts.Responses.V2.InvoicePaymentResponse:
       type: object
@@ -254,6 +268,80 @@ components:
           type:
           - string
           - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Payments.Requests.RecordPaymentRequest:
+      required:
+      - invoiceRecordId
+      - paymentDate
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        paymentAmount:
+          type:
+          - number
+          - 'null'
+          format: double
+        paymentDate:
+          type: string
+          format: date-time
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Payment.Contracts.Models.PaymentMethodType:
+      enum:
+      - Unknown
+      - Card
+      - Ach
+      type: string
+    MC.Invoice.API.Responses.V2.BulkInvoicePaymentResponse:
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        invoiceStatus:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Contracts.Responses.V2.InvoicePaymentResponse'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Payments.Requests.PayInvoiceRequest:
+      required:
+      - correlationId
+      - idempotencyKey
+      - paymentMethodId
+      - paymentMethodType
+      - recordIds
+      type: object
+      properties:
+        correlationId:
+          type: string
+          format: uuid
+        idempotencyKey:
+          minLength: 1
+          type: string
+        paymentMethodType:
+          $ref: '#/components/schemas/MC.Payment.Contracts.Models.PaymentMethodType'
+        paymentMethodId:
+          minLength: 1
+          type: string
+        recordIds:
+          minItems: 1
+          type: array
+          items:
+            type: string
+            format: uuid
       additionalProperties: false
     ProblemDetailsResponse:
       type: object
@@ -283,74 +371,6 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
-    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - Archived
-      - ShortPaid
-      - NeedsReview
-      - Created
-      - Deleted
-      type: string
-    MC.Invoice.API.Dtos.Payments.Requests.PayInvoiceRequest:
-      required:
-      - correlationId
-      - idempotencyKey
-      - paymentMethodId
-      - paymentMethodType
-      - recordIds
-      type: object
-      properties:
-        correlationId:
-          type: string
-          format: uuid
-        idempotencyKey:
-          minLength: 1
-          type: string
-        paymentMethodType:
-          $ref: '#/components/schemas/MC.Payment.Contracts.Models.PaymentMethodType'
-        paymentMethodId:
-          minLength: 1
-          type: string
-        recordIds:
-          minItems: 1
-          type: array
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Payments.Requests.RecordPaymentRequest:
-      required:
-      - invoiceRecordId
-      - paymentDate
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        paymentAmount:
-          type:
-          - number
-          - 'null'
-          format: double
-        paymentDate:
-          type: string
-          format: date-time
-        paymentNotes:
-          type:
-          - string
-          - 'null'
-        createdBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     MC.Invoice.API.Dtos.Payments.Requests.DeletePaymentRequest:
       required:
       - invoiceRecordId

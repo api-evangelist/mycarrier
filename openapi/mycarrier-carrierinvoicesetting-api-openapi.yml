@@ -44,6 +44,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api carrier settings dispute email list
+      x-summary-source: derived
+      operationId: getApiCarrierSettingsDisputeEmailList
+      x-operation-id-source: derived
   /api/CarrierSettings/DisputeEmail/SCAC/{carrierCode}:
     get:
       tags:
@@ -81,6 +85,10 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Get api carrier settings dispute email scac by carrier code
+      x-summary-source: derived
+      operationId: getApiCarrierSettingsDisputeEmailSCACByCarrierCode
+      x-operation-id-source: derived
   /api/CarrierSettings/DisputeEmail/{invoiceRecordId}:
     get:
       tags:
@@ -123,6 +131,10 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Get api carrier settings dispute email by invoice record id
+      x-summary-source: derived
+      operationId: getApiCarrierSettingsDisputeEmailByInvoiceRecordId
+      x-operation-id-source: derived
   /api/CarrierSettings:
     post:
       tags:
@@ -158,6 +170,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api carrier settings
+      x-summary-source: derived
+      operationId: postApiCarrierSettings
+      x-operation-id-source: derived
   /api/CarrierSettings/{carrierCode}:
     delete:
       tags:
@@ -194,6 +210,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Delete api carrier settings by carrier code
+      x-summary-source: derived
+      operationId: deleteApiCarrierSettingsByCarrierCode
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetailsResponse:

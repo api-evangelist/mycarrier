@@ -48,6 +48,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api export template save
+      x-summary-source: derived
+      operationId: postApiExportTemplateSave
+      x-operation-id-source: derived
   /api/Export/Template/List:
     get:
       tags:
@@ -98,6 +102,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Get api export template list
+      x-summary-source: derived
+      operationId: getApiExportTemplateList
+      x-operation-id-source: derived
   /api/Export/Template/{templateId}:
     delete:
       tags:
@@ -139,6 +147,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Delete api export template by template id
+      x-summary-source: derived
+      operationId: deleteApiExportTemplateByTemplateId
+      x-operation-id-source: derived
   /api/Export/Invoices/csv:
     post:
       tags:
@@ -177,6 +189,10 @@ paths:
       deprecated: true
       security:
       - Bearer: []
+      summary: Create api export invoices csv
+      x-summary-source: derived
+      operationId: postApiExportInvoicesCsv
+      x-operation-id-source: derived
   /api/Export/Invoices/pdf:
     post:
       tags:
@@ -214,6 +230,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api export invoices pdf
+      x-summary-source: derived
+      operationId: postApiExportInvoicesPdf
+      x-operation-id-source: derived
   /api/v2/Export/Invoices/csv:
     post:
       tags:
@@ -251,36 +271,36 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api export invoices csv
+      x-summary-source: derived
+      operationId: postApiV2ExportInvoicesCsv
+      x-operation-id-source: derived
 components:
   schemas:
-    ProblemDetailsResponse:
+    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
+      required:
+      - name
       type: object
       properties:
-        type:
+        name:
+          minLength: 1
           type: string
-          description: A URI reference that identifies the problem type
-          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
-        title:
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
+      type: object
+      properties:
+        templateId:
           type: string
-          description: A short, human-readable summary of the problem type
-          example: Bad Request
-        status:
-          type: integer
-          description: The HTTP status code
-          example: 400
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem
-          example: The invoice amount must be greater than zero
-        instance:
-          type: string
-          description: A URI reference that identifies the specific occurrence of the problem
-          example: /api/v1/invoices
-        traceId:
-          type: string
-          description: The OpenTelemetry trace ID for correlating logs and distributed traces
-          example: a1b2c3d4e5f67890abcdef1234567890
-      description: RFC 7807 Problem Details response with traceId for error correlation
+          format: uuid
+      additionalProperties: false
     MC.Invoice.API.Dtos.Export.Request.ExportRequestBase:
       type: object
       properties:
@@ -312,22 +332,24 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
       additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
-      required:
-      - name
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateResponse:
       type: object
       properties:
-        name:
-          minLength: 1
+        templateId:
           type: string
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
-      type: object
-      properties:
+          format: uuid
         name:
           type:
           - string
           - 'null'
+        templateType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.ExportTemplateType'
+        columns:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse'
       additionalProperties: false
     MC.Invoice.API.Dtos.Export.Request.ExportRequest:
       type: object
@@ -354,37 +376,39 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
       additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
-      type: object
-      properties:
-        templateId:
-          type: string
-          format: uuid
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateResponse:
-      type: object
-      properties:
-        templateId:
-          type: string
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-        templateType:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.ExportTemplateType'
-        columns:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse'
-      additionalProperties: false
     MC.Invoice.Data.Mongo.Enums.ExportTemplateType:
       enum:
       - Custom
       - System
       type: string
+    ProblemDetailsResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Bad Request
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: The invoice amount must be greater than zero
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem
+          example: /api/v1/invoices
+        traceId:
+          type: string
+          description: The OpenTelemetry trace ID for correlating logs and distributed traces
+          example: a1b2c3d4e5f67890abcdef1234567890
+      description: RFC 7807 Problem Details response with traceId for error correlation
   securitySchemes:
     Bearer:
       type: http

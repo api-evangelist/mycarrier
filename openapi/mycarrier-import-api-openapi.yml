@@ -46,6 +46,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api import invoices validate
+      x-summary-source: derived
+      operationId: postApiV2ImportInvoicesValidate
+      x-operation-id-source: derived
   /api/v2/import/invoices:
     post:
       tags:
@@ -79,6 +83,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api import invoices
+      x-summary-source: derived
+      operationId: postApiV2ImportInvoices
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetailsResponse:

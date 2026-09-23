@@ -131,6 +131,115 @@ paths:
       - ShippingLocations
 components:
   schemas:
+    MC.Address.Contracts.Models.PublicContracts.AppointmentDetails:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+        pickup:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AddressSettings:
+      additionalProperties: false
+      properties:
+        isAutoAssignProEnabled:
+          description: Indicates whether auto-assign Pro is enabled for this location
+          example: 'true'
+          type: boolean
+        isBillingAddress:
+          description: Indicates whether this is set as a third party billing address
+          example: 'false'
+          type: boolean
+        isBillingAddressOnly:
+          description: Indicates whether this is a billing address only
+          example: 'null'
+          type:
+          - boolean
+          - 'null'
+        isDedicatedThirdParty:
+          description: Indicates whether this is a dedicated third party location
+          example: 'false'
+          type: boolean
+        isShippingLocation:
+          description: Indicates whether this is a shipping location
+          example: 'true'
+          type: boolean
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocation:
+      additionalProperties: false
+      properties:
+        addressId:
+          description: Address ID
+          example: '12345'
+          format: int32
+          type: integer
+        city:
+          description: City
+          example: New York
+          type:
+          - string
+          - 'null'
+        companyName:
+          description: Company name
+          example: Acme Corporation
+          type:
+          - string
+          - 'null'
+        country:
+          description: Country
+          example: USA
+          type:
+          - string
+          - 'null'
+        locationId:
+          description: Location ID
+          example: LOC-123
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal code
+          example: '10001'
+          type:
+          - string
+          - 'null'
+        stateCode:
+          description: State code
+          example: NY
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          description: Street line 1
+          example: 123 Main St
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          description: Street line 2
+          example: Suite 100
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.Accessorial:
+      additionalProperties: false
+      properties:
+        code:
+          description: Accessorial code
+          example: LFTG
+          type:
+          - string
+          - 'null'
+        name:
+          description: Accessorial name
+          example: Liftgate Delivery
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AccessorialType'
+      type: object
     MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse:
       additionalProperties: false
       properties:
@@ -208,68 +317,11 @@ components:
           - string
           - 'null'
       type: object
-    MC.Address.Contracts.Models.PublicContracts.ShippingLocation:
-      additionalProperties: false
-      properties:
-        addressId:
-          description: Address ID
-          example: '12345'
-          format: int32
-          type: integer
-        city:
-          description: City
-          example: New York
-          type:
-          - string
-          - 'null'
-        companyName:
-          description: Company name
-          example: Acme Corporation
-          type:
-          - string
-          - 'null'
-        country:
-          description: Country
-          example: USA
-          type:
-          - string
-          - 'null'
-        locationId:
-          description: Location ID
-          example: LOC-123
-          type:
-          - string
-          - 'null'
-        postalCode:
-          description: Postal code
-          example: '10001'
-          type:
-          - string
-          - 'null'
-        stateCode:
-          description: State code
-          example: NY
-          type:
-          - string
-          - 'null'
-        streetLine1:
-          description: Street line 1
-          example: 123 Main St
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          description: Street line 2
-          example: Suite 100
-          type:
-          - string
-          - 'null'
-      type: object
-    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse
     : additionalProperties: false
       properties:
         data:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse'
         errors:
           description: Response errors
           items:
@@ -283,32 +335,12 @@ components:
           format: int32
           type: integer
       type: object
-    MC.Address.Contracts.Models.PublicContracts.AddressSettings:
-      additionalProperties: false
-      properties:
-        isAutoAssignProEnabled:
-          description: Indicates whether auto-assign Pro is enabled for this location
-          example: 'true'
-          type: boolean
-        isBillingAddress:
-          description: Indicates whether this is set as a third party billing address
-          example: 'false'
-          type: boolean
-        isBillingAddressOnly:
-          description: Indicates whether this is a billing address only
-          example: 'null'
-          type:
-          - boolean
-          - 'null'
-        isDedicatedThirdParty:
-          description: Indicates whether this is a dedicated third party location
-          example: 'false'
-          type: boolean
-        isShippingLocation:
-          description: Indicates whether this is a shipping location
-          example: 'true'
-          type: boolean
-      type: object
+    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
+      enum:
+      - 0
+      - 1
+      format: int32
+      type: integer
     MC.Address.Contracts.Models.PublicContracts.AppointmentWindow:
       additionalProperties: false
       properties:
@@ -327,6 +359,55 @@ components:
         openTime:
           description: Open time
           example: 08:00
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.Contact:
+      additionalProperties: false
+      properties:
+        addressContactId:
+          description: Address contact ID
+          example: '12345'
+          format: int32
+          type: integer
+        email:
+          description: Email address
+          example: john.doe@example.com
+          type:
+          - string
+          - 'null'
+        ext:
+          description: Phone extension
+          example: '123'
+          type:
+          - string
+          - 'null'
+        firstName:
+          description: First name
+          example: John
+          type:
+          - string
+          - 'null'
+        isPrimary:
+          description: Indicates whether this is the primary contact
+          example: 'true'
+          type: boolean
+        lastName:
+          description: Last name
+          example: Doe
+          type:
+          - string
+          - 'null'
+        phone:
+          description: Phone number
+          example: 555-123-4567
+          type:
+          - string
+          - 'null'
+        position:
+          description: Position
+          example: Manager
           type:
           - string
           - 'null'
@@ -396,66 +477,11 @@ components:
           format: int64
           type: integer
       type: object
-    MC.Address.Contracts.Models.PublicContracts.Contact:
-      additionalProperties: false
-      properties:
-        addressContactId:
-          description: Address contact ID
-          example: '12345'
-          format: int32
-          type: integer
-        email:
-          description: Email address
-          example: john.doe@example.com
-          type:
-          - string
-          - 'null'
-        ext:
-          description: Phone extension
-          example: '123'
-          type:
-          - string
-          - 'null'
-        firstName:
-          description: First name
-          example: John
-          type:
-          - string
-          - 'null'
-        isPrimary:
-          description: Indicates whether this is the primary contact
-          example: 'true'
-          type: boolean
-        lastName:
-          description: Last name
-          example: Doe
-          type:
-          - string
-          - 'null'
-        phone:
-          description: Phone number
-          example: 555-123-4567
-          type:
-          - string
-          - 'null'
-        position:
-          description: Position
-          example: Manager
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
-      enum:
-      - 0
-      - 1
-      format: int32
-      type: integer
-    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
     : additionalProperties: false
       properties:
         data:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse'
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
         errors:
           description: Response errors
           items:
@@ -468,30 +494,4 @@ components:
           example: '200'
           format: int32
           type: integer
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.Accessorial:
-      additionalProperties: false
-      properties:
-        code:
-          description: Accessorial code
-          example: LFTG
-          type:
-          - string
-          - 'null'
-        name:
-          description: Accessorial name
-          example: Liftgate Delivery
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AccessorialType'
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.AppointmentDetails:
-      additionalProperties: false
-      properties:
-        delivery:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
-        pickup:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
       type: object

@@ -284,25 +284,6 @@ paths:
       url: https://api.mycarriertms.com
 components:
   schemas:
-    MC.Order.Client.Contracts.Requests.UploadOrder.References:
-      type: object
-      properties:
-        customerBOLNumber:
-          maxLength: 20
-          type: string
-          description: An optional string to specify a unique Bill of Lading number for an order when an order is dispatched
-          example: '456856'
-        poNumber:
-          maxLength: 128
-          type: string
-          description: An optional string to specify a unique PO number for an order when an order is dispatched
-          example: '145255'
-        referenceNumber:
-          maxLength: 20
-          type: string
-          description: An optional string to specify a unique reference number for an order when an order is dispatched
-          example: '75441454'
-      additionalProperties: false
     MC.Order.Client.Contracts.Responses.Result:
       type: object
       properties:
@@ -328,321 +309,6 @@ components:
           - string
           - 'null'
           description: Message text
-      additionalProperties: false
-    MC.Order.Client.Contracts.Requests.UploadOrder.BillingStop:
-      type: object
-      properties:
-        companyName:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the name of the company at the destination stop
-          example: MyCarrier TMS
-        streetLine1:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the primary street address information at the destination stop
-          example: 598 Virginia Street
-        streetLine2:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the secondary street address information at the destination stop
-          example: Apartment 123
-        city:
-          maxLength: 32
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the city at the destination stop
-          example: River Grove
-        state:
-          type: string
-          description: 'Enum (USA): AL, AK, AZ, AR, CA, CO, CT, DE, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH, NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY.<br />Enum (CAN): AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT.<br />An optional string to be used in the absence of a locationId value that specifies a two letter abbreviation of the State or Province at the destination stop'
-          example: IL
-        zip:
-          maxLength: 10
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the Postal code at the destination stop
-          example: '60171'
-        country:
-          enum:
-          - USA
-          - CAN
-          type: string
-          description: Abbreviation of country (using ISO 3166 standards)
-          default: USA
-        locationID:
-          maxLength: 64
-          type: string
-          description: An optional unique string identifier that can be used to specify a destination stop location that is already saved in the MyCarrier platform
-          example: My billing locationId
-        contactFirstName:
-          maxLength: 32
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the first name of the destination stop contact. May be required for some shipments
-          example: Jane
-        contactLastName:
-          maxLength: 32
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the last name of the destination stop contact. May be required for some shipments
-          example: Wright
-        contactEmail:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the email address of the destination stop contact. May be required for some shipments
-          example: jane.wright@test.com
-        contactPhone:
-          maxLength: 15
-          type: string
-          description: An optional non-formatted string to be used in the absence of a locationId value that specifies the telephone number of the destination stop contact. May be required for some shipments
-          example: (555) 555-1234
-        locationType:
-          type:
-          - string
-          - 'null'
-        ext:
-          type:
-          - string
-          - 'null'
-        readyTime:
-          type:
-          - string
-          - 'null'
-        closeTime:
-          type:
-          - string
-          - 'null'
-        instructions:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Order.Client.Contracts.Requests.UploadOrder.OrderUploadRequest:
-      type: object
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Order.Client.Contracts.Requests.UploadOrder.Order'
-          description: The order(s) payload
-      additionalProperties: false
-    MC.Order.Client.Contracts.Responses.Models.EventHistory:
-      type: object
-      properties:
-        status:
-          type:
-          - string
-          - 'null'
-          description: Order status
-        dateTime:
-          type: string
-          description: Date and time
-          format: date-time
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Order.Client.Contracts.Responses.Models.StatusLog'
-          description: Info messages
-      additionalProperties: false
-    MC.Order.Client.Contracts.Requests.UploadOrder.Unit:
-      type: object
-      properties:
-        shippingUnitType:
-          enum:
-          - Bag
-          - Bale
-          - Box
-          - Bucket
-          - Bundle
-          - Carton
-          - Case
-          - Crate
-          - Cylinder
-          - Drums
-          - Pail
-          - Pallet
-          - Pieces
-          - Reel
-          - Roll
-          - Skid
-          - Tote
-          - Tube
-          type: string
-          description: A non-optional string enumeration that specifies the type of handling unit the order will used when an order is quoted or dispatched
-          default: Pallet
-        shippingUnitCount:
-          maxLength: 3
-          type: string
-          description: A non-optional numeric string that specifies the number of handling units of the type, dimensions, and commodity(ies) specified in the shippingUnitType that will be used when an order is quoted or dispatched
-          default: '1'
-          example: '2'
-        unitLength:
-          maxLength: 4
-          type: string
-          description: An optional non-decimal numeric string that specifies the length of the handling unit using the units of measurement specified in the customer’s default settings
-          example: '50'
-        unitWidth:
-          maxLength: 4
-          type: string
-          description: An optional non-decimal numeric string that specifies the width of the handling unit using the units of measurement specified in the customer’s default settings
-          example: '50'
-        unitHeight:
-          maxLength: 4
-          type: string
-          description: An optional non-decimal numeric string that specifies the height of the handling unit using the units of measurement specified in the customer’s default settings
-          example: '50'
-        unitStackable:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string that specifies if the handling units of the type, dimensions, and commodity(ies) specified in the shippingUnitType are stackable when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        quoteCommodities:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Order.Client.Contracts.Requests.UploadOrder.Commodity'
-          description: A non-optional array of objects that specifies the one or more commodities contained in a specific handling unit object
-      additionalProperties: false
-    MC.Order.Client.Contracts.Requests.UploadOrder.Commodity:
-      type: object
-      properties:
-        productID:
-          maxLength: 128
-          type: string
-          description: An optional unique string identifier that can be used to specify a commodity that is already saved in the MyCarrier platform
-          example: My Product ID
-        commodityDescription:
-          maxLength: 499
-          type: string
-          description: An optional string to be used in the absence of a productid that specifies the commodity description for a specific commodity in a specific handling unit
-          example: Some text
-        commodityNMFC:
-          maxLength: 6
-          minLength: 4
-          type: string
-          description: An optional non-decimal numeric string to be used in the absence of a productid that specifies the commodity NMFC code for a specific commodity in a specific handling unit
-          example: '32100'
-        commoditySub:
-          maxLength: 2
-          type: string
-          description: An optional non-decimal numeric string to be used in the absence of a productid that specifies the commodity NMFC item sub code for a specific commodity in a specific handling unit
-          example: '2'
-        commodityClass:
-          enum:
-          - '50'
-          - '55'
-          - '60'
-          - '65'
-          - '70'
-          - '77.5'
-          - '85'
-          - '92.5'
-          - '100'
-          - '110'
-          - '125'
-          - '150'
-          - '175'
-          - '200'
-          - '250'
-          - '300'
-          - '400'
-          - '500'
-          type: string
-          description: A non-optional non-decimal numeric string to be used in the absence of a productid that specifies the commodity class for a specific commodity in a specific handling unit
-        commodityPieces:
-          maxLength: 5
-          type: string
-          description: A non-optional non-decimal numeric string that specifies the number of pieces for a specific commodity in a specific handling unit
-          default: '1'
-          example: '1'
-        commodityWeight:
-          maxLength: 5
-          type: string
-          description: A non-optional non-decimal numeric string to be used in the absence of a productid that specifies the weight for a specific commodity in a specific handling unit using the units of measurement specified in the customer’s default settings
-          example: '100'
-        commodityPackingType:
-          enum:
-          - Bag
-          - Bale
-          - Box
-          - Bucket
-          - Bundle
-          - Carton
-          - Case
-          - Crate
-          - Cylinder
-          - Drums
-          - Pail
-          - Reel
-          - Roll
-          - Tote
-          - Tube
-          type: string
-          description: A non-optional string enumeration that specifies the type of packaging used for a specific commodity in a specific handling unit
-        commodityHazMat:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies that the specific commodity in a specific handling unit is classified as hazardous material
-          default: 'NO'
-          example: 'Yes'
-        hazmatIDNumber:
-          maxLength: 6
-          type: string
-          description: An optional string to be used in conjunction with the commodityHazMat property using the United Nations (UN) or North American (NA) format that specifies the hazardous material identifier for the specific commodity in the specific handling unit
-          example: UN2333
-        hazmatProperShippingName:
-          maxLength: 499
-          type: string
-          description: An optional string to be used in conjunction with the commodityHazMat property that specifies the full proper shipping name for the specific commodity in the specific handling unit
-          example: 1, 3-Dimethylbutylamine
-        hazmatHazardClass:
-          maxLength: 12
-          type: string
-          description: An optional string to be used in conjunction with the commodityHazMat property that specifies the Federal Motor Carrier Safety Administration (FMCSA) hazard class for the specific commodity in the specific handling unit
-          example: '3'
-        hazmatPackingGroup:
-          enum:
-          - I
-          - II
-          - III
-          - NONE
-          type: string
-          description: An optional string enumeration to be used in conjunction with the commodityHazMat property that specifies the hazardous material packing group type indicating the degree of danger for a hazardous material in the specific commodity in the specific handling unit
-        customerOrderNumber:
-          maxLength: 20
-          type: string
-          description: An semi-optional string to be used in conjunction with the isVicsBol property that specifies the Sales Order number of the which the commodity is a line item of to be displayed on the VICs Bill of Lading
-          example: '123456'
-        additionalInfo:
-          maxLength: 43
-          type: string
-          description: An optional string to be used with the isVicsBol property that specifies additional information to be added to the "Additional Shipper Info" in each line item, displayed on the VICs Bill of Lading.
-          example: Additional Info
-        rolledGoodsSquareYards:
-          maxLength: 4
-          minLength: 1
-          type: string
-          description: An optional non-decimal numeric string to be used to specifies the commodity rolled goods value for a specific commodity in a specific handling unit
-          example: '1234'
       additionalProperties: false
     MC.Order.Client.Contracts.Requests.UploadOrder.OriginStop:
       type: object
@@ -756,6 +422,120 @@ components:
           type: string
           description: An optional unique string identifier that can be used to specify a origin stop location that is already saved in the MyCarrier platform
           example: My origin locationId
+      additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.OrderUploadRequest:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Order.Client.Contracts.Requests.UploadOrder.Order'
+          description: The order(s) payload
+      additionalProperties: false
+    MC.Order.Client.Contracts.Responses.Models.EventHistory:
+      type: object
+      properties:
+        status:
+          type:
+          - string
+          - 'null'
+          description: Order status
+        dateTime:
+          type: string
+          description: Date and time
+          format: date-time
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Order.Client.Contracts.Responses.Models.StatusLog'
+          description: Info messages
+      additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.BillingStop:
+      type: object
+      properties:
+        companyName:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the name of the company at the destination stop
+          example: MyCarrier TMS
+        streetLine1:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the primary street address information at the destination stop
+          example: 598 Virginia Street
+        streetLine2:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the secondary street address information at the destination stop
+          example: Apartment 123
+        city:
+          maxLength: 32
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the city at the destination stop
+          example: River Grove
+        state:
+          type: string
+          description: 'Enum (USA): AL, AK, AZ, AR, CA, CO, CT, DE, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH, NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY.<br />Enum (CAN): AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT.<br />An optional string to be used in the absence of a locationId value that specifies a two letter abbreviation of the State or Province at the destination stop'
+          example: IL
+        zip:
+          maxLength: 10
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the Postal code at the destination stop
+          example: '60171'
+        country:
+          enum:
+          - USA
+          - CAN
+          type: string
+          description: Abbreviation of country (using ISO 3166 standards)
+          default: USA
+        locationID:
+          maxLength: 64
+          type: string
+          description: An optional unique string identifier that can be used to specify a destination stop location that is already saved in the MyCarrier platform
+          example: My billing locationId
+        contactFirstName:
+          maxLength: 32
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the first name of the destination stop contact. May be required for some shipments
+          example: Jane
+        contactLastName:
+          maxLength: 32
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the last name of the destination stop contact. May be required for some shipments
+          example: Wright
+        contactEmail:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the email address of the destination stop contact. May be required for some shipments
+          example: jane.wright@test.com
+        contactPhone:
+          maxLength: 15
+          type: string
+          description: An optional non-formatted string to be used in the absence of a locationId value that specifies the telephone number of the destination stop contact. May be required for some shipments
+          example: (555) 555-1234
+        locationType:
+          type:
+          - string
+          - 'null'
+        ext:
+          type:
+          - string
+          - 'null'
+        readyTime:
+          type:
+          - string
+          - 'null'
+        closeTime:
+          type:
+          - string
+          - 'null'
+        instructions:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
     MC.Order.Client.Contracts.Requests.UploadOrder.Order:
       required:
@@ -1000,6 +780,471 @@ components:
             $ref: '#/components/schemas/MC.Order.Client.Contracts.Requests.UploadOrder.Unit'
           description: A non-optional array of objects that specifies the one or more handling units of different types with different commodities a order contains when an order is quoted or dispatched
       additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.DestinationStop:
+      type: object
+      properties:
+        companyName:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the name of the company at the destination stop
+          example: MyCarrier TMS
+        streetLine1:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the primary street address information at the destination stop
+          example: 598 Virginia Street
+        streetLine2:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the secondary street address information at the destination stop
+          example: Apartment 123
+        city:
+          maxLength: 32
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the city at the destination stop
+          example: River Grove
+        state:
+          type: string
+          description: 'Enum (USA): AL, AK, AZ, AR, CA, CO, CT, DE, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH, NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY.<br />Enum (CAN): AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT.<br />An optional string to be used in the absence of a locationId value that specifies a two letter abbreviation of the State or Province at the destination stop'
+          example: IL
+        zip:
+          maxLength: 10
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the Postal code at the destination stop
+          example: '60171'
+        country:
+          enum:
+          - USA
+          - CAN
+          type: string
+          description: Abbreviation of country (using ISO 3166 standards)
+          default: USA
+        locationType:
+          enum:
+          - Business
+          - Residential
+          - Trade Show
+          - Airport
+          - Camp
+          - Church
+          - Construction Site
+          - Country Club
+          - Fair/Amusement/Park
+          - Farm
+          - Government Site
+          - Grocery Warehouse
+          - Hospital
+          - Hotel
+          - Limited Access
+          - Military Installation
+          - Mine Site
+          - Native American Reservation
+          - Nursing Home
+          - Pier
+          - Prison
+          - Resort
+          - School
+          - Self-Storage
+          - Utility Site
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the type of location at the destination stop for identification of limited access locations
+          default: Business
+        contactFirstName:
+          maxLength: 32
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the first name of the destination stop contact. May be required for some shipments
+          example: Jane
+        contactLastName:
+          maxLength: 32
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the last name of the destination stop contact. May be required for some shipments
+          example: Wright
+        contactEmail:
+          maxLength: 64
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies the email address of the destination stop contact. May be required for some shipments
+          example: jane.wright@test.com
+        contactPhone:
+          maxLength: 15
+          type: string
+          description: An optional non-formatted string to be used in the absence of a locationId value that specifies the telephone number of the destination stop contact. May be required for some shipments
+          example: (555) 555-1234
+        ext:
+          maxLength: 4
+          type: string
+          description: An optional numeric only string to be used in the absence of a locationId value that specifies the telephone extension of the destination stop contact if applicable
+          example: '30'
+        readyTime:
+          type: string
+          description: An optional formatted string to be used in the absence of a locationId value that specifies the time of day local to the destination stop that the destination stop is open to pickups in HH:mm AM or HH:mm PM format
+          example: 9:00 AM
+        closeTime:
+          type: string
+          description: An optional formatted string to be used in the absence of a locationId value that specifies the time of day local to the destination stop that the destination stop is closed to pickups in HH:mm AM or HH:mm PM format
+          example: 4:00 PM
+        instructions:
+          maxLength: 100
+          type: string
+          description: An optional string to be used in the absence of a locationId value that specifies any additional instructions for pickup at the destination stop
+          example: Some instruction notes
+        locationID:
+          maxLength: 64
+          type: string
+          description: An optional unique string identifier that can be used to specify a destination stop location that is already saved in the MyCarrier platform
+          example: My destination locationId
+      additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.Unit:
+      type: object
+      properties:
+        shippingUnitType:
+          enum:
+          - Bag
+          - Bale
+          - Box
+          - Bucket
+          - Bundle
+          - Carton
+          - Case
+          - Crate
+          - Cylinder
+          - Drums
+          - Pail
+          - Pallet
+          - Pieces
+          - Reel
+          - Roll
+          - Skid
+          - Tote
+          - Tube
+          type: string
+          description: A non-optional string enumeration that specifies the type of handling unit the order will used when an order is quoted or dispatched
+          default: Pallet
+        shippingUnitCount:
+          maxLength: 3
+          type: string
+          description: A non-optional numeric string that specifies the number of handling units of the type, dimensions, and commodity(ies) specified in the shippingUnitType that will be used when an order is quoted or dispatched
+          default: '1'
+          example: '2'
+        unitLength:
+          maxLength: 4
+          type: string
+          description: An optional non-decimal numeric string that specifies the length of the handling unit using the units of measurement specified in the customer’s default settings
+          example: '50'
+        unitWidth:
+          maxLength: 4
+          type: string
+          description: An optional non-decimal numeric string that specifies the width of the handling unit using the units of measurement specified in the customer’s default settings
+          example: '50'
+        unitHeight:
+          maxLength: 4
+          type: string
+          description: An optional non-decimal numeric string that specifies the height of the handling unit using the units of measurement specified in the customer’s default settings
+          example: '50'
+        unitStackable:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string that specifies if the handling units of the type, dimensions, and commodity(ies) specified in the shippingUnitType are stackable when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        quoteCommodities:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Order.Client.Contracts.Requests.UploadOrder.Commodity'
+          description: A non-optional array of objects that specifies the one or more commodities contained in a specific handling unit object
+      additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.References:
+      type: object
+      properties:
+        customerBOLNumber:
+          maxLength: 20
+          type: string
+          description: An optional string to specify a unique Bill of Lading number for an order when an order is dispatched
+          example: '456856'
+        poNumber:
+          maxLength: 128
+          type: string
+          description: An optional string to specify a unique PO number for an order when an order is dispatched
+          example: '145255'
+        referenceNumber:
+          maxLength: 20
+          type: string
+          description: An optional string to specify a unique reference number for an order when an order is dispatched
+          example: '75441454'
+      additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.Commodity:
+      type: object
+      properties:
+        productID:
+          maxLength: 128
+          type: string
+          description: An optional unique string identifier that can be used to specify a commodity that is already saved in the MyCarrier platform
+          example: My Product ID
+        commodityDescription:
+          maxLength: 499
+          type: string
+          description: An optional string to be used in the absence of a productid that specifies the commodity description for a specific commodity in a specific handling unit
+          example: Some text
+        commodityNMFC:
+          maxLength: 6
+          minLength: 4
+          type: string
+          description: An optional non-decimal numeric string to be used in the absence of a productid that specifies the commodity NMFC code for a specific commodity in a specific handling unit
+          example: '32100'
+        commoditySub:
+          maxLength: 2
+          type: string
+          description: An optional non-decimal numeric string to be used in the absence of a productid that specifies the commodity NMFC item sub code for a specific commodity in a specific handling unit
+          example: '2'
+        commodityClass:
+          enum:
+          - '50'
+          - '55'
+          - '60'
+          - '65'
+          - '70'
+          - '77.5'
+          - '85'
+          - '92.5'
+          - '100'
+          - '110'
+          - '125'
+          - '150'
+          - '175'
+          - '200'
+          - '250'
+          - '300'
+          - '400'
+          - '500'
+          type: string
+          description: A non-optional non-decimal numeric string to be used in the absence of a productid that specifies the commodity class for a specific commodity in a specific handling unit
+        commodityPieces:
+          maxLength: 5
+          type: string
+          description: A non-optional non-decimal numeric string that specifies the number of pieces for a specific commodity in a specific handling unit
+          default: '1'
+          example: '1'
+        commodityWeight:
+          maxLength: 5
+          type: string
+          description: A non-optional non-decimal numeric string to be used in the absence of a productid that specifies the weight for a specific commodity in a specific handling unit using the units of measurement specified in the customer’s default settings
+          example: '100'
+        commodityPackingType:
+          enum:
+          - Bag
+          - Bale
+          - Box
+          - Bucket
+          - Bundle
+          - Carton
+          - Case
+          - Crate
+          - Cylinder
+          - Drums
+          - Pail
+          - Reel
+          - Roll
+          - Tote
+          - Tube
+          type: string
+          description: A non-optional string enumeration that specifies the type of packaging used for a specific commodity in a specific handling unit
+        commodityHazMat:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies that the specific commodity in a specific handling unit is classified as hazardous material
+          default: 'NO'
+          example: 'Yes'
+        hazmatIDNumber:
+          maxLength: 6
+          type: string
+          description: An optional string to be used in conjunction with the commodityHazMat property using the United Nations (UN) or North American (NA) format that specifies the hazardous material identifier for the specific commodity in the specific handling unit
+          example: UN2333
+        hazmatProperShippingName:
+          maxLength: 499
+          type: string
+          description: An optional string to be used in conjunction with the commodityHazMat property that specifies the full proper shipping name for the specific commodity in the specific handling unit
+          example: 1, 3-Dimethylbutylamine
+        hazmatHazardClass:
+          maxLength: 12
+          type: string
+          description: An optional string to be used in conjunction with the commodityHazMat property that specifies the Federal Motor Carrier Safety Administration (FMCSA) hazard class for the specific commodity in the specific handling unit
+          example: '3'
+        hazmatPackingGroup:
+          enum:
+          - I
+          - II
+          - III
+          - NONE
+          type: string
+          description: An optional string enumeration to be used in conjunction with the commodityHazMat property that specifies the hazardous material packing group type indicating the degree of danger for a hazardous material in the specific commodity in the specific handling unit
+        customerOrderNumber:
+          maxLength: 20
+          type: string
+          description: An semi-optional string to be used in conjunction with the isVicsBol property that specifies the Sales Order number of the which the commodity is a line item of to be displayed on the VICs Bill of Lading
+          example: '123456'
+        additionalInfo:
+          maxLength: 43
+          type: string
+          description: An optional string to be used with the isVicsBol property that specifies additional information to be added to the "Additional Shipper Info" in each line item, displayed on the VICs Bill of Lading.
+          example: Additional Info
+        rolledGoodsSquareYards:
+          maxLength: 4
+          minLength: 1
+          type: string
+          description: An optional non-decimal numeric string to be used to specifies the commodity rolled goods value for a specific commodity in a specific handling unit
+          example: '1234'
+      additionalProperties: false
+    MC.Order.Client.Contracts.Requests.UploadOrder.DestinationAccessorials:
+      type: object
+      properties:
+        notifyBeforeDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to notify the destination recipient before a delivery is attempted when an order is quoted or dispatched
+          default: 'NO'
+          example: 'Yes'
+        liftgateDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform an liftgate delivery when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        sortOrSegregateDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to sort or segregate the shipment from when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        insideDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform an inside delivery when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        deliveryAppointment:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to schedule an delivery appointment when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        thresholdDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform a threshold delivery when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        whiteGloveDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform a white glove delivery when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+        twoPersonDelivery:
+          enum:
+          - 'YES'
+          - 'NO'
+          - 'TRUE'
+          - 'FALSE'
+          - Y
+          - N
+          - T
+          - F
+          - '1'
+          - '0'
+          type: string
+          description: An optional string enumeration that specifies whether an order destination stop requires two person delivery when an order is quoted or dispatched
+          default: 'NO'
+          example: 'No'
+      additionalProperties: false
     MC.Order.Client.Contracts.Requests.UploadOrder.OriginAccessorials:
       type: object
       properties:
@@ -1198,251 +1443,6 @@ components:
           items:
             $ref: '#/components/schemas/MC.Order.Client.Contracts.Responses.Models.EventHistory'
           description: Status history for last upload of the order
-      additionalProperties: false
-    MC.Order.Client.Contracts.Requests.UploadOrder.DestinationAccessorials:
-      type: object
-      properties:
-        notifyBeforeDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to notify the destination recipient before a delivery is attempted when an order is quoted or dispatched
-          default: 'NO'
-          example: 'Yes'
-        liftgateDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform an liftgate delivery when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        sortOrSegregateDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to sort or segregate the shipment from when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        insideDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform an inside delivery when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        deliveryAppointment:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to schedule an delivery appointment when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        thresholdDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform a threshold delivery when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        whiteGloveDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires the carrier to perform a white glove delivery when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-        twoPersonDelivery:
-          enum:
-          - 'YES'
-          - 'NO'
-          - 'TRUE'
-          - 'FALSE'
-          - Y
-          - N
-          - T
-          - F
-          - '1'
-          - '0'
-          type: string
-          description: An optional string enumeration that specifies whether an order destination stop requires two person delivery when an order is quoted or dispatched
-          default: 'NO'
-          example: 'No'
-      additionalProperties: false
-    MC.Order.Client.Contracts.Requests.UploadOrder.DestinationStop:
-      type: object
-      properties:
-        companyName:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the name of the company at the destination stop
-          example: MyCarrier TMS
-        streetLine1:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the primary street address information at the destination stop
-          example: 598 Virginia Street
-        streetLine2:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the secondary street address information at the destination stop
-          example: Apartment 123
-        city:
-          maxLength: 32
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the city at the destination stop
-          example: River Grove
-        state:
-          type: string
-          description: 'Enum (USA): AL, AK, AZ, AR, CA, CO, CT, DE, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH, NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY.<br />Enum (CAN): AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT.<br />An optional string to be used in the absence of a locationId value that specifies a two letter abbreviation of the State or Province at the destination stop'
-          example: IL
-        zip:
-          maxLength: 10
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the Postal code at the destination stop
-          example: '60171'
-        country:
-          enum:
-          - USA
-          - CAN
-          type: string
-          description: Abbreviation of country (using ISO 3166 standards)
-          default: USA
-        locationType:
-          enum:
-          - Business
-          - Residential
-          - Trade Show
-          - Airport
-          - Camp
-          - Church
-          - Construction Site
-          - Country Club
-          - Fair/Amusement/Park
-          - Farm
-          - Government Site
-          - Grocery Warehouse
-          - Hospital
-          - Hotel
-          - Limited Access
-          - Military Installation
-          - Mine Site
-          - Native American Reservation
-          - Nursing Home
-          - Pier
-          - Prison
-          - Resort
-          - School
-          - Self-Storage
-          - Utility Site
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the type of location at the destination stop for identification of limited access locations
-          default: Business
-        contactFirstName:
-          maxLength: 32
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the first name of the destination stop contact. May be required for some shipments
-          example: Jane
-        contactLastName:
-          maxLength: 32
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the last name of the destination stop contact. May be required for some shipments
-          example: Wright
-        contactEmail:
-          maxLength: 64
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies the email address of the destination stop contact. May be required for some shipments
-          example: jane.wright@test.com
-        contactPhone:
-          maxLength: 15
-          type: string
-          description: An optional non-formatted string to be used in the absence of a locationId value that specifies the telephone number of the destination stop contact. May be required for some shipments
-          example: (555) 555-1234
-        ext:
-          maxLength: 4
-          type: string
-          description: An optional numeric only string to be used in the absence of a locationId value that specifies the telephone extension of the destination stop contact if applicable
-          example: '30'
-        readyTime:
-          type: string
-          description: An optional formatted string to be used in the absence of a locationId value that specifies the time of day local to the destination stop that the destination stop is open to pickups in HH:mm AM or HH:mm PM format
-          example: 9:00 AM
-        closeTime:
-          type: string
-          description: An optional formatted string to be used in the absence of a locationId value that specifies the time of day local to the destination stop that the destination stop is closed to pickups in HH:mm AM or HH:mm PM format
-          example: 4:00 PM
-        instructions:
-          maxLength: 100
-          type: string
-          description: An optional string to be used in the absence of a locationId value that specifies any additional instructions for pickup at the destination stop
-          example: Some instruction notes
-        locationID:
-          maxLength: 64
-          type: string
-          description: An optional unique string identifier that can be used to specify a destination stop location that is already saved in the MyCarrier platform
-          example: My destination locationId
       additionalProperties: false
   securitySchemes:
     BasicAuth:

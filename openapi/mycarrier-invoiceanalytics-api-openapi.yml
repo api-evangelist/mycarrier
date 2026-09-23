@@ -48,6 +48,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api invoice analytics overcharges
+      x-summary-source: derived
+      operationId: postApiInvoiceAnalyticsOvercharges
+      x-operation-id-source: derived
   /api/InvoiceAnalytics/CarrierPerformance:
     post:
       tags:
@@ -89,6 +93,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api invoice analytics carrier performance
+      x-summary-source: derived
+      operationId: postApiInvoiceAnalyticsCarrierPerformance
+      x-operation-id-source: derived
   /api/InvoiceAnalytics/ApprovalAndDisputeFrequency:
     post:
       tags:
@@ -130,6 +138,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api invoice analytics approval and dispute frequency
+      x-summary-source: derived
+      operationId: postApiInvoiceAnalyticsApprovalAndDisputeFrequency
+      x-operation-id-source: derived
   /api/InvoiceAnalytics/OverchargeFrequency:
     post:
       tags:
@@ -171,6 +183,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api invoice analytics overcharge frequency
+      x-summary-source: derived
+      operationId: postApiInvoiceAnalyticsOverchargeFrequency
+      x-operation-id-source: derived
   /api/InvoiceAnalytics/Summary:
     post:
       tags:
@@ -208,23 +224,53 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
       security:
       - Bearer: []
+      summary: Create api invoice analytics summary
+      x-summary-source: derived
+      operationId: postApiInvoiceAnalyticsSummary
+      x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsResponse:
+    MC.Invoice.API.Dtos.Analytics.InvoiceAnalyticsFilterRequest:
+      required:
+      - from
       type: object
       properties:
-        approvalItems:
+        from:
+          type: string
+          format: date-time
+        to:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        carriers:
           type:
           - array
           - 'null'
           items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsItem'
-        disputeItems:
+            type: string
+        excludeOrphaned:
           type:
-          - array
+          - boolean
           - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsItem'
+        top:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsItem:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        total:
+          type: number
+          format: double
+        overcharged:
+          type: number
+          format: double
       additionalProperties: false
     MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesFrequencyAnalyticsResponse:
       type: object
@@ -262,17 +308,6 @@ components:
           - 'null'
           format: double
       additionalProperties: false
-    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesFrequencyAnalyticsItem:
-      type: object
-      properties:
-        carrier:
-          type:
-          - string
-          - 'null'
-        overcharged:
-          type: number
-          format: double
-      additionalProperties: false
     MC.Invoice.API.Dtos.Analytics.Responses.InvoiceCarrierPerformanceAnalyticsItem:
       type: object
       properties:
@@ -295,6 +330,38 @@ components:
         disputeCount:
           type: integer
           format: int32
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsResponse:
+      type: object
+      properties:
+        quantityItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsItem'
+        costItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsItem'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsResponse:
+      type: object
+      properties:
+        approvalItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsItem'
+        disputeItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsItem'
       additionalProperties: false
     ProblemDetailsResponse:
       type: object
@@ -324,85 +391,6 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
-    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsCarrierItem:
-      type: object
-      properties:
-        carrier:
-          type:
-          - string
-          - 'null'
-        total:
-          type: integer
-          format: int32
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Analytics.InvoiceAnalyticsFilterRequest:
-      required:
-      - from
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-        to:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        carriers:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        excludeOrphaned:
-          type:
-          - boolean
-          - 'null'
-        top:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceCarrierPerformanceAnalyticsResponse:
-      type: object
-      properties:
-        items:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceCarrierPerformanceAnalyticsItem'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsResponse:
-      type: object
-      properties:
-        quantityItems:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsItem'
-        costItems:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsItem'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesAnalyticsItem:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date-time
-        total:
-          type: number
-          format: double
-        overcharged:
-          type: number
-          format: double
-      additionalProperties: false
     MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsItem:
       type: object
       properties:
@@ -419,6 +407,38 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsCarrierItem'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceOverchargesFrequencyAnalyticsItem:
+      type: object
+      properties:
+        carrier:
+          type:
+          - string
+          - 'null'
+        overcharged:
+          type: number
+          format: double
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceApprovalAndDisputeFrequencyAnalyticsCarrierItem:
+      type: object
+      properties:
+        carrier:
+          type:
+          - string
+          - 'null'
+        total:
+          type: integer
+          format: int32
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Analytics.Responses.InvoiceCarrierPerformanceAnalyticsResponse:
+      type: object
+      properties:
+        items:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Analytics.Responses.InvoiceCarrierPerformanceAnalyticsItem'
       additionalProperties: false
   securitySchemes:
     Bearer:

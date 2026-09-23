@@ -49,6 +49,10 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailsResponse'
+      summary: Get api by environment customer by customer id transaction by transaction id…
+      x-summary-source: derived
+      operationId: getApiV1ByEnvironmentCustomerByCustomerIdTransactionByTransactionIdReceipt
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetailsResponse:

@@ -31,6 +31,8 @@ paths:
                 $ref: '#/components/schemas/WebhookType'
       security:
       - Bearer: []
+      operationId: getWebhookTypeByName
+      x-operation-id-source: derived
     delete:
       tags:
       - WebhookType
@@ -46,6 +48,8 @@ paths:
           description: The WebhookType was deleted
       security:
       - Bearer: []
+      operationId: deleteWebhookTypeByName
+      x-operation-id-source: derived
     put:
       tags:
       - WebhookType
@@ -111,6 +115,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
       security:
       - Bearer: []
+      operationId: putWebhookTypeByName
+      x-operation-id-source: derived
   /WebhookType:
     get:
       tags:
@@ -137,6 +143,8 @@ paths:
                   $ref: '#/components/schemas/WebhookType'
       security:
       - Bearer: []
+      operationId: getWebhookType
+      x-operation-id-source: derived
     post:
       tags:
       - WebhookType
@@ -183,6 +191,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
       security:
       - Bearer: []
+      operationId: postWebhookType
+      x-operation-id-source: derived
 components:
   schemas:
     ProblemDetails:
