@@ -103,6 +103,41 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest:
+      required:
+      - content
+      - invoiceRecordId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        content:
+          maxLength: 300
+          minLength: 1
+          type: string
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest:
+      required:
+      - invoiceRecordId
+      - noteId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        noteId:
+          type: string
+          format: uuid
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     Microsoft.AspNetCore.Mvc.ProblemDetails:
       type: object
       properties:
@@ -128,41 +163,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest:
-      required:
-      - invoiceRecordId
-      - noteId
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        noteId:
-          type: string
-          format: uuid
-        requestedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest:
-      required:
-      - content
-      - invoiceRecordId
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        content:
-          maxLength: 300
-          minLength: 1
-          type: string
-        requestedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
   securitySchemes:
     BasicAuth:
       type: http

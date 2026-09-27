@@ -209,11 +209,71 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.Data.Enums.InvoiceArchivingType:
+    MC.Invoice.Data.Enums.IntegrationInvoiceStatusType:
       enum:
-      - Unarchive
-      - Archive
+      - Open
+      - Approved
+      - Paid
+      - ShortPaid
       type: string
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        contactName:
+          type:
+          - string
+          - 'null'
+        contactEmail:
+          type:
+          - string
+          - 'null'
+        contactPhone:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline:
+      type: object
+      properties:
+        estimatedDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actualDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
     MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity:
       type: object
       properties:
@@ -276,6 +336,50 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    MC.Invoice.Data.Enums.InvoiceArchivingType:
+      enum:
+      - Unarchive
+      - Archive
+      type: string
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_CreateInvoiceShipment:
+      required:
+      - carrierProNumber
+      type: object
+      properties:
+        carrierProNumber:
+          minLength: 1
+          type: string
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        poNumber:
+          type:
+          - string
+          - 'null'
+        delivery:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline'
+        pickup:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline'
+        shipperInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo'
+        consigneeInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo'
+        requesterInfo:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress'
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity'
+        lineItems:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Entities.ShipmentPriceDetail'
+      additionalProperties: false
     Microsoft.AspNetCore.Mvc.ProblemDetails:
       type: object
       properties:
@@ -301,52 +405,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline:
-      type: object
-      properties:
-        estimatedDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        actualDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress:
-      type: object
-      properties:
-        companyName:
-          type:
-          - string
-          - 'null'
-        streetLine1:
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
-          type:
-          - string
-          - 'null'
-        country:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest:
       required:
       - carrierCode
@@ -388,53 +446,7 @@ components:
           minLength: 1
           type: string
       additionalProperties: false
-    MC.Invoice.Data.Enums.IntegrationInvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Paid
-      - ShortPaid
-      type: string
-    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_CreateInvoiceShipment:
-      required:
-      - carrierProNumber
-      type: object
-      properties:
-        carrierProNumber:
-          minLength: 1
-          type: string
-        customerBOLNumber:
-          type:
-          - string
-          - 'null'
-        poNumber:
-          type:
-          - string
-          - 'null'
-        delivery:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline'
-        pickup:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline'
-        shipperInfo:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo'
-        consigneeInfo:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo'
-        requesterInfo:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress'
-        commodities:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity'
-        lineItems:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Entities.ShipmentPriceDetail'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo:
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress:
       type: object
       properties:
         companyName:
@@ -462,18 +474,6 @@ components:
           - string
           - 'null'
         country:
-          type:
-          - string
-          - 'null'
-        contactName:
-          type:
-          - string
-          - 'null'
-        contactEmail:
-          type:
-          - string
-          - 'null'
-        contactPhone:
           type:
           - string
           - 'null'

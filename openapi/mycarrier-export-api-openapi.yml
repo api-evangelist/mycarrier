@@ -277,41 +277,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          minLength: 1
-          type: string
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
-      type: object
-      properties:
-        templateId:
-          type: string
-          format: uuid
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Request.ExportRequestBase:
-      type: object
-      properties:
-        recordIds:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
     MC.Invoice.API.Dtos.Export.Request.ExportTemplateRequest:
       required:
       - columns
@@ -332,6 +297,18 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
       additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.ExportTemplateType:
+      enum:
+      - Custom
+      - System
+      type: string
     MC.Invoice.API.Dtos.Export.Response.ExportTemplateResponse:
       type: object
       properties:
@@ -376,11 +353,26 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.ExportTemplateType:
-      enum:
-      - Custom
-      - System
-      type: string
+    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Request.ExportRequestBase:
+      type: object
+      properties:
+        recordIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
     ProblemDetailsResponse:
       type: object
       properties:
@@ -409,6 +401,14 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

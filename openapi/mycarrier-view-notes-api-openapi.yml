@@ -64,6 +64,24 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceNoteResponse:
+      type: object
+      properties:
+        noteId:
+          type: string
+          format: uuid
+        updatedAt:
+          type: string
+          format: date-time
+        content:
+          type:
+          - string
+          - 'null'
+        userName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     Microsoft.AspNetCore.Mvc.ProblemDetails:
       type: object
       properties:
@@ -89,24 +107,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceNoteResponse:
-      type: object
-      properties:
-        noteId:
-          type: string
-          format: uuid
-        updatedAt:
-          type: string
-          format: date-time
-        content:
-          type:
-          - string
-          - 'null'
-        userName:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
   securitySchemes:
     BasicAuth:
       type: http

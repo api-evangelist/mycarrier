@@ -131,6 +131,79 @@ paths:
       - ShippingLocations
 components:
   schemas:
+    MC.Address.Contracts.Models.PublicContracts.Contact:
+      additionalProperties: false
+      properties:
+        addressContactId:
+          description: Address contact ID
+          example: '12345'
+          format: int32
+          type: integer
+        email:
+          description: Email address
+          example: john.doe@example.com
+          type:
+          - string
+          - 'null'
+        ext:
+          description: Phone extension
+          example: '123'
+          type:
+          - string
+          - 'null'
+        firstName:
+          description: First name
+          example: John
+          type:
+          - string
+          - 'null'
+        isPrimary:
+          description: Indicates whether this is the primary contact
+          example: 'true'
+          type: boolean
+        lastName:
+          description: Last name
+          example: Doe
+          type:
+          - string
+          - 'null'
+        phone:
+          description: Phone number
+          example: 555-123-4567
+          type:
+          - string
+          - 'null'
+        position:
+          description: Position
+          example: Manager
+          type:
+          - string
+          - 'null'
+      type: object
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse
+    : additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse'
+        errors:
+          description: Response errors
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
+      enum:
+      - 0
+      - 1
+      format: int32
+      type: integer
     MC.Address.Contracts.Models.PublicContracts.AppointmentDetails:
       additionalProperties: false
       properties:
@@ -138,6 +211,148 @@ components:
           $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
         pickup:
           $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse:
+      additionalProperties: false
+      properties:
+        accessorials:
+          description: Accessorial services
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.Accessorial'
+          type:
+          - array
+          - 'null'
+        addressLine1:
+          description: Address line 1
+          example: 123 Main St
+          type:
+          - string
+          - 'null'
+        addressLine2:
+          description: Address line 2
+          example: Suite 200
+          type:
+          - string
+          - 'null'
+        appointmentDetails:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentDetails'
+        city:
+          description: City
+          example: Salt Lake City
+          type:
+          - string
+          - 'null'
+        contacts:
+          description: Contact information
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.Contact'
+          type:
+          - array
+          - 'null'
+        country:
+          description: Country
+          example: USA
+          type:
+          - string
+          - 'null'
+        integratedCarriers:
+          description: Integrated carrier configurations
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.IntegratedCarrier'
+          type:
+          - array
+          - 'null'
+        locationId:
+          description: Location ID
+          example: LOC-UT-001
+          type:
+          - string
+          - 'null'
+        name:
+          description: Location name
+          example: Acme Distribution
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal code
+          example: '84101'
+          type:
+          - string
+          - 'null'
+        settings:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AddressSettings'
+        stateProvince:
+          description: State or province code
+          example: UT
+          type:
+          - string
+          - 'null'
+      type: object
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
+    : additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
+        errors:
+          description: Response errors
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.AppointmentWindow:
+      additionalProperties: false
+      properties:
+        closeTime:
+          description: Close time
+          example: '17:00'
+          type:
+          - string
+          - 'null'
+        instructions:
+          description: Instructions
+          example: Deliver to receiving entrance. Appointment required.
+          type:
+          - string
+          - 'null'
+        openTime:
+          description: Open time
+          example: 08:00
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse:
+      additionalProperties: false
+      properties:
+        isTruncated:
+          description: Indicates whether the results are truncated
+          example: 'true'
+          type: boolean
+        returnedCount:
+          description: Number of returned results
+          example: '10'
+          format: int64
+          type: integer
+        shippingLocations:
+          description: Shipping locations
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocation'
+          type:
+          - array
+          - 'null'
+        totalCount:
+          description: Total count of results
+          example: '100'
+          format: int64
+          type: integer
       type: object
     MC.Address.Contracts.Models.PublicContracts.AddressSettings:
       additionalProperties: false
@@ -240,178 +455,6 @@ components:
         type:
           $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AccessorialType'
       type: object
-    MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse:
-      additionalProperties: false
-      properties:
-        accessorials:
-          description: Accessorial services
-          items:
-            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.Accessorial'
-          type:
-          - array
-          - 'null'
-        addressLine1:
-          description: Address line 1
-          example: 123 Main St
-          type:
-          - string
-          - 'null'
-        addressLine2:
-          description: Address line 2
-          example: Suite 200
-          type:
-          - string
-          - 'null'
-        appointmentDetails:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentDetails'
-        city:
-          description: City
-          example: Salt Lake City
-          type:
-          - string
-          - 'null'
-        contacts:
-          description: Contact information
-          items:
-            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.Contact'
-          type:
-          - array
-          - 'null'
-        country:
-          description: Country
-          example: USA
-          type:
-          - string
-          - 'null'
-        integratedCarriers:
-          description: Integrated carrier configurations
-          items:
-            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.IntegratedCarrier'
-          type:
-          - array
-          - 'null'
-        locationId:
-          description: Location ID
-          example: LOC-UT-001
-          type:
-          - string
-          - 'null'
-        name:
-          description: Location name
-          example: Acme Distribution
-          type:
-          - string
-          - 'null'
-        postalCode:
-          description: Postal code
-          example: '84101'
-          type:
-          - string
-          - 'null'
-        settings:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AddressSettings'
-        stateProvince:
-          description: State or province code
-          example: UT
-          type:
-          - string
-          - 'null'
-      type: object
-    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse
-    : additionalProperties: false
-      properties:
-        data:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse'
-        errors:
-          description: Response errors
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          description: Response status code
-          example: '200'
-          format: int32
-          type: integer
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
-      enum:
-      - 0
-      - 1
-      format: int32
-      type: integer
-    MC.Address.Contracts.Models.PublicContracts.AppointmentWindow:
-      additionalProperties: false
-      properties:
-        closeTime:
-          description: Close time
-          example: '17:00'
-          type:
-          - string
-          - 'null'
-        instructions:
-          description: Instructions
-          example: Deliver to receiving entrance. Appointment required.
-          type:
-          - string
-          - 'null'
-        openTime:
-          description: Open time
-          example: 08:00
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.Contact:
-      additionalProperties: false
-      properties:
-        addressContactId:
-          description: Address contact ID
-          example: '12345'
-          format: int32
-          type: integer
-        email:
-          description: Email address
-          example: john.doe@example.com
-          type:
-          - string
-          - 'null'
-        ext:
-          description: Phone extension
-          example: '123'
-          type:
-          - string
-          - 'null'
-        firstName:
-          description: First name
-          example: John
-          type:
-          - string
-          - 'null'
-        isPrimary:
-          description: Indicates whether this is the primary contact
-          example: 'true'
-          type: boolean
-        lastName:
-          description: Last name
-          example: Doe
-          type:
-          - string
-          - 'null'
-        phone:
-          description: Phone number
-          example: 555-123-4567
-          type:
-          - string
-          - 'null'
-        position:
-          description: Position
-          example: Manager
-          type:
-          - string
-          - 'null'
-      type: object
     MC.Address.Contracts.Models.PublicContracts.IntegratedCarrier:
       additionalProperties: false
       properties:
@@ -451,47 +494,4 @@ components:
           type:
           - string
           - 'null'
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse:
-      additionalProperties: false
-      properties:
-        isTruncated:
-          description: Indicates whether the results are truncated
-          example: 'true'
-          type: boolean
-        returnedCount:
-          description: Number of returned results
-          example: '10'
-          format: int64
-          type: integer
-        shippingLocations:
-          description: Shipping locations
-          items:
-            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocation'
-          type:
-          - array
-          - 'null'
-        totalCount:
-          description: Total count of results
-          example: '100'
-          format: int64
-          type: integer
-      type: object
-    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
-    : additionalProperties: false
-      properties:
-        data:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
-        errors:
-          description: Response errors
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          description: Response status code
-          example: '200'
-          format: int32
-          type: integer
       type: object

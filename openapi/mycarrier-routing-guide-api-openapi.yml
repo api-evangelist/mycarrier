@@ -292,63 +292,6 @@ paths:
       - Routing Guide
 components:
   schemas:
-    MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object:
-      additionalProperties: false
-      properties:
-        data: {}
-        errors:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          format: int32
-          type: integer
-      type: object
-    MC.RoutingGuide.Client.Contracts.Requests.PublicMatchRoutingGuideRequestDto:
-      additionalProperties: false
-      description: Atleast any one of these parameters should be provided
-      properties:
-        destinationState:
-          description: DestinationState used to match against saved routing guide rules
-          type: string
-        destinationZip:
-          description: DestinationZip used to match against saved routing guide rules
-          type: string
-        originState:
-          description: OriginState used to match against saved routing guide rules
-          type: string
-        originZip:
-          description: OriginZip used to match against saved routing guide rules
-          type: string
-        tradingPartner:
-          description: Trading Partner used to match against saved routing guide rules
-          type: string
-      type: object
-    MC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto:
-      additionalProperties: false
-      properties:
-        carrierName:
-          description: The carrier name associated for this routing guide rule
-          type: string
-        carrierScac:
-          description: The carrier scac associated for this routing guide rule
-          type: string
-        carrierService:
-          description: The carrier service associated for this routing guide rule
-          type: string
-        id:
-          description: The id being used for the routing guide rule
-          format: int32
-          type: integer
-        routingRuleApplied:
-          description: The routing guide rule associated for this routing guide
-          type: string
-        unpreferredCarriers:
-          description: A comma-separated list of carrier SCACs to be excluded for this routing guide rule.
-          type: string
-      type: object
     ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfMC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto
     : additionalProperties: false
       properties:
@@ -364,68 +307,6 @@ components:
         statusCode:
           format: int32
           type: integer
-      type: object
-    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto
-    : additionalProperties: false
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto'
-          type:
-          - array
-          - 'null'
-        errors:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          format: int32
-          type: integer
-      type: object
-    MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto:
-      additionalProperties: false
-      properties:
-        carrierName:
-          type:
-          - string
-          - 'null'
-        carrierSCAC:
-          type:
-          - string
-          - 'null'
-        carrierService:
-          type:
-          - string
-          - 'null'
-        destinationState:
-          type:
-          - string
-          - 'null'
-        destinationZip:
-          type:
-          - string
-          - 'null'
-        id:
-          format: int32
-          type: integer
-        originState:
-          type:
-          - string
-          - 'null'
-        originZip:
-          type:
-          - string
-          - 'null'
-        tradingPartner:
-          type:
-          - string
-          - 'null'
-        unpreferredCarriers:
-          type:
-          - string
-          - 'null'
       type: object
     MC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto:
       additionalProperties: false
@@ -473,6 +354,20 @@ components:
           - string
           - 'null'
       type: object
+    MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Object:
+      additionalProperties: false
+      properties:
+        data: {}
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
     ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.PublicRoutingGuideMasterDto
     : additionalProperties: false
       properties:
@@ -491,4 +386,109 @@ components:
         statusCode:
           format: int32
           type: integer
+      type: object
+    ? MC.RoutingGuide.Client.Contracts.Responses.ApiResponseOfSystem.Collections.Generic.IReadOnlyCollectionOfMC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto
+    : additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto'
+          type:
+          - array
+          - 'null'
+        errors:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        statusCode:
+          format: int32
+          type: integer
+      type: object
+    MC.RoutingGuide.Client.Contracts.Responses.PublicMatchRoutingGuideResponseDto:
+      additionalProperties: false
+      properties:
+        carrierName:
+          description: The carrier name associated for this routing guide rule
+          type: string
+        carrierScac:
+          description: The carrier scac associated for this routing guide rule
+          type: string
+        carrierService:
+          description: The carrier service associated for this routing guide rule
+          type: string
+        id:
+          description: The id being used for the routing guide rule
+          format: int32
+          type: integer
+        routingRuleApplied:
+          description: The routing guide rule associated for this routing guide
+          type: string
+        unpreferredCarriers:
+          description: A comma-separated list of carrier SCACs to be excluded for this routing guide rule.
+          type: string
+      type: object
+    MC.RoutingGuide.Client.Contracts.Responses.PublicRoutingGuideReadModelDto:
+      additionalProperties: false
+      properties:
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierSCAC:
+          type:
+          - string
+          - 'null'
+        carrierService:
+          type:
+          - string
+          - 'null'
+        destinationState:
+          type:
+          - string
+          - 'null'
+        destinationZip:
+          type:
+          - string
+          - 'null'
+        id:
+          format: int32
+          type: integer
+        originState:
+          type:
+          - string
+          - 'null'
+        originZip:
+          type:
+          - string
+          - 'null'
+        tradingPartner:
+          type:
+          - string
+          - 'null'
+        unpreferredCarriers:
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.RoutingGuide.Client.Contracts.Requests.PublicMatchRoutingGuideRequestDto:
+      additionalProperties: false
+      description: Atleast any one of these parameters should be provided
+      properties:
+        destinationState:
+          description: DestinationState used to match against saved routing guide rules
+          type: string
+        destinationZip:
+          description: DestinationZip used to match against saved routing guide rules
+          type: string
+        originState:
+          description: OriginState used to match against saved routing guide rules
+          type: string
+        originZip:
+          description: OriginZip used to match against saved routing guide rules
+          type: string
+        tradingPartner:
+          description: Trading Partner used to match against saved routing guide rules
+          type: string
       type: object

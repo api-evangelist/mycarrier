@@ -98,18 +98,6 @@ components:
       - Wallet
       - Analytics
       type: string
-    MC.Invoice.API.Responses.V3.TabItemV3Response:
-      type: object
-      properties:
-        tabItem:
-          type:
-          - string
-          - 'null'
-        icon:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
       required:
       - navigationTabs
@@ -167,6 +155,18 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Responses.V3.TabItemV3Response'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V3.TabItemV3Response:
+      type: object
+      properties:
+        tabItem:
+          type:
+          - string
+          - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
     Bearer:

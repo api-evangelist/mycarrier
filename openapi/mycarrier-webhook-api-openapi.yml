@@ -384,6 +384,32 @@ components:
           - string
           - 'null'
       type: object
+    MessageStatusRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+        information:
+          items:
+            $ref: '#/components/schemas/InformationRequest'
+          type:
+          - array
+          - 'null'
+        message:
+          type:
+          - string
+          - 'null'
+        resolution:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - string
+          - 'null'
+      type: object
     WebhookDocumentRequet:
       additionalProperties: false
       properties:
@@ -416,40 +442,6 @@ components:
           - string
           - 'null'
       type: object
-    ShipmentInfoRequest:
-      additionalProperties: false
-      properties:
-        weight:
-          type:
-          - string
-          - 'null'
-      type: object
-    MessageStatusRequest:
-      additionalProperties: false
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-        information:
-          items:
-            $ref: '#/components/schemas/InformationRequest'
-          type:
-          - array
-          - 'null'
-        message:
-          type:
-          - string
-          - 'null'
-        resolution:
-          type:
-          - string
-          - 'null'
-        status:
-          type:
-          - string
-          - 'null'
-      type: object
     AppointmentRequest:
       additionalProperties: false
       properties:
@@ -466,16 +458,6 @@ components:
           - string
           - 'null'
         startTime:
-          type:
-          - string
-          - 'null'
-      type: object
-    TransitRequest:
-      additionalProperties: false
-      properties:
-        delivery:
-          $ref: '#/components/schemas/DeliveryRequest'
-        pickupDate:
           type:
           - string
           - 'null'
@@ -506,6 +488,38 @@ components:
           - string
           - 'null'
       type: object
+    AddressWebhookRequest:
+      additionalProperties: false
+      properties:
+        postalCode:
+          type:
+          - string
+          - 'null'
+      type: object
+    ReferenceNumberRequest:
+      additionalProperties: false
+      properties:
+        bol:
+          type:
+          - string
+          - 'null'
+        customerReference:
+          type:
+          - string
+          - 'null'
+        pickup:
+          type:
+          - string
+          - 'null'
+        po:
+          type:
+          - string
+          - 'null'
+        proNumber:
+          type:
+          - string
+          - 'null'
+      type: object
     InformationRequest:
       additionalProperties: false
       properties:
@@ -514,6 +528,24 @@ components:
           - string
           - 'null'
         type:
+          type:
+          - string
+          - 'null'
+      type: object
+    ShipmentInfoRequest:
+      additionalProperties: false
+      properties:
+        weight:
+          type:
+          - string
+          - 'null'
+      type: object
+    TransitRequest:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/DeliveryRequest'
+        pickupDate:
           type:
           - string
           - 'null'
@@ -554,38 +586,6 @@ components:
         transit:
           $ref: '#/components/schemas/TransitRequest'
       type: object
-    AddressWebhookRequest:
-      additionalProperties: false
-      properties:
-        postalCode:
-          type:
-          - string
-          - 'null'
-      type: object
-    ReferenceNumberRequest:
-      additionalProperties: false
-      properties:
-        bol:
-          type:
-          - string
-          - 'null'
-        customerReference:
-          type:
-          - string
-          - 'null'
-        pickup:
-          type:
-          - string
-          - 'null'
-        po:
-          type:
-          - string
-          - 'null'
-        proNumber:
-          type:
-          - string
-          - 'null'
-      type: object
     WebhookHttpHeaderComposed:
       type: object
       properties:
@@ -597,35 +597,6 @@ components:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    WebhookComposed:
-      type: object
-      properties:
-        environment:
-          type:
-          - string
-          - 'null'
-        credentialUserName:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type: integer
-          format: int32
-        webhookType:
-          type:
-          - string
-          - 'null'
-        uri:
-          type:
-          - string
-          - 'null'
-        headers:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/WebhookHttpHeaderComposed'
       additionalProperties: false
     Webhook:
       type: object
@@ -675,6 +646,35 @@ components:
           - string
           - 'null'
       additionalProperties: {}
+    WebhookComposed:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        credentialUserName:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        uri:
+          type:
+          - string
+          - 'null'
+        headers:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/WebhookHttpHeaderComposed'
+      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

@@ -205,42 +205,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.FreightAudit.Requests.DeleteStatusReasonRequest:
-      required:
-      - recordId
-      type: object
-      properties:
-        recordId:
-          type: string
-          format: uuid
-        reason:
-          type:
-          - string
-          - 'null'
-        otherNotes:
-          type:
-          - string
-          - 'null'
-        updatedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - Archived
-      - ShortPaid
-      - NeedsReview
-      - Created
-      - Deleted
-      type: string
     MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateStatusReasonRequest:
       required:
       - recordIds
@@ -264,6 +228,21 @@ components:
             type: string
             format: uuid
       additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
     MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceBulkUpdateRequest:
       required:
       - recordIds
@@ -278,6 +257,27 @@ components:
         updatedBy:
           minLength: 1
           type: string
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Requests.DeleteStatusReasonRequest:
+      required:
+      - recordId
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        reason:
+          type:
+          - string
+          - 'null'
+        otherNotes:
+          type:
+          - string
+          - 'null'
+        updatedBy:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
     ProblemDetailsResponse:
       type: object

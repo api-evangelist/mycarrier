@@ -304,21 +304,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - Archived
-      - ShortPaid
-      - NeedsReview
-      - Created
-      - Deleted
-      type: string
     MC.Invoice.Data.Mongo.Entities.CompanyInfoExtended:
       type: object
       properties:
@@ -362,24 +347,6 @@ components:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.InvoiceCarrierInfo:
-      type: object
-      properties:
-        carrierCode:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.HandlingUnit:
-      type: object
-      properties:
-        commodities:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.Commodity'
       additionalProperties: false
     MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail:
       type: object
@@ -448,38 +415,6 @@ components:
           - 'null'
           format: double
       additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest:
-      required:
-      - recordId
-      - statusType
-      type: object
-      properties:
-        recordId:
-          type: string
-          format: uuid
-        statusType:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
-        approvedReason:
-          type:
-          - string
-          - 'null'
-        approvedOtherNotes:
-          type:
-          - string
-          - 'null'
-        updatedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.FreightClass:
-      type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     MC.Invoice.Data.Mongo.Entities.Commodity:
       type: object
       properties:
@@ -500,6 +435,71 @@ components:
         freightClass:
           $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.FreightClass'
         packingType:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.HandlingUnit:
+      type: object
+      properties:
+        commodities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.Commodity'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
+    MC.Invoice.Data.Mongo.Entities.CompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.FreightClass:
+      type: object
+      properties:
+        code:
           type:
           - string
           - 'null'
@@ -532,6 +532,14 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.Data.Mongo.Entities.InvoiceCarrierInfo:
+      type: object
+      properties:
+        carrierCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     MC.Invoice.API.Dtos.FreightAudit.Requests.YourEDICreateInvoiceRequest_CreateInvoiceShipment:
       required:
       - carrierProNumber
@@ -590,34 +598,26 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.ShipmentPriceDetail'
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.CompanyInfo:
+    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceStatusRequest:
+      required:
+      - recordId
+      - statusType
       type: object
       properties:
-        companyName:
+        recordId:
+          type: string
+          format: uuid
+        statusType:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        approvedReason:
           type:
           - string
           - 'null'
-        streetLine1:
+        approvedOtherNotes:
           type:
           - string
           - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
-          type:
-          - string
-          - 'null'
-        country:
+        updatedBy:
           type:
           - string
           - 'null'
