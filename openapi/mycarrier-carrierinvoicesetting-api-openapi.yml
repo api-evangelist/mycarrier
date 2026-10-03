@@ -216,6 +216,19 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.API.Dtos.CarrierSettings.CarrierInvoiceSettingRequest:
+      required:
+      - carrierCode
+      type: object
+      properties:
+        carrierCode:
+          minLength: 1
+          type: string
+        disputeEmail:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ProblemDetailsResponse:
       type: object
       properties:
@@ -251,19 +264,6 @@ components:
           type:
           - string
           - 'null'
-        disputeEmail:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.CarrierSettings.CarrierInvoiceSettingRequest:
-      required:
-      - carrierCode
-      type: object
-      properties:
-        carrierCode:
-          minLength: 1
-          type: string
         disputeEmail:
           type:
           - string

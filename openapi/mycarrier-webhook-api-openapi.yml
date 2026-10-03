@@ -352,60 +352,14 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    StatusRequest:
+    InformationRequest:
       additionalProperties: false
       properties:
-        carrierDescription:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        code:
-          type:
-          - string
-          - 'null'
-        date:
-          type:
-          - string
-          - 'null'
-        stateProvince:
-          type:
-          - string
-          - 'null'
-        time:
-          type:
-          - string
-          - 'null'
-        utc:
-          type:
-          - string
-          - 'null'
-      type: object
-    MessageStatusRequest:
-      additionalProperties: false
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-        information:
-          items:
-            $ref: '#/components/schemas/InformationRequest'
-          type:
-          - array
-          - 'null'
         message:
           type:
           - string
           - 'null'
-        resolution:
-          type:
-          - string
-          - 'null'
-        status:
+        type:
           type:
           - string
           - 'null'
@@ -442,22 +396,60 @@ components:
           - string
           - 'null'
       type: object
-    AppointmentRequest:
+    MessageStatusRequest:
       additionalProperties: false
       properties:
+        code:
+          type:
+          - string
+          - 'null'
+        information:
+          items:
+            $ref: '#/components/schemas/InformationRequest'
+          type:
+          - array
+          - 'null'
+        message:
+          type:
+          - string
+          - 'null'
+        resolution:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - string
+          - 'null'
+      type: object
+    StatusRequest:
+      additionalProperties: false
+      properties:
+        carrierDescription:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
         date:
           type:
           - string
           - 'null'
-        endTime:
+        stateProvince:
           type:
           - string
           - 'null'
-        notes:
+        time:
           type:
           - string
           - 'null'
-        startTime:
+        utc:
           type:
           - string
           - 'null'
@@ -496,56 +488,22 @@ components:
           - string
           - 'null'
       type: object
-    ReferenceNumberRequest:
+    AppointmentRequest:
       additionalProperties: false
       properties:
-        bol:
+        date:
           type:
           - string
           - 'null'
-        customerReference:
+        endTime:
           type:
           - string
           - 'null'
-        pickup:
+        notes:
           type:
           - string
           - 'null'
-        po:
-          type:
-          - string
-          - 'null'
-        proNumber:
-          type:
-          - string
-          - 'null'
-      type: object
-    InformationRequest:
-      additionalProperties: false
-      properties:
-        message:
-          type:
-          - string
-          - 'null'
-        type:
-          type:
-          - string
-          - 'null'
-      type: object
-    ShipmentInfoRequest:
-      additionalProperties: false
-      properties:
-        weight:
-          type:
-          - string
-          - 'null'
-      type: object
-    TransitRequest:
-      additionalProperties: false
-      properties:
-        delivery:
-          $ref: '#/components/schemas/DeliveryRequest'
-        pickupDate:
+        startTime:
           type:
           - string
           - 'null'
@@ -586,6 +544,48 @@ components:
         transit:
           $ref: '#/components/schemas/TransitRequest'
       type: object
+    ReferenceNumberRequest:
+      additionalProperties: false
+      properties:
+        bol:
+          type:
+          - string
+          - 'null'
+        customerReference:
+          type:
+          - string
+          - 'null'
+        pickup:
+          type:
+          - string
+          - 'null'
+        po:
+          type:
+          - string
+          - 'null'
+        proNumber:
+          type:
+          - string
+          - 'null'
+      type: object
+    ShipmentInfoRequest:
+      additionalProperties: false
+      properties:
+        weight:
+          type:
+          - string
+          - 'null'
+      type: object
+    TransitRequest:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/DeliveryRequest'
+        pickupDate:
+          type:
+          - string
+          - 'null'
+      type: object
     WebhookHttpHeaderComposed:
       type: object
       properties:
@@ -598,54 +598,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    Webhook:
-      type: object
-      properties:
-        environment:
-          type:
-          - string
-          - 'null'
-        credentialUserName:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type: integer
-          format: int32
-        webhookType:
-          type:
-          - string
-          - 'null'
-        uri:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    ProblemDetails:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        title:
-          type:
-          - string
-          - 'null'
-        status:
-          type:
-          - integer
-          - 'null'
-          format: int32
-        detail:
-          type:
-          - string
-          - 'null'
-        instance:
-          type:
-          - string
-          - 'null'
-      additionalProperties: {}
     WebhookComposed:
       type: object
       properties:
@@ -674,6 +626,54 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/WebhookHttpHeaderComposed'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    Webhook:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        credentialUserName:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        uri:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
     Bearer:

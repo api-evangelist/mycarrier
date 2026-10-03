@@ -308,53 +308,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-        isSelected:
-          type: boolean
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings:
-      type: object
-      properties:
-        carrierName:
-          type:
-          - string
-          - 'null'
-        carrierScac:
-          type:
-          - string
-          - 'null'
-        disputeEmail:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest:
-      required:
-      - carrierName
-      - carrierScac
-      - disputeEmail
-      type: object
-      properties:
-        carrierName:
-          minLength: 1
-          type: string
-        carrierScac:
-          minLength: 1
-          type: string
-        disputeEmail:
-          minLength: 1
-          type: string
-      additionalProperties: false
     MC.Invoice.Data.Mongo.Entities.EdiMapping:
       type: object
       properties:
@@ -373,12 +326,6 @@ components:
           - 'null'
           format: date-time
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType:
-      enum:
-      - Hourly
-      - Daily
-      - Weekly
-      type: string
     MC.Invoice.Domain.Dtos.CustomerSettings.UpsertCustomerInvoiceSettingRequest:
       required:
       - customerId
@@ -485,6 +432,37 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        isSelected:
+          type: boolean
+      additionalProperties: false
+    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest:
+      required:
+      - carrierName
+      - carrierScac
+      - disputeEmail
+      type: object
+      properties:
+        carrierName:
+          minLength: 1
+          type: string
+        carrierScac:
+          minLength: 1
+          type: string
+        disputeEmail:
+          minLength: 1
+          type: string
+      additionalProperties: false
     MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingResponse:
       type: object
       properties:
@@ -497,6 +475,12 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType:
+      enum:
+      - Hourly
+      - Daily
+      - Weekly
+      type: string
     MC.Invoice.API.Dtos.CustomerSettings.CustomerInvoiceSettingResponse:
       type: object
       properties:
@@ -577,6 +561,22 @@ components:
           type: integer
           format: int32
           readOnly: true
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings:
+      type: object
+      properties:
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierScac:
+          type:
+          - string
+          - 'null'
+        disputeEmail:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
     Bearer:

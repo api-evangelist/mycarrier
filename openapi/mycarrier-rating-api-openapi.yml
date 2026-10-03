@@ -102,197 +102,19 @@ paths:
     - url: https://app-integration-prod-api.azurewebsites.net/feature
 components:
   schemas:
-    MC.Infrastructure.Static.Data.Enums.WeightUnitCode:
+    MC.Infrastructure.Static.Data.Enums.Country:
       enum:
-      - LB
-      - KG
-      type: string
-    MC.Quote.Contracts.Responses.Rate.PriceDetailsResponse:
-      additionalProperties: false
-      properties:
-        chargeItems:
-          description: Detailed breakdown of individual charges and fees comprising the total cost
-          items:
-            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.ChargeItemResponse'
-          type:
-          - array
-          - 'null'
-        currency:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.CurrencyCode'
-        discount:
-          description: Discount amount applied to the quote reducing the total cost
-          example: '15.00'
-          format: double
-          type:
-          - number
-          - 'null'
-        subtotal:
-          description: Subtotal before additional charges or discounts are applied
-          example: '130.00'
-          format: double
-          type:
-          - number
-          - 'null'
-        totalCost:
-          description: Total cost for the shipment including all charges and fees
-          example: '1245.75'
-          format: double
-          type: number
-      type: object
-    MC.Quote.Contracts.Requests.Rate.HandlingUnitRequest:
-      additionalProperties: false
-      properties:
-        carpetRollSquareYards:
-          description: Carpet roll square yards for carpet rates.
-          format: int32
-          maximum: 9999
-          type:
-          - integer
-          - 'null'
-        commodities:
-          description: Collection of commodities contained within this handling unit
-          items:
-            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.CommodityRequest'
-          required:
-          - commodities
-          type:
-          - array
-          - 'null'
-        count:
-          description: Quantity of identical handling units of this specification
-          format: int32
-          maximum: 999
-          minimum: 1
-          required:
-          - count
-          type: integer
-        freightClass:
-          description: Freight classification code for pricing determination ("50", "55", "60", "65", "70", "77.5", "85", "92.5", "100", "110", "125", "150", "175", "200", "250", "300", "400", "500")
-          enum:
-          - '50'
-          - '55'
-          - '60'
-          - '65'
-          - '70'
-          - '77.5'
-          - '85'
-          - '92.5'
-          - '100'
-          - '110'
-          - '125'
-          - '150'
-          - '175'
-          - '200'
-          - '250'
-          - '300'
-          - '400'
-          - '500'
-          example: '85'
-          type:
-          - string
-          - 'null'
-        height:
-          description: Height dimension in specified measurement units
-          format: int32
-          maximum: 9999
-          minimum: 1
-          required:
-          - height
-          type: integer
-        length:
-          description: Length dimension in specified measurement units
-          format: int32
-          maximum: 9999
-          minimum: 1
-          required:
-          - length
-          type: integer
-        packageType:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PackageTypeCode'
-        stackable:
-          description: Indicates whether the handling unit can be stacked with others for space efficiency
-          example: 'true'
-          required:
-          - stackable
-          type: boolean
-        width:
-          description: Width dimension in specified measurement units
-          format: int32
-          maximum: 9999
-          minimum: 1
-          required:
-          - width
-          type: integer
-      required:
-      - count
-      - length
-      - width
-      - height
-      - stackable
-      - commodities
-      type: object
-    MC.Quote.Contracts.Requests.Rate.RatingRequest:
-      additionalProperties: false
-      properties:
-        accessorials:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.AccessorialsRequest'
-        action:
-          $ref: '#/components/schemas/MC.Quote.Common.Enums.RatingAction'
-        fullValueCoverageDetails:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.FullValueCoverageDetailsRequest'
-        identifiers:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.IdentifiersRequest'
-        paymentTerms:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PaymentTermCode'
-        service:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ServiceRequest'
-        shippingDetails:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ShippingDetailsRequest'
-        stops:
-          description: Collection of pickup and delivery stops for the shipment
-          items:
-            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.StopRequest'
-          required:
-          - stops
-          type:
-          - array
-          - 'null'
-      required:
-      - stops
-      type: object
-    MC.Infrastructure.Static.Data.Enums.CurrencyCode:
-      enum:
-      - USD
-      - CAD
+      - USA
+      - CAN
       - MEX
       type: string
-    MC.Quote.Contracts.Responses.Rate.AppointmentDetailsResponse:
-      additionalProperties: false
-      properties:
-        delivery:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.DeliveryResponse'
-        pickup:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.PickupResponse'
-        quoteEffectiveDate:
-          description: Quote effective date in yyyy/MM/dd format from which the rates become valid
-          example: 2025/12/15
-          type:
-          - string
-          - 'null'
-        quoteExpirationDate:
-          description: Quote expiration date in yyyy/MM/dd format after which the rates are no longer valid
-          example: 2025/12/22
-          type:
-          - string
-          - 'null'
-        transitDays:
-          description: Number of business days for transit from pickup to delivery
-          example: '3'
-          format: int32
-          type:
-          - integer
-          - 'null'
-      type: object
+    MC.Quote.Common.Enums.RatingAction:
+      enum:
+      - RATE_ONLY
+      - RATE_AND_SAVE
+      - RATE_AND_SELECT
+      - RATE_AND_DISPATCH
+      type: string
     MC.Quote.Contracts.Requests.Rate.DeliveryRequest:
       additionalProperties: false
       properties:
@@ -314,303 +136,6 @@ components:
           type:
           - string
           - 'null'
-      type: object
-    MC.Quote.Contracts.Requests.Rate.ServiceRequest:
-      additionalProperties: false
-      properties:
-        carriers:
-          description: Carrier SCAC codes for requesting rates, if null then ALL carriers will be requested
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        equipmentType:
-          description: Equipment type specification
-          example: Van
-          type:
-          - string
-          - 'null'
-        level:
-          description: Service level requirements - currently supported "STD" and "GUR", if ["ALL"] then both service levels will be requested
-          items:
-            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceLevelCode'
-          type:
-          - array
-          - 'null'
-        mode:
-          description: Transportation service modes ("LTL", "VLTL" supported) - currently limited to single mode
-          items:
-            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceMode'
-          required:
-          - mode
-          type:
-          - array
-          - 'null'
-      required:
-      - mode
-      type: object
-    MC.Quote.Contracts.Requests.Rate.AccessorialsRequest:
-      additionalProperties: false
-      properties:
-        codes:
-          description: Collection of accessorial service codes for special requirements like liftgate, appointment delivery, inside pickup, etc.
-          items:
-            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.AccessorialCode'
-          type:
-          - array
-          - 'null'
-      type: object
-    MC.Infrastructure.Static.Data.Enums.DimensionUnitCode:
-      enum:
-      - IN
-      - CM
-      type: string
-    MC.Infrastructure.Static.Data.Enums.HazardClassCode:
-      enum:
-      - NA
-      - I
-      - II
-      - III
-      type: string
-    MC.Infrastructure.Static.Data.Enums.ServiceMode:
-      enum:
-      - LTL
-      - VLTL
-      - TL
-      - GFP
-      - PARCEL
-      type: string
-    MC.Quote.Contracts.Responses.Rate.ChargeItemResponse:
-      additionalProperties: false
-      properties:
-        amount:
-          description: Monetary amount for this charge item
-          example: '150.75'
-          format: double
-          type: number
-        code:
-          description: Charge code identifier for the fee or service
-          example: FUEL
-          type:
-          - string
-          - 'null'
-        description:
-          description: Human-readable description of the charge
-          example: Fuel Surcharge
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Quote.Contracts.Requests.Rate.ShippingDetailsRequest:
-      additionalProperties: false
-      properties:
-        dimensionsUnit:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.DimensionUnitCode'
-        handlingUnits:
-          description: Detailed collection of individual handling units with their specifications
-          items:
-            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.HandlingUnitRequest'
-          required:
-          - handlingUnits
-          type:
-          - array
-          - 'null'
-        linearFeet:
-          description: Linear feet measurement for VLTL.
-          format: double
-          maximum: 999
-          type:
-          - number
-          - 'null'
-        totalHandlingUnitCount:
-          description: Total count of all handling units in the shipment
-          format: int32
-          maximum: 9999
-          minimum: 1
-          type:
-          - integer
-          - 'null'
-        totalWeight:
-          description: Total weight of the entire shipment in specified weight units
-          format: int32
-          maximum: 99999
-          minimum: 1
-          type:
-          - integer
-          - 'null'
-        weightUnit:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.WeightUnitCode'
-      required:
-      - handlingUnits
-      type: object
-    MC.Quote.Contracts.Responses.ApiResponseOfMC.Quote.Contracts.Responses.Rate.RatingResponse:
-      additionalProperties: false
-      properties:
-        data:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.RatingResponse'
-        errors:
-          description: Response errors
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        statusCode:
-          description: Response status code
-          example: '200'
-          format: int32
-          type: integer
-      type: object
-    MC.Quote.Contracts.Requests.Rate.PickupRequest:
-      additionalProperties: false
-      properties:
-        closeTime:
-          description: Closing time for pickup window in 24-hour HH:mm format
-          example: '17:00'
-          type:
-          - string
-          - 'null'
-        openTime:
-          description: Opening time for pickup window in 24-hour HH:mm format
-          example: 08:00
-          type:
-          - string
-          - 'null'
-        pickupDate:
-          description: Pickup date in yyyy/MM/dd format. This is required for origin stops
-          example: 2024/12/15
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Quote.Contracts.Responses.Rate.PickupResponse:
-      additionalProperties: false
-      properties:
-        estimatedPickupDate:
-          description: Estimated pickup date in yyyy/MM/dd format based on carrier schedules
-          example: 2025/12/15
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Infrastructure.Static.Data.Enums.ServiceLevelCode:
-      enum:
-      - ALL
-      - STD
-      - GUR
-      - GUR_AM
-      - GUR_PM
-      - GUR_NOON
-      type: string
-    MC.Quote.Contracts.Responses.Rate.DeliveryResponse:
-      additionalProperties: false
-      properties:
-        estimatedDeliveryDate:
-          description: Estimated delivery date in yyyy/MM/dd format based on transit times
-          example: 2025/12/18
-          type:
-          - string
-          - 'null'
-        guaranteedTime:
-          description: Guaranteed delivery time in HH:mm format
-          example: '14:30'
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Quote.Contracts.Responses.Rate.ServiceResponse:
-      additionalProperties: false
-      properties:
-        carrier:
-          description: Carrier SCAC (Standard Carrier Alpha Code) providing the rate
-          example: ABCF
-          maxLength: 4
-          type:
-          - string
-          - 'null'
-        laneType:
-          description: Lane type classification for the shipping route
-          example: Direct
-          type:
-          - string
-          - 'null'
-        level:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceLevelCode'
-        mode:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceMode'
-        pricing:
-          description: Pricing type or structure information for the rate
-          example: Contract
-          type:
-          - string
-          - 'null'
-        rateType:
-          description: Rate type classification for the shipping route
-          example: Carpet
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Quote.Contracts.Requests.Rate.StopRequest:
-      additionalProperties: false
-      properties:
-        addressId:
-          description: Unique identifier (primary key) that can be used to specify an address that is already saved in the MyCarrier platform, required when payment terms is "PREPAID" and stopType is "ORIGIN", required when payment terms is "INBOUND_COLLECT" and stopType is "DESTINATION"
-          example: '1'
-          type:
-          - string
-          - 'null'
-        addressLine1:
-          description: Primary street address line including number and street name
-          example: 123 Main Street
-          maxLength: 250
-          type:
-          - string
-          - 'null'
-        addressLine2:
-          description: Secondary address line for suite, apartment, or building information
-          example: Suite 100
-          maxLength: 250
-          type:
-          - string
-          - 'null'
-        appointmentDetails:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.AppointmentDetailsRequest'
-        city:
-          description: City name for the stop location (required if addressId not provided)
-          example: Chicago
-          maxLength: 100
-          type:
-          - string
-          - 'null'
-        contact:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ContactRequest'
-        country:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.Country'
-        name:
-          description: Company or business name at this stop location
-          example: ABC Manufacturing
-          maxLength: 250
-          type:
-          - string
-          - 'null'
-        postalCode:
-          description: Postal or ZIP code for the stop location (required if addressId not provided)
-          example: '60601'
-          maxLength: 6
-          type:
-          - string
-          - 'null'
-        stateProvince:
-          description: State or province abbreviation code (required if addressId not provided)
-          example: IL
-          maxLength: 2
-          type:
-          - string
-          - 'null'
-        stopType:
-          $ref: '#/components/schemas/MC.Quote.Common.Enums.StopType'
       type: object
     MC.Quote.Contracts.Requests.Rate.CommodityRequest:
       additionalProperties: false
@@ -700,71 +225,124 @@ components:
       - pieces
       - freightClass
       type: object
-    MC.Infrastructure.Static.Data.Enums.PaymentTermCode:
-      enum:
-      - PREPAID
-      - INBOUND_COLLECT
-      - THIRD_PARTY
-      - COLLECT
-      type: string
-    MC.Quote.Contracts.Responses.Rate.RatingResponse:
+    MC.Quote.Contracts.Requests.Rate.ContactRequest:
       additionalProperties: false
       properties:
-        quoteId:
-          description: Internal identifier for saved quote for RATE_AND_SAVE action
-          example: '123456'
-          format: int64
-          type:
-          - integer
-          - 'null'
-        quoteKey:
-          description: Internal key for saved quote for RATE_AND_SAVE action
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-          format: uuid
+        email:
+          description: Email address for sending notifications and coordination messages
+          example: john.smith@example.com
+          maxLength: 320
           type:
           - string
           - 'null'
-        rates:
-          description: Collection of individual rate quotes from different carriers
+        firstName:
+          description: First name of the contact person responsible for shipment coordination
+          example: John
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        lastName:
+          description: Last name of the contact person responsible for shipment coordination
+          example: Smith
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        phone:
+          description: Phone number for contacting this person during pickup or delivery
+          example: 555-123-4567
+          maxLength: 20
+          type:
+          - string
+          - 'null'
+        phoneExtension:
+          description: Phone number extension for contacting this person during pickup or delivery
+          example: '4561'
+          maxLength: 10
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Responses.ApiResponseOfMC.Quote.Contracts.Responses.Rate.RatingResponse:
+      additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.RatingResponse'
+        errors:
+          description: Response errors
           items:
-            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.RateItemResponse'
+            type: string
           type:
           - array
           - 'null'
-        referenceId:
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
+      type: object
+    MC.Infrastructure.Static.Data.Enums.DimensionUnitCode:
+      enum:
+      - IN
+      - CM
+      type: string
+    MC.Quote.Common.Enums.Response.Source:
+      enum:
+      - Carrier
+      - MyCarrier
+      - ThirdParty
+      - Validation
+      type: string
+    MC.Quote.Contracts.Responses.Rate.AccessorialsResponse:
+      additionalProperties: false
+      properties:
+        unsupported:
+          description: Unsupported accessorials
+          items:
+            type: string
           type:
-          - string
+          - array
           - 'null'
-        savedQuoteId:
-          description: Unique identifier for the saved quote for RATE_AND_SAVE action
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-          format: uuid
-          type:
-          - string
-          - 'null'
+      type: object
+    MC.Quote.Contracts.Responses.Rate.RateItemResponse:
+      additionalProperties: false
+      properties:
+        accessorials:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.AccessorialsResponse'
+        appointmentDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.AppointmentDetailsResponse'
+        identifiers:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.IdentifiersResponse'
+        priceDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.PriceDetailsResponse'
+        service:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.ServiceResponse'
         statusInfo:
           $ref: '#/components/schemas/MC.Quote.Contracts.Responses.StatusInfo'
       type: object
-    MC.Quote.Contracts.Responses.StatusInfo:
+    MC.Quote.Common.Enums.StopType:
+      enum:
+      - ORIGIN
+      - DESTINATION
+      type: string
+    MC.Quote.Contracts.Requests.Rate.FullValueCoverageDetailsRequest:
       additionalProperties: false
       properties:
-        message:
-          description: Main message describing the response status or any errors
-          example: Transaction was successful.
-          maxLength: 500
+        currency:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.CurrencyCode'
+        monetaryValue:
+          description: Declared monetary value for insurance coverage calculation (in string format for precision)
+          example: '50000.00'
           type:
           - string
           - 'null'
-        notes:
-          description: Collection of detailed notes providing additional information about the response
-          items:
-            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Note'
-          type:
-          - array
-          - 'null'
-        status:
-          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Status'
       type: object
+    MC.Infrastructure.Static.Data.Enums.WeightUnitCode:
+      enum:
+      - LB
+      - KG
+      type: string
     MC.Infrastructure.Static.Data.Enums.AccessorialCode:
       enum:
       - HAZM
@@ -860,99 +438,6 @@ components:
       - TWPD
       - TWPP
       type: string
-    MC.Quote.Contracts.Responses.Note:
-      additionalProperties: false
-      properties:
-        code:
-          description: Error or reference code for programmatic handling of this note
-          example: VALIDATION_001
-          maxLength: 50
-          type:
-          - string
-          - 'null'
-        message:
-          description: Descriptive message providing details about this specific aspect
-          example: The 'weight' field is required and must be greater than 0
-          maxLength: 1000
-          type:
-          - string
-          - 'null'
-        source:
-          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Source'
-        status:
-          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Status'
-      type: object
-    MC.Infrastructure.Static.Data.Enums.Country:
-      enum:
-      - USA
-      - CAN
-      - MEX
-      type: string
-    MC.Quote.Contracts.Requests.Rate.ContactRequest:
-      additionalProperties: false
-      properties:
-        email:
-          description: Email address for sending notifications and coordination messages
-          example: john.smith@example.com
-          maxLength: 320
-          type:
-          - string
-          - 'null'
-        firstName:
-          description: First name of the contact person responsible for shipment coordination
-          example: John
-          maxLength: 250
-          type:
-          - string
-          - 'null'
-        lastName:
-          description: Last name of the contact person responsible for shipment coordination
-          example: Smith
-          maxLength: 250
-          type:
-          - string
-          - 'null'
-        phone:
-          description: Phone number for contacting this person during pickup or delivery
-          example: 555-123-4567
-          maxLength: 20
-          type:
-          - string
-          - 'null'
-        phoneExtension:
-          description: Phone number extension for contacting this person during pickup or delivery
-          example: '4561'
-          maxLength: 10
-          type:
-          - string
-          - 'null'
-      type: object
-    MC.Quote.Common.Enums.StopType:
-      enum:
-      - ORIGIN
-      - DESTINATION
-      type: string
-    MC.Infrastructure.Static.Data.Enums.PackageTypeCode:
-      enum:
-      - BAG
-      - BALE
-      - BOX
-      - BUCKET
-      - BUNDLE
-      - CARTON
-      - CASE
-      - CRATE
-      - CYLINDER
-      - DRUM
-      - PAIL
-      - PLT
-      - REEL
-      - ROLL
-      - SKID
-      - TUBE
-      - TOTE
-      - PIECES
-      type: string
     MC.Quote.Contracts.Responses.Rate.IdentifiersResponse:
       additionalProperties: false
       properties:
@@ -963,16 +448,35 @@ components:
           - string
           - 'null'
       type: object
-    MC.Quote.Contracts.Responses.Rate.AccessorialsResponse:
+    MC.Quote.Contracts.Requests.Rate.PickupRequest:
       additionalProperties: false
       properties:
-        unsupported:
-          description: Unsupported accessorials
-          items:
-            type: string
+        closeTime:
+          description: Closing time for pickup window in 24-hour HH:mm format
+          example: '17:00'
           type:
-          - array
+          - string
           - 'null'
+        openTime:
+          description: Opening time for pickup window in 24-hour HH:mm format
+          example: 08:00
+          type:
+          - string
+          - 'null'
+        pickupDate:
+          description: Pickup date in yyyy/MM/dd format. This is required for origin stops
+          example: 2024/12/15
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Requests.Rate.AppointmentDetailsRequest:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.DeliveryRequest'
+        pickup:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.PickupRequest'
       type: object
     MC.Quote.Contracts.Requests.Rate.HazardousDetailsRequest:
       additionalProperties: false
@@ -1005,37 +509,166 @@ components:
           - string
           - 'null'
       type: object
-    MC.Quote.Common.Enums.RatingAction:
+    MC.Quote.Contracts.Responses.StatusInfo:
+      additionalProperties: false
+      properties:
+        message:
+          description: Main message describing the response status or any errors
+          example: Transaction was successful.
+          maxLength: 500
+          type:
+          - string
+          - 'null'
+        notes:
+          description: Collection of detailed notes providing additional information about the response
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Note'
+          type:
+          - array
+          - 'null'
+        status:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Status'
+      type: object
+    MC.Quote.Contracts.Requests.Rate.AccessorialsRequest:
+      additionalProperties: false
+      properties:
+        codes:
+          description: Collection of accessorial service codes for special requirements like liftgate, appointment delivery, inside pickup, etc.
+          items:
+            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.AccessorialCode'
+          type:
+          - array
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Requests.Rate.HandlingUnitRequest:
+      additionalProperties: false
+      properties:
+        carpetRollSquareYards:
+          description: Carpet roll square yards for carpet rates.
+          format: int32
+          maximum: 9999
+          type:
+          - integer
+          - 'null'
+        commodities:
+          description: Collection of commodities contained within this handling unit
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.CommodityRequest'
+          required:
+          - commodities
+          type:
+          - array
+          - 'null'
+        count:
+          description: Quantity of identical handling units of this specification
+          format: int32
+          maximum: 999
+          minimum: 1
+          required:
+          - count
+          type: integer
+        freightClass:
+          description: Freight classification code for pricing determination ("50", "55", "60", "65", "70", "77.5", "85", "92.5", "100", "110", "125", "150", "175", "200", "250", "300", "400", "500")
+          enum:
+          - '50'
+          - '55'
+          - '60'
+          - '65'
+          - '70'
+          - '77.5'
+          - '85'
+          - '92.5'
+          - '100'
+          - '110'
+          - '125'
+          - '150'
+          - '175'
+          - '200'
+          - '250'
+          - '300'
+          - '400'
+          - '500'
+          example: '85'
+          type:
+          - string
+          - 'null'
+        height:
+          description: Height dimension in specified measurement units
+          format: int32
+          maximum: 9999
+          minimum: 1
+          required:
+          - height
+          type: integer
+        length:
+          description: Length dimension in specified measurement units
+          format: int32
+          maximum: 9999
+          minimum: 1
+          required:
+          - length
+          type: integer
+        packageType:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PackageTypeCode'
+        stackable:
+          description: Indicates whether the handling unit can be stacked with others for space efficiency
+          example: 'true'
+          required:
+          - stackable
+          type: boolean
+        width:
+          description: Width dimension in specified measurement units
+          format: int32
+          maximum: 9999
+          minimum: 1
+          required:
+          - width
+          type: integer
+      required:
+      - count
+      - length
+      - width
+      - height
+      - stackable
+      - commodities
+      type: object
+    MC.Infrastructure.Static.Data.Enums.HazardClassCode:
       enum:
-      - RATE_ONLY
-      - RATE_AND_SAVE
-      - RATE_AND_SELECT
-      - RATE_AND_DISPATCH
+      - NA
+      - I
+      - II
+      - III
       type: string
-    MC.Quote.Contracts.Requests.Rate.AppointmentDetailsRequest:
-      additionalProperties: false
-      properties:
-        delivery:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.DeliveryRequest'
-        pickup:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.PickupRequest'
-      type: object
-    MC.Quote.Contracts.Responses.Rate.RateItemResponse:
-      additionalProperties: false
-      properties:
-        accessorials:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.AccessorialsResponse'
-        appointmentDetails:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.AppointmentDetailsResponse'
-        identifiers:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.IdentifiersResponse'
-        priceDetails:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.PriceDetailsResponse'
-        service:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.ServiceResponse'
-        statusInfo:
-          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.StatusInfo'
-      type: object
+    MC.Infrastructure.Static.Data.Enums.ServiceLevelCode:
+      enum:
+      - ALL
+      - STD
+      - GUR
+      - GUR_AM
+      - GUR_PM
+      - GUR_NOON
+      type: string
+    MC.Infrastructure.Static.Data.Enums.PackageTypeCode:
+      enum:
+      - BAG
+      - BALE
+      - BOX
+      - BUCKET
+      - BUNDLE
+      - CARTON
+      - CASE
+      - CRATE
+      - CYLINDER
+      - DRUM
+      - PAIL
+      - PLT
+      - REEL
+      - ROLL
+      - SKID
+      - TUBE
+      - TOTE
+      - PIECES
+      type: string
     MC.Quote.Common.Enums.Response.Status:
       enum:
       - Success
@@ -1043,6 +676,144 @@ components:
       - Warning
       - Error
       type: string
+    MC.Quote.Contracts.Responses.Rate.AppointmentDetailsResponse:
+      additionalProperties: false
+      properties:
+        delivery:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.DeliveryResponse'
+        pickup:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.PickupResponse'
+        quoteEffectiveDate:
+          description: Quote effective date in yyyy/MM/dd format from which the rates become valid
+          example: 2025/12/15
+          type:
+          - string
+          - 'null'
+        quoteExpirationDate:
+          description: Quote expiration date in yyyy/MM/dd format after which the rates are no longer valid
+          example: 2025/12/22
+          type:
+          - string
+          - 'null'
+        transitDays:
+          description: Number of business days for transit from pickup to delivery
+          example: '3'
+          format: int32
+          type:
+          - integer
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Requests.Rate.ServiceRequest:
+      additionalProperties: false
+      properties:
+        carriers:
+          description: Carrier SCAC codes for requesting rates, if null then ALL carriers will be requested
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        equipmentType:
+          description: Equipment type specification
+          example: Van
+          type:
+          - string
+          - 'null'
+        level:
+          description: Service level requirements - currently supported "STD" and "GUR", if ["ALL"] then both service levels will be requested
+          items:
+            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceLevelCode'
+          type:
+          - array
+          - 'null'
+        mode:
+          description: Transportation service modes ("LTL", "VLTL" supported) - currently limited to single mode
+          items:
+            $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceMode'
+          required:
+          - mode
+          type:
+          - array
+          - 'null'
+      required:
+      - mode
+      type: object
+    MC.Infrastructure.Static.Data.Enums.PaymentTermCode:
+      enum:
+      - PREPAID
+      - INBOUND_COLLECT
+      - THIRD_PARTY
+      - COLLECT
+      type: string
+    MC.Infrastructure.Static.Data.Enums.ServiceMode:
+      enum:
+      - LTL
+      - VLTL
+      - TL
+      - GFP
+      - PARCEL
+      type: string
+    MC.Quote.Contracts.Requests.Rate.RatingRequest:
+      additionalProperties: false
+      properties:
+        accessorials:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.AccessorialsRequest'
+        action:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.RatingAction'
+        fullValueCoverageDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.FullValueCoverageDetailsRequest'
+        identifiers:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.IdentifiersRequest'
+        paymentTerms:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.PaymentTermCode'
+        service:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ServiceRequest'
+        shippingDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ShippingDetailsRequest'
+        stops:
+          description: Collection of pickup and delivery stops for the shipment
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.StopRequest'
+          required:
+          - stops
+          type:
+          - array
+          - 'null'
+      required:
+      - stops
+      type: object
+    MC.Quote.Contracts.Responses.Rate.PriceDetailsResponse:
+      additionalProperties: false
+      properties:
+        chargeItems:
+          description: Detailed breakdown of individual charges and fees comprising the total cost
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.ChargeItemResponse'
+          type:
+          - array
+          - 'null'
+        currency:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.CurrencyCode'
+        discount:
+          description: Discount amount applied to the quote reducing the total cost
+          example: '15.00'
+          format: double
+          type:
+          - number
+          - 'null'
+        subtotal:
+          description: Subtotal before additional charges or discounts are applied
+          example: '130.00'
+          format: double
+          type:
+          - number
+          - 'null'
+        totalCost:
+          description: Total cost for the shipment including all charges and fees
+          example: '1245.75'
+          format: double
+          type: number
+      type: object
     MC.Quote.Contracts.Requests.Rate.IdentifiersRequest:
       additionalProperties: false
       properties:
@@ -1054,250 +825,254 @@ components:
           - array
           - 'null'
       type: object
-    MC.Quote.Common.Enums.Response.Source:
-      enum:
-      - Carrier
-      - MyCarrier
-      - ThirdParty
-      - Validation
-      type: string
-    MC.Quote.Contracts.Requests.Rate.FullValueCoverageDetailsRequest:
+    MC.Quote.Contracts.Responses.Rate.RatingResponse:
       additionalProperties: false
       properties:
-        currency:
-          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.CurrencyCode'
-        monetaryValue:
-          description: Declared monetary value for insurance coverage calculation (in string format for precision)
-          example: '50000.00'
+        quoteId:
+          description: Internal identifier for saved quote for RATE_AND_SAVE action
+          example: '123456'
+          format: int64
+          type:
+          - integer
+          - 'null'
+        quoteKey:
+          description: Internal key for saved quote for RATE_AND_SAVE action
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: uuid
+          type:
+          - string
+          - 'null'
+        rates:
+          description: Collection of individual rate quotes from different carriers
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Responses.Rate.RateItemResponse'
+          type:
+          - array
+          - 'null'
+        referenceId:
+          type:
+          - string
+          - 'null'
+        savedQuoteId:
+          description: Unique identifier for the saved quote for RATE_AND_SAVE action
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: uuid
+          type:
+          - string
+          - 'null'
+        statusInfo:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Responses.StatusInfo'
+      type: object
+    MC.Quote.Contracts.Responses.Note:
+      additionalProperties: false
+      properties:
+        code:
+          description: Error or reference code for programmatic handling of this note
+          example: VALIDATION_001
+          maxLength: 50
+          type:
+          - string
+          - 'null'
+        message:
+          description: Descriptive message providing details about this specific aspect
+          example: The 'weight' field is required and must be greater than 0
+          maxLength: 1000
+          type:
+          - string
+          - 'null'
+        source:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Source'
+        status:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.Response.Status'
+      type: object
+    MC.Quote.Contracts.Responses.Rate.PickupResponse:
+      additionalProperties: false
+      properties:
+        estimatedPickupDate:
+          description: Estimated pickup date in yyyy/MM/dd format based on carrier schedules
+          example: 2025/12/15
           type:
           - string
           - 'null'
       type: object
-    priceBreakUp:
-      type: object
+    MC.Quote.Contracts.Requests.Rate.StopRequest:
+      additionalProperties: false
       properties:
-        type:
-          type: string
-          example: FSC
-        code:
-          type: string
-          example: FSC
-        description:
-          type: string
-          example: Fuel Surcharge
-        price:
-          type: string
-          example: '43.06'
-    data_quote_request:
-      type: object
-      properties:
-        preferredCarriers:
-          type: string
-          example: SAIA
-        accessorialServices:
-          type: string
-          example: INDEL,LGDEL,RESDEL
-        shipment:
-          $ref: '#/components/schemas/shipment_booking_request'
-    RateQuoteRequest:
-      required:
-      - customerEmail
-      - locationId
-      type: object
-      properties:
-        specVersion:
-          type: string
+        addressId:
+          description: Unique identifier (primary key) that can be used to specify an address that is already saved in the MyCarrier platform, required when payment terms is "PREPAID" and stopType is "ORIGIN", required when payment terms is "INBOUND_COLLECT" and stopType is "DESTINATION"
           example: '1'
-        type:
-          type: string
-          example: com.mycarrier.carrier.integrations
-        source:
-          type: string
-          example: https://mycarrier.uat.com
-        id:
-          type: string
-          example: bcef4153-0e25-4435-9f76-93a91f675d31
-        time:
-          type: string
-          example: '2022-10-03T15:03:05.450Z'
-        direction:
-          type: string
-          example: outbound
-        customerName:
-          type: string
-          example: Amazon
-        customerEmail:
-          type: string
-          example: MyCarrieradminEmail@domain.com
-        locationId:
-          type: string
-          example: '682656'
-        data:
-          $ref: '#/components/schemas/data_quote_request'
-    rates:
-      type: object
-      properties:
-        quoteStatus:
-          type: string
-          example: available
-        rejectReason:
-          type: string
-          format: nullable
-        quoteId:
-          type: string
-          example: '139805226'
-        carrierQuoteId:
-          type: string
-        shipmentMode:
-          type: string
-        equipmentType:
-          type: string
-        quoteExpiryDate:
-          type: string
-        currencyCode:
-          type: string
-          example: USD
-        carrier:
-          $ref: '#/components/schemas/carrier'
-        price:
-          type: array
-          items:
-            $ref: '#/components/schemas/price'
-    hazmat:
-      type: object
-      properties:
-        identification_number:
-          type: string
-          example: UN1000
-        packingGroupId:
-          type: string
-          example: High
-        classId:
-          type: string
-          example: ExtremelyInsensitiveExplosives
-        emergencyContact:
-          $ref: '#/components/schemas/contact'
-    contact:
-      type: object
-      properties:
-        contactName:
-          type: string
-          example: personsname
-        phone:
-          type: string
-          example: (999) 999-9999
-        email:
-          type: string
-          example: testemail@test.com
-    multipleItem:
-      type: object
-      properties:
-        lineItemId:
-          type: string
-          example: '5'
-        commodityName:
-          type: string
-          example: Test name
-        class:
-          type: string
-          example: '60'
-        commodityDescription:
-          type: string
-          example: test description
-        countryOfManufacture:
-          type: string
-          example: United States
-        nmfcItemCode:
-          type: string
-          example: '123'
-        nmfcSubCode:
-          type: string
-          example: '12345'
-        commodityType:
-          type: string
-          example: string
-        isHazmat:
-          type: boolean
-        hazmat:
-          $ref: '#/components/schemas/hazmat'
-        unitValue:
-          type: integer
-          format: int32
-          example: 0
-        unitValueCurrency:
-          type: string
-          example: USD
-        weight:
-          type: integer
-          format: int32
-          example: 200
-        quantity:
-          type: integer
-          format: int32
-          example: 1
-    pickup:
-      type: object
-      properties:
-        stopNumber:
-          type: integer
-          format: int32
-          example: 1
-        stopType:
-          type: string
-          example: PICKUP
-        name:
-          type: string
-          example: Compco
+          type:
+          - string
+          - 'null'
         addressLine1:
-          type: string
-          example: 59 Bedford St
+          description: Primary street address line including number and street name
+          example: 123 Main Street
+          maxLength: 250
+          type:
+          - string
+          - 'null'
         addressLine2:
-          type: string
+          description: Secondary address line for suite, apartment, or building information
+          example: Suite 100
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        appointmentDetails:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.AppointmentDetailsRequest'
         city:
-          type: string
-          example: Stamford
-        stateProvince:
-          type: string
-          example: CT
-        postalCode:
-          type: string
-          example: 06901
+          description: City name for the stop location (required if addressId not provided)
+          example: Chicago
+          maxLength: 100
+          type:
+          - string
+          - 'null'
+        contact:
+          $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.ContactRequest'
         country:
-          $ref: '#/components/schemas/country'
-        latitude:
-          type: number
-          example: 32.7325
-        longitude:
-          type: number
-          example: -117.2011
-        contactEmail:
-          type: string
-          example: test@email.com
-        contactName:
-          type: string
-          example: Person Name
-        contactPhone:
-          type: string
-          example: (999) 999-9999
-        schedule:
-          $ref: '#/components/schemas/pickschedule'
-        isScheduleRequired:
-          type: boolean
-        note:
-          type: string
-          example: Check in with security prior to loading or unloading.
-    pickschedule:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.Country'
+        name:
+          description: Company or business name at this stop location
+          example: ABC Manufacturing
+          maxLength: 250
+          type:
+          - string
+          - 'null'
+        postalCode:
+          description: Postal or ZIP code for the stop location (required if addressId not provided)
+          example: '60601'
+          maxLength: 6
+          type:
+          - string
+          - 'null'
+        stateProvince:
+          description: State or province abbreviation code (required if addressId not provided)
+          example: IL
+          maxLength: 2
+          type:
+          - string
+          - 'null'
+        stopType:
+          $ref: '#/components/schemas/MC.Quote.Common.Enums.StopType'
       type: object
+    MC.Quote.Contracts.Requests.Rate.ShippingDetailsRequest:
+      additionalProperties: false
       properties:
-        date:
-          type: string
-          format: date
-        start_time:
-          type: string
-          example: '14:00:00'
-        end_time:
-          type: string
-          example: '20:00:00'
+        dimensionsUnit:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.DimensionUnitCode'
+        handlingUnits:
+          description: Detailed collection of individual handling units with their specifications
+          items:
+            $ref: '#/components/schemas/MC.Quote.Contracts.Requests.Rate.HandlingUnitRequest'
+          required:
+          - handlingUnits
+          type:
+          - array
+          - 'null'
+        linearFeet:
+          description: Linear feet measurement for VLTL.
+          format: double
+          maximum: 999
+          type:
+          - number
+          - 'null'
+        totalHandlingUnitCount:
+          description: Total count of all handling units in the shipment
+          format: int32
+          maximum: 9999
+          minimum: 1
+          type:
+          - integer
+          - 'null'
+        totalWeight:
+          description: Total weight of the entire shipment in specified weight units
+          format: int32
+          maximum: 99999
+          minimum: 1
+          type:
+          - integer
+          - 'null'
+        weightUnit:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.WeightUnitCode'
+      required:
+      - handlingUnits
+      type: object
+    MC.Quote.Contracts.Responses.Rate.ServiceResponse:
+      additionalProperties: false
+      properties:
+        carrier:
+          description: Carrier SCAC (Standard Carrier Alpha Code) providing the rate
+          example: ABCF
+          maxLength: 4
+          type:
+          - string
+          - 'null'
+        laneType:
+          description: Lane type classification for the shipping route
+          example: Direct
+          type:
+          - string
+          - 'null'
+        level:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceLevelCode'
+        mode:
+          $ref: '#/components/schemas/MC.Infrastructure.Static.Data.Enums.ServiceMode'
+        pricing:
+          description: Pricing type or structure information for the rate
+          example: Contract
+          type:
+          - string
+          - 'null'
+        rateType:
+          description: Rate type classification for the shipping route
+          example: Carpet
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Responses.Rate.ChargeItemResponse:
+      additionalProperties: false
+      properties:
+        amount:
+          description: Monetary amount for this charge item
+          example: '150.75'
+          format: double
+          type: number
+        code:
+          description: Charge code identifier for the fee or service
+          example: FUEL
+          type:
+          - string
+          - 'null'
+        description:
+          description: Human-readable description of the charge
+          example: Fuel Surcharge
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Quote.Contracts.Responses.Rate.DeliveryResponse:
+      additionalProperties: false
+      properties:
+        estimatedDeliveryDate:
+          description: Estimated delivery date in yyyy/MM/dd format based on transit times
+          example: 2025/12/18
+          type:
+          - string
+          - 'null'
+        guaranteedTime:
+          description: Guaranteed delivery time in HH:mm format
+          example: '14:30'
+          type:
+          - string
+          - 'null'
+      type: object
+    MC.Infrastructure.Static.Data.Enums.CurrencyCode:
+      enum:
+      - USD
+      - CAD
+      - MEX
+      type: string
     shipment_booking_request:
       type: object
       properties:
@@ -1387,36 +1162,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/shipmentitems'
-    serviceLevel:
-      type: object
-      properties:
-        code:
-          type: string
-          example: STD
-        description:
-          type: string
-          example: Standard Rate
-        guaranteed:
-          type: string
-        serviceDays:
-          type: string
-        serviceType:
-          type: string
-    price:
-      type: object
-      properties:
-        serviceLevel:
-          $ref: '#/components/schemas/serviceLevel'
-        grossPrice:
-          type: string
-          example: '154.56'
-        netPrice:
-          type: string
-          example: '154.56'
-        priceBreakUp:
-          type: array
-          items:
-            $ref: '#/components/schemas/priceBreakUp'
     dimensions:
       type: object
       properties:
@@ -1457,27 +1202,56 @@ components:
         packageType:
           type: string
           example: BAG
-    carrier:
+    multipleItem:
       type: object
       properties:
-        name:
+        lineItemId:
           type: string
-          example: SAIA
-        uuid:
+          example: '5'
+        commodityName:
           type: string
-        scac:
+          example: Test name
+        class:
           type: string
-          example: SAIA
-    country:
-      type: object
-      properties:
-        alpha2Code:
+          example: '60'
+        commodityDescription:
           type: string
-          example: US
-        name:
+          example: test description
+        countryOfManufacture:
           type: string
           example: United States
-    RateQuoteResponse:
+        nmfcItemCode:
+          type: string
+          example: '123'
+        nmfcSubCode:
+          type: string
+          example: '12345'
+        commodityType:
+          type: string
+          example: string
+        isHazmat:
+          type: boolean
+        hazmat:
+          $ref: '#/components/schemas/hazmat'
+        unitValue:
+          type: integer
+          format: int32
+          example: 0
+        unitValueCurrency:
+          type: string
+          example: USD
+        weight:
+          type: integer
+          format: int32
+          example: 200
+        quantity:
+          type: integer
+          format: int32
+          example: 1
+    RateQuoteRequest:
+      required:
+      - customerEmail
+      - locationId
       type: object
       properties:
         specVersion:
@@ -1494,25 +1268,147 @@ components:
           example: bcef4153-0e25-4435-9f76-93a91f675d31
         time:
           type: string
-          example: '2023-01-24T10:18:11.000Z'
-        dataContentType:
-          type: string
-          example: application/json
-        erpType:
-          type: string
-          format: nullable
+          example: '2022-10-03T15:03:05.450Z'
         direction:
           type: string
-          example: inbound
-        subject:
+          example: outbound
+        customerName:
           type: string
-        erpRecordType:
+          example: Amazon
+        customerEmail:
+          type: string
+          example: MyCarrieradminEmail@domain.com
+        locationId:
+          type: string
+          example: '682656'
+        data:
+          $ref: '#/components/schemas/data_quote_request'
+    contact:
+      type: object
+      properties:
+        contactName:
+          type: string
+          example: personsname
+        phone:
+          type: string
+          example: (999) 999-9999
+        email:
+          type: string
+          example: testemail@test.com
+    pickschedule:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          example: '14:00:00'
+        end_time:
+          type: string
+          example: '20:00:00'
+    rates:
+      type: object
+      properties:
+        quoteStatus:
+          type: string
+          example: available
+        rejectReason:
           type: string
           format: nullable
-        carrierScacCode:
+        quoteId:
           type: string
-        data:
-          $ref: '#/components/schemas/data_quote_response'
+          example: '139805226'
+        carrierQuoteId:
+          type: string
+        shipmentMode:
+          type: string
+        equipmentType:
+          type: string
+        quoteExpiryDate:
+          type: string
+        currencyCode:
+          type: string
+          example: USD
+        carrier:
+          $ref: '#/components/schemas/carrier'
+        price:
+          type: array
+          items:
+            $ref: '#/components/schemas/price'
+    pickup:
+      type: object
+      properties:
+        stopNumber:
+          type: integer
+          format: int32
+          example: 1
+        stopType:
+          type: string
+          example: PICKUP
+        name:
+          type: string
+          example: Compco
+        addressLine1:
+          type: string
+          example: 59 Bedford St
+        addressLine2:
+          type: string
+        city:
+          type: string
+          example: Stamford
+        stateProvince:
+          type: string
+          example: CT
+        postalCode:
+          type: string
+          example: 06901
+        country:
+          $ref: '#/components/schemas/country'
+        latitude:
+          type: number
+          example: 32.7325
+        longitude:
+          type: number
+          example: -117.2011
+        contactEmail:
+          type: string
+          example: test@email.com
+        contactName:
+          type: string
+          example: Person Name
+        contactPhone:
+          type: string
+          example: (999) 999-9999
+        schedule:
+          $ref: '#/components/schemas/pickschedule'
+        isScheduleRequired:
+          type: boolean
+        note:
+          type: string
+          example: Check in with security prior to loading or unloading.
+    data_quote_response:
+      type: object
+      properties:
+        rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/rates'
+    serviceLevel:
+      type: object
+      properties:
+        code:
+          type: string
+          example: STD
+        description:
+          type: string
+          example: Standard Rate
+        guaranteed:
+          type: string
+        serviceDays:
+          type: string
+        serviceType:
+          type: string
     shipmentitems:
       type: object
       properties:
@@ -1566,13 +1462,117 @@ components:
           $ref: '#/components/schemas/dimensions'
         multipleItems:
           $ref: '#/components/schemas/multipleItem'
-    data_quote_response:
+    RateQuoteResponse:
       type: object
       properties:
-        rates:
+        specVersion:
+          type: string
+          example: '1'
+        type:
+          type: string
+          example: com.mycarrier.carrier.integrations
+        source:
+          type: string
+          example: https://mycarrier.uat.com
+        id:
+          type: string
+          example: bcef4153-0e25-4435-9f76-93a91f675d31
+        time:
+          type: string
+          example: '2023-01-24T10:18:11.000Z'
+        dataContentType:
+          type: string
+          example: application/json
+        erpType:
+          type: string
+          format: nullable
+        direction:
+          type: string
+          example: inbound
+        subject:
+          type: string
+        erpRecordType:
+          type: string
+          format: nullable
+        carrierScacCode:
+          type: string
+        data:
+          $ref: '#/components/schemas/data_quote_response'
+    data_quote_request:
+      type: object
+      properties:
+        preferredCarriers:
+          type: string
+          example: SAIA
+        accessorialServices:
+          type: string
+          example: INDEL,LGDEL,RESDEL
+        shipment:
+          $ref: '#/components/schemas/shipment_booking_request'
+    price:
+      type: object
+      properties:
+        serviceLevel:
+          $ref: '#/components/schemas/serviceLevel'
+        grossPrice:
+          type: string
+          example: '154.56'
+        netPrice:
+          type: string
+          example: '154.56'
+        priceBreakUp:
           type: array
           items:
-            $ref: '#/components/schemas/rates'
+            $ref: '#/components/schemas/priceBreakUp'
+    country:
+      type: object
+      properties:
+        alpha2Code:
+          type: string
+          example: US
+        name:
+          type: string
+          example: United States
+    priceBreakUp:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FSC
+        code:
+          type: string
+          example: FSC
+        description:
+          type: string
+          example: Fuel Surcharge
+        price:
+          type: string
+          example: '43.06'
+    hazmat:
+      type: object
+      properties:
+        identification_number:
+          type: string
+          example: UN1000
+        packingGroupId:
+          type: string
+          example: High
+        classId:
+          type: string
+          example: ExtremelyInsensitiveExplosives
+        emergencyContact:
+          $ref: '#/components/schemas/contact'
+    carrier:
+      type: object
+      properties:
+        name:
+          type: string
+          example: SAIA
+        uuid:
+          type: string
+        scac:
+          type: string
+          example: SAIA
 x-refined-from:
 - mycarrier-public-api-openapi.json
 - mycarrier-rating-api-openapi.json

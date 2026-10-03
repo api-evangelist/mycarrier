@@ -184,6 +184,25 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    DeleteHttpHeaderRequest:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        headerKey:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     WebhookHttpHeader:
       type: object
       properties:
@@ -232,25 +251,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    DeleteHttpHeaderRequest:
-      type: object
-      properties:
-        environment:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type: integer
-          format: int32
-        webhookType:
-          type:
-          - string
-          - 'null'
-        headerKey:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

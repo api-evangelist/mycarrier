@@ -103,24 +103,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest:
-      required:
-      - content
-      - invoiceRecordId
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        content:
-          maxLength: 300
-          minLength: 1
-          type: string
-        requestedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest:
       required:
       - invoiceRecordId
@@ -163,6 +145,24 @@ components:
           - string
           - 'null'
       additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationSaveNotesRequest:
+      required:
+      - content
+      - invoiceRecordId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        content:
+          maxLength: 300
+          minLength: 1
+          type: string
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     BasicAuth:
       type: http

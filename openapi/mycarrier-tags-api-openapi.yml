@@ -193,21 +193,6 @@ components:
             type: string
             format: uuid
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - Archived
-      - ShortPaid
-      - NeedsReview
-      - Created
-      - Deleted
-      type: string
     MC.Invoice.API.Dtos.Tags.BulkCreateTagRequest:
       required:
       - recordIds
@@ -230,6 +215,21 @@ components:
             type: string
             format: uuid
       additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
   securitySchemes:
     Bearer:
       type: http

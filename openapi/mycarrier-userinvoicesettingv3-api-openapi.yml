@@ -98,16 +98,6 @@ components:
       - Wallet
       - Analytics
       type: string
-    MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
-      required:
-      - navigationTabs
-      type: object
-      properties:
-        navigationTabs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceTab'
-      additionalProperties: false
     ProblemDetailsResponse:
       type: object
       properties:
@@ -167,6 +157,16 @@ components:
           type:
           - string
           - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
+      required:
+      - navigationTabs
+      type: object
+      properties:
+        navigationTabs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceTab'
       additionalProperties: false
   securitySchemes:
     Bearer:
