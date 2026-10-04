@@ -203,29 +203,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    WebhookHttpHeader:
-      type: object
-      properties:
-        environment:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type: integer
-          format: int32
-        webhookType:
-          type:
-          - string
-          - 'null'
-        headerKey:
-          type:
-          - string
-          - 'null'
-        headerValue:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     ProblemDetails:
       type: object
       properties:
@@ -251,6 +228,29 @@ components:
           - string
           - 'null'
       additionalProperties: {}
+    WebhookHttpHeader:
+      type: object
+      properties:
+        environment:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type: integer
+          format: int32
+        webhookType:
+          type:
+          - string
+          - 'null'
+        headerKey:
+          type:
+          - string
+          - 'null'
+        headerValue:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

@@ -557,68 +557,28 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.Common.Enums.SortingType:
-      enum:
-      - Asc
-      - Desc
-      type: string
-    MC.Invoice.API.Dtos.FreightAudit.Responses.MatchOriginalQuoteResponse:
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoicePaymentFilterItemResponse:
       type: object
       properties:
-        shipmentId:
-          type:
-          - integer
-          - 'null'
-          format: int64
-        quoteId:
-          type:
-          - integer
-          - 'null'
-          format: int64
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Shipments.ShipmentPriceDetailDto:
-      type: object
-      properties:
-        description:
-          type:
-          - string
-          - 'null'
-        amount:
+        paymentId:
+          type: string
+          format: uuid
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
           type: number
           format: double
-        chargeCode:
+        paymentNotes:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceCountResponse:
-      type: object
-      properties:
-        totalInvoiceCount:
-          type: integer
-          format: int32
-      additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterRequestValuesResponse:
-      type: object
-      properties:
-        carrierNames:
+        createdBy:
           type:
-          - array
+          - string
           - 'null'
-          items:
-            type: string
-        statuses:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
-        tags:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
+        isRemoved:
+          type: boolean
       additionalProperties: false
     MC.Invoice.API.Dtos.Generic.SortingRequest:
       type: object
@@ -629,96 +589,6 @@ components:
           - 'null'
         sortingType:
           $ref: '#/components/schemas/MC.Invoice.Common.Enums.SortingType'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Requests.MatchOriginalQuoteRequest:
-      required:
-      - carrierProNumber
-      - carrierScacCode
-      type: object
-      properties:
-        carrierScacCode:
-          minLength: 1
-          type: string
-        carrierProNumber:
-          minLength: 1
-          type: string
-        customerBolNumber:
-          type:
-          - string
-          - 'null'
-        poNumber:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceFilterRequestBase:
-      type: object
-      properties:
-        searchText:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          deprecated: true
-        shipmentIds:
-          type:
-          - array
-          - 'null'
-          items:
-            type: integer
-            format: int64
-        carrierNames:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        poNumbers:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        proNumbers:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        bolNumbers:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        invoiceDateTime:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest'
-        invoiceDueDate:
-          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest'
-        statuses:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
-        tags:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        isArchived:
-          type:
-          - boolean
-          - 'null'
-        hasOvercharge:
-          type:
-          - boolean
-          - 'null'
       additionalProperties: false
     MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse:
       type: object
@@ -833,67 +703,44 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
-      enum:
-      - Open
-      - Approved
-      - Dispute
-      - Denied
-      - Cancelled
-      - AutoApproved
-      - Paid
-      - Archived
-      - ShortPaid
-      - NeedsReview
-      - Created
-      - Deleted
-      type: string
-    MC.Invoice.Contracts.Responses.V2.InvoiceTagResponse:
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceCountResponse:
       type: object
       properties:
-        name:
-          type:
-          - string
-          - 'null'
+        totalInvoiceCount:
+          type: integer
+          format: int32
       additionalProperties: false
-    MC.Invoice.API.Dtos.Generic.PrioritySortingRequest:
+    MC.Invoice.API.Dtos.FreightAudit.Responses.MatchOriginalQuoteResponse:
       type: object
       properties:
-        sortingField:
+        shipmentId:
           type:
-          - string
+          - integer
           - 'null'
-        sortingFieldValue:
+          format: int64
+        quoteId:
           type:
-          - string
+          - integer
           - 'null'
-        sortingType:
-          $ref: '#/components/schemas/MC.Invoice.Common.Enums.SortingType'
+          format: int64
       additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse_CompanyInfo:
+    MC.Invoice.API.Dtos.FreightAudit.Requests.MatchOriginalQuoteRequest:
+      required:
+      - carrierProNumber
+      - carrierScacCode
       type: object
       properties:
-        companyName:
+        carrierScacCode:
+          minLength: 1
+          type: string
+        carrierProNumber:
+          minLength: 1
+          type: string
+        customerBolNumber:
           type:
           - string
           - 'null'
-        streetLine1:
-          type:
-          - string
-          - 'null'
-        streetLine2:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        state:
-          type:
-          - string
-          - 'null'
-        zip:
+        poNumber:
           type:
           - string
           - 'null'
@@ -914,38 +761,13 @@ components:
           description: Specifies the end date for filtering invoices based on the invoiced date
           format: date-time
       additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceRemittanceRequest:
+    MC.Invoice.Contracts.Responses.V2.InvoiceTagResponse:
       type: object
       properties:
-        customerId:
+        name:
           type:
-          - integer
+          - string
           - 'null'
-          format: int32
-          deprecated: true
-        recordIds:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Generic.PaginationRequest:
-      type: object
-      properties:
-        skip:
-          maximum: 2147483647
-          minimum: 0
-          type: integer
-          description: Specifies the number of records to exclude from the beginning of the query results
-          format: int32
-        take:
-          maximum: 2147483647
-          minimum: 1
-          type: integer
-          description: Can be used to set the number of records that you want to receive in response
-          format: int32
       additionalProperties: false
     MC.Invoice.API.Dtos.FreightAudit.Requests.EmailInvoiceDetailsRequest:
       required:
@@ -977,28 +799,171 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoicePaymentFilterItemResponse:
+    MC.Invoice.Data.Mongo.Enums.InvoiceStatusType:
+      enum:
+      - Open
+      - Approved
+      - Dispute
+      - Denied
+      - Cancelled
+      - AutoApproved
+      - Paid
+      - Archived
+      - ShortPaid
+      - NeedsReview
+      - Created
+      - Deleted
+      type: string
+    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceRequest:
+      required:
+      - carrierProNumber
+      - carrierScacCode
+      - customerBolNumber
+      - invoiceAmount
+      - invoiceDateTime
+      - lineItems
       type: object
       properties:
-        paymentId:
-          type: string
-          format: uuid
-        paymentDate:
+        invoiceDateTime:
           type: string
           format: date-time
-        paymentAmount:
+        invoiceDueDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invoiceAmount:
+          maximum: 79228162514264337593543950335
+          minimum: 1.0e-28
           type: number
           format: double
-        paymentNotes:
+        notes:
           type:
           - string
           - 'null'
-        createdBy:
+        carrierScacCode:
+          minLength: 1
+          type: string
+        carrierProNumber:
+          minLength: 1
+          type: string
+        customerBolNumber:
+          minLength: 1
+          type: string
+        poNumber:
           type:
           - string
           - 'null'
-        isRemoved:
-          type: boolean
+        referenceNumber:
+          type:
+          - string
+          - 'null'
+        shipmentId:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        lineItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Shipments.ShipmentPriceDetailDto'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse_CompanyInfo:
+      type: object
+      properties:
+        companyName:
+          type:
+          - string
+          - 'null'
+        streetLine1:
+          type:
+          - string
+          - 'null'
+        streetLine2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        zip:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceFilterRequestBase:
+      type: object
+      properties:
+        searchText:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          deprecated: true
+        shipmentIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+            format: int64
+        carrierNames:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        poNumbers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        proNumbers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        bolNumbers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        invoiceDateTime:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest'
+        invoiceDueDate:
+          $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.DateTimeRangeRequest'
+        statuses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        isArchived:
+          type:
+          - boolean
+          - 'null'
+        hasOvercharge:
+          type:
+          - boolean
+          - 'null'
       additionalProperties: false
     MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceFilterRequest:
       type: object
@@ -1075,25 +1040,22 @@ components:
         prioritySorting:
           $ref: '#/components/schemas/MC.Invoice.API.Dtos.Generic.PrioritySortingRequest'
       additionalProperties: false
-    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterResponse:
+    MC.Invoice.API.Dtos.FreightAudit.Requests.InvoiceRemittanceRequest:
       type: object
       properties:
-        priorityRecordIds:
+        customerId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          deprecated: true
+        recordIds:
           type:
           - array
           - 'null'
           items:
             type: string
             format: uuid
-        totalInvoiceCount:
-          type: integer
-          format: int64
-        invoices:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse'
       additionalProperties: false
     ProblemDetailsResponse:
       type: object
@@ -1123,59 +1085,97 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
-    MC.Invoice.API.Dtos.FreightAudit.Requests.UpdateInvoiceRequest:
-      required:
-      - carrierProNumber
-      - carrierScacCode
-      - customerBolNumber
-      - invoiceAmount
-      - invoiceDateTime
-      - lineItems
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterResponse:
       type: object
       properties:
-        invoiceDateTime:
-          type: string
-          format: date-time
-        invoiceDueDateTime:
+        priorityRecordIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+        totalInvoiceCount:
+          type: integer
+          format: int64
+        invoices:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterItemResponse'
+      additionalProperties: false
+    MC.Invoice.Common.Enums.SortingType:
+      enum:
+      - Asc
+      - Desc
+      type: string
+    MC.Invoice.API.Dtos.Generic.PrioritySortingRequest:
+      type: object
+      properties:
+        sortingField:
           type:
           - string
           - 'null'
-          format: date-time
-        invoiceAmount:
-          maximum: 79228162514264337593543950335
-          minimum: 1.0e-28
+        sortingFieldValue:
+          type:
+          - string
+          - 'null'
+        sortingType:
+          $ref: '#/components/schemas/MC.Invoice.Common.Enums.SortingType'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Generic.PaginationRequest:
+      type: object
+      properties:
+        skip:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          description: Specifies the number of records to exclude from the beginning of the query results
+          format: int32
+        take:
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+          description: Can be used to set the number of records that you want to receive in response
+          format: int32
+      additionalProperties: false
+    MC.Invoice.API.Dtos.FreightAudit.Responses.InvoiceFilterRequestValuesResponse:
+      type: object
+      properties:
+        carrierNames:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        statuses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceStatusType'
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Shipments.ShipmentPriceDetailDto:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
           type: number
           format: double
-        notes:
+        chargeCode:
           type:
           - string
           - 'null'
-        carrierScacCode:
-          minLength: 1
-          type: string
-        carrierProNumber:
-          minLength: 1
-          type: string
-        customerBolNumber:
-          minLength: 1
-          type: string
-        poNumber:
-          type:
-          - string
-          - 'null'
-        referenceNumber:
-          type:
-          - string
-          - 'null'
-        shipmentId:
-          type:
-          - integer
-          - 'null'
-          format: int64
-        lineItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Shipments.ShipmentPriceDetailDto'
       additionalProperties: false
   securitySchemes:
     Bearer:

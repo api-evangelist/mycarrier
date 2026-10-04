@@ -128,21 +128,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse:
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        invoiceStatus:
-          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse'
-      additionalProperties: false
     MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceRecordPaymentRequest:
       required:
       - invoiceRecordId
@@ -181,6 +166,27 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        paymentDate:
+          type: string
+          format: date-time
+        paymentAmount:
+          type: number
+          format: double
+        paymentNotes:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     MC.Invoice.Data.Enums.InvoiceStatusType:
       enum:
       - Open
@@ -192,6 +198,21 @@ components:
       - Paid
       - ShortPaid
       type: string
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentStatusResponse:
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        invoiceStatus:
+          $ref: '#/components/schemas/MC.Invoice.Data.Enums.InvoiceStatusType'
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse'
+      additionalProperties: false
     Microsoft.AspNetCore.Mvc.ProblemDetails:
       type: object
       properties:
@@ -217,27 +238,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    MC.Invoice.API.Dtos.Integrations.IntegrationInvoicePaymentResponse:
-      type: object
-      properties:
-        paymentId:
-          type: string
-          format: uuid
-        paymentDate:
-          type: string
-          format: date-time
-        paymentAmount:
-          type: number
-          format: double
-        paymentNotes:
-          type:
-          - string
-          - 'null'
-        createdBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
   securitySchemes:
     BasicAuth:
       type: http

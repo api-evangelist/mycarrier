@@ -176,6 +176,62 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.API.Responses.V3.InvoiceActionRequiredV3Response_InvoiceFilteredItemV3Response:
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        dateReceived:
+          type: string
+          format: date-time
+        carrierProNumber:
+          type:
+          - string
+          - 'null'
+        customerBOLNumber:
+          type:
+          - string
+          - 'null'
+        customerId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierLogo:
+          type:
+          - string
+          - 'null'
+        invoiceAmount:
+          type: number
+          format: double
+        amountDue:
+          type: number
+          format: double
+        quoteAmount:
+          type: number
+          format: double
+        shipmentId:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        status:
+          type:
+          - string
+          - 'null'
+        hasOvercharge:
+          type: boolean
+          readOnly: true
+        hasReceipt:
+          type: boolean
+        hasIntegrationFee:
+          type: boolean
+      additionalProperties: false
     MC.Invoice.API.Responses.V3.InvoiceActionRequiredV3Response:
       type: object
       properties:
@@ -261,62 +317,6 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    MC.Invoice.API.Responses.V3.InvoiceActionRequiredV3Response_InvoiceFilteredItemV3Response:
-      type: object
-      properties:
-        recordId:
-          type: string
-          format: uuid
-        dateReceived:
-          type: string
-          format: date-time
-        carrierProNumber:
-          type:
-          - string
-          - 'null'
-        customerBOLNumber:
-          type:
-          - string
-          - 'null'
-        customerId:
-          type:
-          - integer
-          - 'null'
-          format: int32
-        carrierName:
-          type:
-          - string
-          - 'null'
-        carrierLogo:
-          type:
-          - string
-          - 'null'
-        invoiceAmount:
-          type: number
-          format: double
-        amountDue:
-          type: number
-          format: double
-        quoteAmount:
-          type: number
-          format: double
-        shipmentId:
-          type:
-          - integer
-          - 'null'
-          format: int64
-        status:
-          type:
-          - string
-          - 'null'
-        hasOvercharge:
-          type: boolean
-          readOnly: true
-        hasReceipt:
-          type: boolean
-        hasIntegrationFee:
-          type: boolean
-      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

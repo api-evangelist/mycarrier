@@ -352,104 +352,22 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    InformationRequest:
+    AppointmentRequest:
       additionalProperties: false
       properties:
-        message:
-          type:
-          - string
-          - 'null'
-        type:
-          type:
-          - string
-          - 'null'
-      type: object
-    WebhookDocumentRequet:
-      additionalProperties: false
-      properties:
-        documentType:
-          type:
-          - string
-          - 'null'
-        fileType:
-          type:
-          - string
-          - 'null'
-        images:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        messageStatus:
-          $ref: '#/components/schemas/MessageStatusRequest'
-        proNumber:
-          type:
-          - string
-          - 'null'
-        scac:
-          type:
-          - string
-          - 'null'
-        transactionId:
-          type:
-          - string
-          - 'null'
-      type: object
-    MessageStatusRequest:
-      additionalProperties: false
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-        information:
-          items:
-            $ref: '#/components/schemas/InformationRequest'
-          type:
-          - array
-          - 'null'
-        message:
-          type:
-          - string
-          - 'null'
-        resolution:
-          type:
-          - string
-          - 'null'
-        status:
-          type:
-          - string
-          - 'null'
-      type: object
-    StatusRequest:
-      additionalProperties: false
-      properties:
-        carrierDescription:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        code:
-          type:
-          - string
-          - 'null'
         date:
           type:
           - string
           - 'null'
-        stateProvince:
+        endTime:
           type:
           - string
           - 'null'
-        time:
+        notes:
           type:
           - string
           - 'null'
-        utc:
+        startTime:
           type:
           - string
           - 'null'
@@ -476,34 +394,6 @@ components:
           - string
           - 'null'
         signature:
-          type:
-          - string
-          - 'null'
-      type: object
-    AddressWebhookRequest:
-      additionalProperties: false
-      properties:
-        postalCode:
-          type:
-          - string
-          - 'null'
-      type: object
-    AppointmentRequest:
-      additionalProperties: false
-      properties:
-        date:
-          type:
-          - string
-          - 'null'
-        endTime:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-        startTime:
           type:
           - string
           - 'null'
@@ -544,6 +434,86 @@ components:
         transit:
           $ref: '#/components/schemas/TransitRequest'
       type: object
+    AddressWebhookRequest:
+      additionalProperties: false
+      properties:
+        postalCode:
+          type:
+          - string
+          - 'null'
+      type: object
+    StatusRequest:
+      additionalProperties: false
+      properties:
+        carrierDescription:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+        date:
+          type:
+          - string
+          - 'null'
+        stateProvince:
+          type:
+          - string
+          - 'null'
+        time:
+          type:
+          - string
+          - 'null'
+        utc:
+          type:
+          - string
+          - 'null'
+      type: object
+    WebhookDocumentRequet:
+      additionalProperties: false
+      properties:
+        documentType:
+          type:
+          - string
+          - 'null'
+        fileType:
+          type:
+          - string
+          - 'null'
+        images:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        messageStatus:
+          $ref: '#/components/schemas/MessageStatusRequest'
+        proNumber:
+          type:
+          - string
+          - 'null'
+        scac:
+          type:
+          - string
+          - 'null'
+        transactionId:
+          type:
+          - string
+          - 'null'
+      type: object
+    ShipmentInfoRequest:
+      additionalProperties: false
+      properties:
+        weight:
+          type:
+          - string
+          - 'null'
+      type: object
     ReferenceNumberRequest:
       additionalProperties: false
       properties:
@@ -568,10 +538,40 @@ components:
           - string
           - 'null'
       type: object
-    ShipmentInfoRequest:
+    InformationRequest:
       additionalProperties: false
       properties:
-        weight:
+        message:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+      type: object
+    MessageStatusRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+        information:
+          items:
+            $ref: '#/components/schemas/InformationRequest'
+          type:
+          - array
+          - 'null'
+        message:
+          type:
+          - string
+          - 'null'
+        resolution:
+          type:
+          - string
+          - 'null'
+        status:
           type:
           - string
           - 'null'
@@ -586,18 +586,6 @@ components:
           - string
           - 'null'
       type: object
-    WebhookHttpHeaderComposed:
-      type: object
-      properties:
-        headerKey:
-          type:
-          - string
-          - 'null'
-        headerValue:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     WebhookComposed:
       type: object
       properties:
@@ -626,6 +614,18 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/WebhookHttpHeaderComposed'
+      additionalProperties: false
+    WebhookHttpHeaderComposed:
+      type: object
+      properties:
+        headerKey:
+          type:
+          - string
+          - 'null'
+        headerValue:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
     ProblemDetails:
       type: object

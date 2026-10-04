@@ -131,12 +131,6 @@ paths:
       - ShippingLocations
 components:
   schemas:
-    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
-      enum:
-      - 0
-      - 1
-      format: int32
-      type: integer
     MC.Address.Contracts.Models.PublicContracts.IntegratedCarrier:
       additionalProperties: false
       properties:
@@ -311,31 +305,23 @@ components:
           - string
           - 'null'
       type: object
-    MC.Address.Contracts.Models.PublicContracts.Accessorial:
-      additionalProperties: false
+    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
+    : additionalProperties: false
       properties:
-        code:
-          description: Accessorial code
-          example: LFTG
+        data:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
+        errors:
+          description: Response errors
+          items:
+            type: string
           type:
-          - string
+          - array
           - 'null'
-        name:
-          description: Accessorial name
-          example: Liftgate Delivery
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AccessorialType'
-      type: object
-    MC.Address.Contracts.Models.PublicContracts.AppointmentDetails:
-      additionalProperties: false
-      properties:
-        delivery:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
-        pickup:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+        statusCode:
+          description: Response status code
+          example: '200'
+          format: int32
+          type: integer
       type: object
     MC.Address.Contracts.Models.PublicContracts.Contact:
       additionalProperties: false
@@ -386,49 +372,38 @@ components:
           - string
           - 'null'
       type: object
-    MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse:
+    MC.Address.Contracts.Models.PublicContracts.AppointmentDetails:
       additionalProperties: false
       properties:
-        isTruncated:
-          description: Indicates whether the results are truncated
-          example: 'true'
-          type: boolean
-        returnedCount:
-          description: Number of returned results
-          example: '10'
-          format: int64
-          type: integer
-        shippingLocations:
-          description: Shipping locations
-          items:
-            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocation'
-          type:
-          - array
-          - 'null'
-        totalCount:
-          description: Total count of results
-          example: '100'
-          format: int64
-          type: integer
+        delivery:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
+        pickup:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AppointmentWindow'
       type: object
-    ? MC.Address.Contracts.Models.PublicContracts.ApiResponseOfMC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse
-    : additionalProperties: false
+    MC.Address.Contracts.Models.PublicContracts.Accessorial:
+      additionalProperties: false
       properties:
-        data:
-          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocationDetailsResponse'
-        errors:
-          description: Response errors
-          items:
-            type: string
+        code:
+          description: Accessorial code
+          example: LFTG
           type:
-          - array
+          - string
           - 'null'
-        statusCode:
-          description: Response status code
-          example: '200'
-          format: int32
-          type: integer
+        name:
+          description: Accessorial name
+          example: Liftgate Delivery
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.AccessorialType'
       type: object
+    MC.Address.Contracts.Models.PublicContracts.AccessorialType:
+      enum:
+      - 0
+      - 1
+      format: int32
+      type: integer
     MC.Address.Contracts.Models.PublicContracts.AddressSettings:
       additionalProperties: false
       properties:
@@ -494,4 +469,29 @@ components:
           type:
           - string
           - 'null'
+      type: object
+    MC.Address.Contracts.Models.PublicContracts.ShippingLocationSearchResponse:
+      additionalProperties: false
+      properties:
+        isTruncated:
+          description: Indicates whether the results are truncated
+          example: 'true'
+          type: boolean
+        returnedCount:
+          description: Number of returned results
+          example: '10'
+          format: int64
+          type: integer
+        shippingLocations:
+          description: Shipping locations
+          items:
+            $ref: '#/components/schemas/MC.Address.Contracts.Models.PublicContracts.ShippingLocation'
+          type:
+          - array
+          - 'null'
+        totalCount:
+          description: Total count of results
+          example: '100'
+          format: int64
+          type: integer
       type: object

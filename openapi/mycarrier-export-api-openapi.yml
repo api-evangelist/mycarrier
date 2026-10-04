@@ -277,6 +277,29 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.ExportTemplateType:
+      enum:
+      - Custom
+      - System
+      type: string
+    MC.Invoice.API.Dtos.Export.Request.ExportRequestBase:
+      type: object
+      properties:
+        recordIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
     MC.Invoice.API.Dtos.Export.Response.ExportTemplateResponse:
       type: object
       properties:
@@ -295,6 +318,26 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Request.ExportTemplateRequest:
+      required:
+      - columns
+      - customerId
+      - name
+      type: object
+      properties:
+        customerId:
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+          format: int32
+        name:
+          minLength: 1
+          type: string
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
       additionalProperties: false
     ProblemDetailsResponse:
       type: object
@@ -324,35 +367,6 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateSaveResponse:
-      type: object
-      properties:
-        templateId:
-          type: string
-          format: uuid
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          minLength: 1
-          type: string
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.ExportTemplateType:
-      enum:
-      - Custom
-      - System
-      type: string
     MC.Invoice.API.Dtos.Export.Request.ExportRequest:
       type: object
       properties:
@@ -378,36 +392,22 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
       additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Request.ExportRequestBase:
-      type: object
-      properties:
-        recordIds:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Export.Request.ExportTemplateRequest:
+    MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest:
       required:
-      - columns
-      - customerId
       - name
       type: object
       properties:
-        customerId:
-          maximum: 2147483647
-          minimum: 1
-          type: integer
-          format: int32
         name:
           minLength: 1
           type: string
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Dtos.Export.Request.ExportTemplateColumnRequest'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Export.Response.ExportTemplateColumnResponse:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
     Bearer:
