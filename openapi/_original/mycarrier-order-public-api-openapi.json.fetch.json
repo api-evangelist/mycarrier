@@ -1,0 +1,12 @@
+{
+ "url": "https://order-public-api.api.mycarriertms.com/swagger/v1/swagger.json",
+ "requested_url": "https://order-public-api.api.mycarriertms.com/swagger/v1/swagger.json",
+ "status": 200,
+ "content_type": "application/json;charset=utf-8",
+ "bytes": 66419,
+ "sha256": "078dc6ff657fe221e6d52318bcb02f9374ec988a1698fcc4e4486fefe657aa38",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
