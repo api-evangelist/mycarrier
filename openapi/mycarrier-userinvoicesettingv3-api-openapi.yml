@@ -91,13 +91,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.Data.Mongo.Enums.InvoiceTab:
-      enum:
-      - Overview
-      - Invoices
-      - Wallet
-      - Analytics
-      type: string
     MC.Invoice.API.Responses.V3.TabItemV3Response:
       type: object
       properties:
@@ -110,6 +103,23 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
+      required:
+      - navigationTabs
+      type: object
+      properties:
+        navigationTabs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceTab'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.InvoiceTab:
+      enum:
+      - Overview
+      - Invoices
+      - Wallet
+      - Analytics
+      type: string
     ProblemDetailsResponse:
       type: object
       properties:
@@ -157,16 +167,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/MC.Invoice.API.Responses.V3.TabItemV3Response'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.UserSettings.ReorderInvoiceNavigationTabsRequest:
-      required:
-      - navigationTabs
-      type: object
-      properties:
-        navigationTabs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.InvoiceTab'
       additionalProperties: false
   securitySchemes:
     Bearer:

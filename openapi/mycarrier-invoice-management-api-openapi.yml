@@ -209,6 +209,27 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceApprovalReasonRequest:
+      required:
+      - approvedReason
+      - recordId
+      - updatedBy
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        updatedBy:
+          minLength: 1
+          type: string
+        approvedReason:
+          minLength: 1
+          type: string
+        approvedOtherNotes:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     MC.Invoice.Data.Enums.IntegrationInvoiceStatusType:
       enum:
       - Open
@@ -255,22 +276,41 @@ components:
           items:
             $ref: '#/components/schemas/MC.Invoice.Data.Entities.ShipmentPriceDetail'
       additionalProperties: false
-    MC.Invoice.Data.Enums.InvoiceArchivingType:
-      enum:
-      - Unarchive
-      - Archive
-      type: string
-    MC.Invoice.Data.Entities.ShipmentPriceDetail:
+    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest:
+      required:
+      - recordId
+      - updatedBy
+      type: object
+      properties:
+        recordId:
+          type: string
+          format: uuid
+        updatedBy:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity:
       type: object
       properties:
         description:
           type:
           - string
           - 'null'
-        amount:
-          type: number
-          format: double
-        chargeCode:
+        piecesNumber:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        totalWeight:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        freightClassCode:
+          type:
+          - string
+          - 'null'
+        packingType:
           type:
           - string
           - 'null'
@@ -303,53 +343,36 @@ components:
         shipment:
           $ref: '#/components/schemas/MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_CreateInvoiceShipment'
       additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_Commodity:
+    Microsoft.AspNetCore.Mvc.ProblemDetails:
       type: object
       properties:
-        description:
+        type:
           type:
           - string
           - 'null'
-        piecesNumber:
+        title:
+          type:
+          - string
+          - 'null'
+        status:
           type:
           - integer
           - 'null'
           format: int32
-        totalWeight:
-          type:
-          - integer
-          - 'null'
-          format: int32
-        freightClassCode:
+        detail:
           type:
           - string
           - 'null'
-        packingType:
+        instance:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceApprovalReasonRequest:
-      required:
-      - approvedReason
-      - recordId
-      - updatedBy
-      type: object
-      properties:
-        recordId:
-          type: string
-          format: uuid
-        updatedBy:
-          minLength: 1
-          type: string
-        approvedReason:
-          minLength: 1
-          type: string
-        approvedOtherNotes:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
+      additionalProperties: {}
+    MC.Invoice.Data.Enums.InvoiceArchivingType:
+      enum:
+      - Unarchive
+      - Archive
+      type: string
     MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyInfo:
       type: object
       properties:
@@ -394,6 +417,35 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline:
+      type: object
+      properties:
+        estimatedDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actualDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.Data.Entities.ShipmentPriceDetail:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: number
+          format: double
+        chargeCode:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_InvoiceCompanyAddress:
       type: object
       properties:
@@ -426,58 +478,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationCreateInvoiceRequest_ShippingTimeline:
-      type: object
-      properties:
-        estimatedDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        actualDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationInvoiceUpdateRequest:
-      required:
-      - recordId
-      - updatedBy
-      type: object
-      properties:
-        recordId:
-          type: string
-          format: uuid
-        updatedBy:
-          minLength: 1
-          type: string
-      additionalProperties: false
-    Microsoft.AspNetCore.Mvc.ProblemDetails:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-        title:
-          type:
-          - string
-          - 'null'
-        status:
-          type:
-          - integer
-          - 'null'
-          format: int32
-        detail:
-          type:
-          - string
-          - 'null'
-        instance:
-          type:
-          - string
-          - 'null'
-      additionalProperties: {}
   securitySchemes:
     BasicAuth:
       type: http

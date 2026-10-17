@@ -195,18 +195,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    WebhookType:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-        description:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     ProblemDetails:
       type: object
       properties:
@@ -232,6 +220,18 @@ components:
           - string
           - 'null'
       additionalProperties: {}
+    WebhookType:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

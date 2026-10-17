@@ -184,7 +184,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    DeleteHttpHeaderRequest:
+    WebhookHttpHeader:
       type: object
       properties:
         environment:
@@ -199,6 +199,10 @@ components:
           - string
           - 'null'
         headerKey:
+          type:
+          - string
+          - 'null'
+        headerValue:
           type:
           - string
           - 'null'
@@ -228,7 +232,7 @@ components:
           - string
           - 'null'
       additionalProperties: {}
-    WebhookHttpHeader:
+    DeleteHttpHeaderRequest:
       type: object
       properties:
         environment:
@@ -243,10 +247,6 @@ components:
           - string
           - 'null'
         headerKey:
-          type:
-          - string
-          - 'null'
-        headerValue:
           type:
           - string
           - 'null'

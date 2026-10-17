@@ -308,84 +308,17 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.Data.Mongo.Entities.EdiMapping:
+    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingResponse:
       type: object
       properties:
-        carrierId:
-          type: integer
-          format: int32
-        identificationCode:
+        carrierScac:
           type:
           - string
           - 'null'
-        isProcessed:
-          type: boolean
-        createdDateTime:
+        disputeEmail:
           type:
           - string
           - 'null'
-          format: date-time
-      additionalProperties: false
-    MC.Invoice.Domain.Dtos.CustomerSettings.UpsertCustomerInvoiceSettingRequest:
-      required:
-      - customerId
-      type: object
-      properties:
-        customerId:
-          type: integer
-          format: int32
-        autoApproveInvoiceAmountThreshold:
-          type:
-          - number
-          - 'null'
-          format: double
-        autoApproveInvoicePercentageThreshold:
-          type:
-          - number
-          - 'null'
-          format: double
-        autoApproveInvoiceUnderageAmountThreshold:
-          type:
-          - number
-          - 'null'
-          format: double
-        autoApproveInvoiceUnderagePercentageThreshold:
-          type:
-          - number
-          - 'null'
-          format: double
-        newInvoiceVersionEmailNotificationFrequency:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
-        newInvoiceEmailNotificationFrequency:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
-        newInvoiceNotificationSettings:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
-        newInvoiceVersionNotificationSettings:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
-        carrierDisputeEmailSettings:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings'
-        isPaymentReceiptNotificationEnabled:
-          type:
-          - boolean
-          - 'null'
-        paymentReceiptNotificationSettings:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
       additionalProperties: false
     MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType:
       enum:
@@ -474,82 +407,6 @@ components:
           format: int32
           readOnly: true
       additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-        isSelected:
-          type: boolean
-      additionalProperties: false
-    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest:
-      required:
-      - carrierName
-      - carrierScac
-      - disputeEmail
-      type: object
-      properties:
-        carrierName:
-          minLength: 1
-          type: string
-        carrierScac:
-          minLength: 1
-          type: string
-        disputeEmail:
-          minLength: 1
-          type: string
-      additionalProperties: false
-    MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest:
-      required:
-      - carrierId
-      - customerId
-      - identificationCode
-      type: object
-      properties:
-        customerId:
-          type: integer
-          format: int32
-        identificationCode:
-          minLength: 1
-          type: string
-        carrierId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingResponse:
-      type: object
-      properties:
-        carrierScac:
-          type:
-          - string
-          - 'null'
-        disputeEmail:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings:
-      type: object
-      properties:
-        carrierName:
-          type:
-          - string
-          - 'null'
-        carrierScac:
-          type:
-          - string
-          - 'null'
-        disputeEmail:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     ProblemDetailsResponse:
       type: object
       properties:
@@ -578,6 +435,149 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.Domain.Dtos.CustomerSettings.UpsertCustomerInvoiceSettingRequest:
+      required:
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+        autoApproveInvoiceAmountThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoicePercentageThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoiceUnderageAmountThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        autoApproveInvoiceUnderagePercentageThreshold:
+          type:
+          - number
+          - 'null'
+          format: double
+        newInvoiceVersionEmailNotificationFrequency:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
+        newInvoiceEmailNotificationFrequency:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.NotificationFrequencyType'
+        newInvoiceNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        newInvoiceVersionNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+        carrierDisputeEmailSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings'
+        isPaymentReceiptNotificationEnabled:
+          type:
+          - boolean
+          - 'null'
+        paymentReceiptNotificationSettings:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings'
+      additionalProperties: false
+    MC.Invoice.API.Dtos.CustomerSettings.EdiMappingInformationRequest:
+      required:
+      - carrierId
+      - customerId
+      - identificationCode
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+        identificationCode:
+          minLength: 1
+          type: string
+        carrierId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    MC.Invoice.API.Dtos.CustomerSettings.DisputeEmailSettingRequest:
+      required:
+      - carrierName
+      - carrierScac
+      - disputeEmail
+      type: object
+      properties:
+        carrierName:
+          minLength: 1
+          type: string
+        carrierScac:
+          minLength: 1
+          type: string
+        disputeEmail:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.DisputeEmailSettings:
+      type: object
+      properties:
+        carrierName:
+          type:
+          - string
+          - 'null'
+        carrierScac:
+          type:
+          - string
+          - 'null'
+        disputeEmail:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.EdiMapping:
+      type: object
+      properties:
+        carrierId:
+          type: integer
+          format: int32
+        identificationCode:
+          type:
+          - string
+          - 'null'
+        isProcessed:
+          type: boolean
+        createdDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Entities.CustomerUserNotificationSettings:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        isSelected:
+          type: boolean
+      additionalProperties: false
   securitySchemes:
     Bearer:
       type: http

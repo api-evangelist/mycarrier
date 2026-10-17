@@ -121,23 +121,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest:
-      required:
-      - invoiceRecordId
-      - noteId
-      type: object
-      properties:
-        invoiceRecordId:
-          type: string
-          format: uuid
-        noteId:
-          type: string
-          format: uuid
-        requestedBy:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     Microsoft.AspNetCore.Mvc.ProblemDetails:
       type: object
       properties:
@@ -163,6 +146,23 @@ components:
           - string
           - 'null'
       additionalProperties: {}
+    MC.Invoice.API.Dtos.Integrations.IntegrationDeleteNotesRequest:
+      required:
+      - invoiceRecordId
+      - noteId
+      type: object
+      properties:
+        invoiceRecordId:
+          type: string
+          format: uuid
+        noteId:
+          type: string
+          format: uuid
+        requestedBy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     BasicAuth:
       type: http

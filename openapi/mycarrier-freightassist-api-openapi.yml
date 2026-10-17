@@ -95,64 +95,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    MC.Invoice.API.Dtos.FreightAssist.Requests.AuditSuggestionVoteRequest:
-      type: object
-      properties:
-        vote:
-          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.UserVoteType'
-      additionalProperties: false
-    MC.Invoice.Data.Mongo.Enums.UserVoteType:
-      enum:
-      - Neutral
-      - Like
-      - Dislike
-      type: string
-    MC.Invoice.API.Responses.V2.InvoiceDifferenceResponse:
-      type: object
-      properties:
-        categoryId:
-          type: integer
-          format: int32
-        reasonCode:
-          type:
-          - string
-          - 'null'
-        subReasonCodes:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        reasonDescription:
-          type:
-          - string
-          - 'null'
-        differenceAmount:
-          type: number
-          format: double
-        explanation:
-          type:
-          - string
-          - 'null'
-        invoiceSourceCharges:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
-        quoteSourceCharges:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
-        chargeBreakdowns:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.ChargeBreakdownResponse'
-      additionalProperties: false
     MC.Invoice.API.Responses.V2.SourceChargeResponse:
       type: object
       properties:
@@ -253,6 +195,64 @@ components:
           description: The OpenTelemetry trace ID for correlating logs and distributed traces
           example: a1b2c3d4e5f67890abcdef1234567890
       description: RFC 7807 Problem Details response with traceId for error correlation
+    MC.Invoice.API.Dtos.FreightAssist.Requests.AuditSuggestionVoteRequest:
+      type: object
+      properties:
+        vote:
+          $ref: '#/components/schemas/MC.Invoice.Data.Mongo.Enums.UserVoteType'
+      additionalProperties: false
+    MC.Invoice.API.Responses.V2.InvoiceDifferenceResponse:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int32
+        reasonCode:
+          type:
+          - string
+          - 'null'
+        subReasonCodes:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        reasonDescription:
+          type:
+          - string
+          - 'null'
+        differenceAmount:
+          type: number
+          format: double
+        explanation:
+          type:
+          - string
+          - 'null'
+        invoiceSourceCharges:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
+        quoteSourceCharges:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.SourceChargeResponse'
+        chargeBreakdowns:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MC.Invoice.API.Responses.V2.ChargeBreakdownResponse'
+      additionalProperties: false
+    MC.Invoice.Data.Mongo.Enums.UserVoteType:
+      enum:
+      - Neutral
+      - Like
+      - Dislike
+      type: string
   securitySchemes:
     Bearer:
       type: http
